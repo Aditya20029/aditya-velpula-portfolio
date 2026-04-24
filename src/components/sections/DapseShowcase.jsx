@@ -22,7 +22,7 @@ export default function DapseShowcase({ role }) {
       id: "architecture",
       label: "Architecture",
       content: (
-        <div className="grid md:grid-cols-[1fr_auto] gap-8 items-start">
+        <div className="grid md:grid-cols-[1fr_460px] gap-10 items-center">
           <div>
             <h4 className="t-h3 text-[var(--text-primary)] mb-3">
               Hybrid RAG Pipeline
@@ -34,7 +34,9 @@ export default function DapseShowcase({ role }) {
               {role.details.legalContext}
             </p>
           </div>
-          <DapseDiagram />
+          <div className="w-full flex justify-center">
+            <DapseDiagram />
+          </div>
         </div>
       ),
     },
