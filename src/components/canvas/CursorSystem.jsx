@@ -93,13 +93,13 @@ export default function CursorSystem() {
       <div
         ref={glowRef}
         aria-hidden="true"
-        className="pointer-events-none fixed top-0 left-0 z-[9998] transition-[width,height,opacity] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] mix-blend-screen"
+        className="cursor-glow pointer-events-none fixed top-0 left-0 z-[9998] transition-[width,height,opacity] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)]"
         style={{
           width: `${glowSize}px`,
           height: `${glowSize}px`,
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(59,130,246,0.18), transparent 60%)",
+            "radial-gradient(circle, rgba(59,130,246,0.22), transparent 60%)",
           opacity: isInteractive ? 1 : 0.7,
         }}
       />

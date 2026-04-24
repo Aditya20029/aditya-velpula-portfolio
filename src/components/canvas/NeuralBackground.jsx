@@ -32,6 +32,14 @@ export default function NeuralBackground() {
     }));
 
     const mouse = { x: -1000, y: -1000 };
+    // Read theme each frame from the DOM attribute so we re-color when
+    // the user flips the toggle without tearing down the canvas.
+    const getColors = () => {
+      const light = document.documentElement.dataset.theme === "light";
+      return light
+        ? { node: "15, 23, 42", edge: "37, 99, 235" } // deep navy dots, blue edges
+        : { node: "59, 130, 246", edge: "59, 130, 246" };
+    };
     const onMove = (e) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
@@ -83,6 +91,8 @@ export default function NeuralBackground() {
         if (n.y > height) n.y = 0;
       }
 
+      const { node: nodeRgb, edge: edgeRgb } = getColors();
+
       // Edges
       ctx.lineWidth = 0.5;
       for (let i = 0; i < nodes.length; i++) {
@@ -94,7 +104,7 @@ export default function NeuralBackground() {
           const dist = Math.hypot(dx, dy);
           if (dist < 160) {
             const alpha = (1 - dist / 160) * 0.15;
-            ctx.strokeStyle = `rgba(59, 130, 246, ${alpha})`;
+            ctx.strokeStyle = `rgba(${edgeRgb}, ${alpha})`;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
@@ -111,9 +121,7 @@ export default function NeuralBackground() {
           .slice(0, 3);
         for (const { n, d } of scored) {
           if (d < 240) {
-            ctx.strokeStyle = `rgba(59, 130, 246, ${
-              (1 - d / 240) * 0.4
-            })`;
+            ctx.strokeStyle = `rgba(${edgeRgb}, ${(1 - d / 240) * 0.4})`;
             ctx.beginPath();
             ctx.moveTo(mouse.x, mouse.y);
             ctx.lineTo(n.x, n.y);
@@ -124,7 +132,7 @@ export default function NeuralBackground() {
 
       // Nodes
       for (const n of nodes) {
-        ctx.fillStyle = `rgba(59, 130, 246, ${n.opacity})`;
+        ctx.fillStyle = `rgba(${nodeRgb}, ${n.opacity})`;
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
         ctx.fill();

@@ -34,16 +34,34 @@ export const SECTIONS = [
 ];
 
 export const SECTION_TINTS = {
-  hero: "transparent",
-  about: "radial-gradient(circle at 20% 30%, rgba(59,130,246,0.04), transparent 40%)",
-  experience:
-    "linear-gradient(180deg, rgba(6,182,212,0.03), rgba(139,92,246,0.03))",
-  projects:
-    "radial-gradient(circle at 80% 60%, rgba(245,158,11,0.04), transparent 50%)",
-  skills:
-    "radial-gradient(circle at 50% 50%, rgba(139,92,246,0.05), transparent 60%)",
-  certifications:
-    "radial-gradient(circle at 50% 20%, rgba(245,158,11,0.04), transparent 50%)",
-  contact:
-    "radial-gradient(ellipse at 50% 80%, rgba(59,130,246,0.05), transparent 60%)",
+  dark: {
+    hero: "transparent",
+    about:
+      "radial-gradient(circle at 20% 30%, rgba(59,130,246,0.04), transparent 40%)",
+    experience:
+      "linear-gradient(180deg, rgba(6,182,212,0.03), rgba(139,92,246,0.03))",
+    projects:
+      "radial-gradient(circle at 80% 60%, rgba(245,158,11,0.04), transparent 50%)",
+    skills:
+      "radial-gradient(circle at 50% 50%, rgba(139,92,246,0.05), transparent 60%)",
+    certifications:
+      "radial-gradient(circle at 50% 20%, rgba(245,158,11,0.04), transparent 50%)",
+    contact:
+      "radial-gradient(ellipse at 50% 80%, rgba(59,130,246,0.05), transparent 60%)",
+  },
+  light: {
+    hero: "transparent",
+    about:
+      "radial-gradient(circle at 20% 30%, rgba(37,99,235,0.025), transparent 50%)",
+    experience:
+      "linear-gradient(180deg, rgba(8,145,178,0.02), rgba(124,58,237,0.02))",
+    projects:
+      "radial-gradient(circle at 80% 60%, rgba(194,65,12,0.025), transparent 55%)",
+    skills:
+      "radial-gradient(circle at 50% 50%, rgba(124,58,237,0.03), transparent 60%)",
+    certifications:
+      "radial-gradient(circle at 50% 20%, rgba(194,65,12,0.025), transparent 55%)",
+    contact:
+      "radial-gradient(ellipse at 50% 80%, rgba(37,99,235,0.03), transparent 60%)",
+  },
 };

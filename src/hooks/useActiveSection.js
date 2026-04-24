@@ -1,9 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import { SECTIONS, SECTION_TINTS } from "@/utils/constants";
+import { useTheme } from "@/hooks/useTheme";
 
 export function useActiveSection() {
   const [active, setActive] = useState("hero");
+  const { theme } = useTheme();
 
   useEffect(() => {
     const observers = [];
@@ -25,9 +27,10 @@ export function useActiveSection() {
   }, []);
 
   useEffect(() => {
-    const tint = SECTION_TINTS[active] || "transparent";
+    const tints = SECTION_TINTS[theme] || SECTION_TINTS.dark;
+    const tint = tints[active] || "transparent";
     document.documentElement.style.setProperty("--context-tint", tint);
-  }, [active]);
+  }, [active, theme]);
 
   return active;
 }
