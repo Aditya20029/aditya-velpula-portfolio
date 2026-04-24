@@ -5,6 +5,7 @@ import { personal } from "@/data/personal";
 import { EASE } from "@/utils/constants";
 import GlassCard from "@/components/ui/GlassCard";
 import TextReveal from "@/components/ui/TextReveal";
+import SectionAccent from "@/components/ui/SectionAccent";
 
 const IDENTITY_CARDS = [
   {
@@ -37,7 +38,20 @@ const TERMINAL_LINES = [
 
 export default function About() {
   return (
-    <section id="about" className="section relative" aria-label="About">
+    <section id="about" className="section relative overflow-hidden" aria-label="About">
+      {/* Ambient iridescent accent behind the quote */}
+      <SectionAccent
+        variant="ring"
+        size={520}
+        position={{ top: "18%", left: "50%" }}
+        opacity={0.18}
+      />
+      <SectionAccent
+        variant="orb"
+        size={360}
+        position={{ top: "72%", left: "22%" }}
+        opacity={0.25}
+      />
       <div className="container-site relative z-10 flex flex-col gap-24">
         {/* Act 1: Quote */}
         <motion.div

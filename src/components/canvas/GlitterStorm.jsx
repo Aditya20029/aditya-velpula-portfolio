@@ -85,6 +85,22 @@ export default function GlitterStorm() {
     let lastScrollY = window.scrollY;
     let rafId;
 
+    // Cursor state — particles drift toward + brighten inside the radius
+    const cursor = { x: -1000, y: -1000, active: false };
+    const onMove = (e) => {
+      cursor.x = e.clientX;
+      cursor.y = e.clientY;
+      cursor.active = true;
+    };
+    const onLeave = () => {
+      cursor.active = false;
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("mouseleave", onLeave);
+
+    const CURSOR_RADIUS = 220;
+    const CURSOR_RADIUS_SQ = CURSOR_RADIUS * CURSOR_RADIUS;
+
     const tick = (now) => {
       const currentScrollY = window.scrollY;
       const scrollDelta = currentScrollY - lastScrollY;
@@ -99,13 +115,30 @@ export default function GlitterStorm() {
         p.x += p.dx;
         p.y += p.dy;
 
+        // Cursor attraction — pulls nearby particles toward cursor + boosts alpha
+        let cursorBoost = 1;
+        if (cursor.active) {
+          const dx = cursor.x - p.x;
+          const dy = cursor.y - p.y;
+          const dSq = dx * dx + dy * dy;
+          if (dSq < CURSOR_RADIUS_SQ) {
+            const d = Math.sqrt(dSq) || 1;
+            const falloff = 1 - d / CURSOR_RADIUS; // 0..1
+            const force = falloff * 0.35 * p.depth;
+            p.x += (dx / d) * force;
+            p.y += (dy / d) * force;
+            // Brighten near cursor — max 2.4x at the center
+            cursorBoost = 1 + falloff * 1.4;
+          }
+        }
+
         if (p.x < -20) p.x = W + 20;
         else if (p.x > W + 20) p.x = -20;
         if (p.y < -20) p.y = H + 20;
         else if (p.y > H + 20) p.y = -20;
 
         const tw = 1 + 0.5 * Math.sin(p.phase + now * p.twinkle);
-        const alpha = p.baseAlpha * tw;
+        const alpha = p.baseAlpha * tw * cursorBoost;
 
         // Bokeh halo
         const haloR = p.size * 6;
@@ -135,6 +168,8 @@ export default function GlitterStorm() {
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener("resize", resize);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseleave", onLeave);
     };
   }, [reduced]);
 

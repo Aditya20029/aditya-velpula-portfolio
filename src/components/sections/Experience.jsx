@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { Calendar, MapPin } from "lucide-react";
 import { experience } from "@/data/experience";
 import SectionHeading from "@/components/ui/SectionHeading";
+import SectionAccent from "@/components/ui/SectionAccent";
 import DapseShowcase from "./DapseShowcase";
 import ExperienceCard from "./ExperienceCard";
 
@@ -116,7 +117,19 @@ export default function Experience() {
   const others = experience.filter((e) => !e.isHero);
 
   return (
-    <section id="experience" className="section" aria-label="Experience" ref={ref}>
+    <section id="experience" className="section relative overflow-hidden" aria-label="Experience" ref={ref}>
+      <SectionAccent
+        variant="arc"
+        size={420}
+        position={{ top: "8%", left: "18%" }}
+        opacity={0.35}
+      />
+      <SectionAccent
+        variant="orb"
+        size={500}
+        position={{ top: "55%", left: "92%" }}
+        opacity={0.22}
+      />
       <div className="container-site">
         <SectionHeading
           kicker="ACT III"

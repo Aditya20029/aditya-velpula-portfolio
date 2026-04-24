@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Mail, Linkedin, Github } from "lucide-react";
 import { personal } from "@/data/personal";
 import TextReveal from "@/components/ui/TextReveal";
+import SectionAccent from "@/components/ui/SectionAccent";
 import { useMagnetic } from "@/hooks/useMagnetic";
 
 function ContactCard({ href, Icon, label, hoverAnim }) {
@@ -33,7 +34,19 @@ function ContactCard({ href, Icon, label, hoverAnim }) {
 
 export default function Contact() {
   return (
-    <section id="contact" className="section" aria-label="Contact">
+    <section id="contact" className="section relative overflow-hidden" aria-label="Contact">
+      <SectionAccent
+        variant="ring"
+        size={680}
+        position={{ top: "50%", left: "50%" }}
+        opacity={0.22}
+      />
+      <SectionAccent
+        variant="orb"
+        size={520}
+        position={{ top: "85%", left: "50%" }}
+        opacity={0.35}
+      />
       <div className="container-site flex flex-col items-center gap-10 text-center">
         <div
           aria-hidden

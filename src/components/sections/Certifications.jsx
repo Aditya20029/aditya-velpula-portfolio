@@ -6,6 +6,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import HexBadge from "@/components/ui/HexBadge";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import CopyButton from "@/components/ui/CopyButton";
+import SectionAccent from "@/components/ui/SectionAccent";
 
 function CertCard({ cert, index, featured = false }) {
   const tier = CERT_TIERS[cert.tier];
@@ -164,8 +165,20 @@ export default function Certifications() {
   const rest = certifications.filter((c) => !c.featured);
 
   return (
-    <section id="certifications" className="section" aria-label="Certifications">
-      <div className="container-site">
+    <section id="certifications" className="section relative overflow-hidden" aria-label="Certifications">
+      <SectionAccent
+        variant="ring"
+        size={600}
+        position={{ top: "15%", left: "50%" }}
+        opacity={0.18}
+      />
+      <SectionAccent
+        variant="orb"
+        size={360}
+        position={{ top: "88%", left: "12%" }}
+        opacity={0.22}
+      />
+      <div className="container-site relative z-10">
         <SectionHeading
           kicker="ACT IV · VERIFIED"
           title="AWS Certifications"
