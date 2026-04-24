@@ -13,8 +13,8 @@ export const personal = {
   quote: "I don't just analyze data. I architect systems that think.",
   // TODO: User will paste real contact values — currently placeholders
   links: {
-    email: "mailto:aditya@example.com",
-    linkedin: "https://linkedin.com/in/adityavelpula",
+    email: "reachaditya29@gmail.com",
+    linkedin: "https://www.linkedin.com/in/aditya293/",
     github: "https://github.com/Aditya20029",
   },
 };

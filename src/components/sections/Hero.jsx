@@ -94,7 +94,14 @@ export default function Hero() {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.4, delay: 4.35, ease: EASE.outExpo }}
           >
-            <MagneticButton href="#" variant="outlined" data-cursor data-cursor-label="Download">
+            <MagneticButton
+              href="/resume.pdf"
+              target="_blank"
+              rel="noreferrer"
+              variant="outlined"
+              data-cursor
+              data-cursor-label="Open PDF"
+            >
               <FileText size={16} />
               <span>View Resume</span>
             </MagneticButton>

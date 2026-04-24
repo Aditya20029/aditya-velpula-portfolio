@@ -54,7 +54,11 @@ export default function Contact() {
 
         <div className="flex flex-wrap justify-center gap-4">
           <ContactCard
-            href={personal.links.email}
+            href={
+              personal.links.email.startsWith("mailto:")
+                ? personal.links.email
+                : `mailto:${personal.links.email}`
+            }
             Icon={Mail}
             label="Email"
             hoverAnim={{ x: 4, y: -4 }}

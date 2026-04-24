@@ -86,10 +86,11 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             <ThemeToggle />
             <a
-              href={personal.links.github}
+              href="/resume.pdf"
               target="_blank"
               rel="noreferrer"
               data-cursor
+              data-cursor-label="Open PDF"
               className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full t-mono-sm border border-[var(--border-hover)] bg-[var(--surface-glass)] text-[var(--text-primary)] hover:border-[var(--border-active)] transition-colors"
             >
               <FileText size={14} /> Resume
