@@ -15,13 +15,12 @@ const VARIANTS = {
 export default function MagneticButton({
   children,
   variant = "ghost",
-  as: Tag = "button",
   className,
   href,
   ...rest
 }) {
   const ref = useMagnetic({ radius: 120, strength: 0.25 });
-  const Component = href ? motion.a : motion(Tag);
+  const Component = href ? motion.a : motion.button;
 
   return (
     <div ref={ref} className="inline-block">

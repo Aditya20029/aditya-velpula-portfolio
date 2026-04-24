@@ -69,8 +69,6 @@ export default function About() {
                   damping: 20,
                   delay: card.delay,
                 }}
-                animate={{ y: [0, -6, 0] }}
-                transitionEnd={{ y: 0 }}
               >
                 <GlassCard className="p-6 h-full flex items-start gap-4">
                   <div className="w-10 h-10 rounded-xl bg-[var(--surface-glass)] border border-[var(--border-subtle)] flex items-center justify-center text-[var(--accent-primary)] shrink-0">
