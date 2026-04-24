@@ -3,12 +3,58 @@ import { useEffect, useRef } from "react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 /**
- * Dense colorful bokeh glitter — matches the reel's sparkling particle
- * haze around the chrome centerpiece.
+ * Dense colorful bokeh particle storm — fixed full-viewport, so the same
+ * canvas reads on every section of the page. Each particle always drifts
+ * intrinsically (not just on scroll) so the field feels alive even when
+ * the user is sitting still on a section.
  *
- * vs. Starfield: softer, MUCH more color variety, larger blurred halos,
- * slower drift, no warp streaks. Feels like confetti suspended in space.
+ * Perf:
+ *   - Halos are pre-rendered once into an offscreen sprite per color, then
+ *     blitted with drawImage. Avoids the cost of createRadialGradient /
+ *     shadowBlur every particle every frame.
+ *   - scrollDelta clamped per frame so fast Lenis flicks don't shear.
  */
+
+const PALETTE = [
+  "255, 154, 230", // pink
+  "255, 154, 230",
+  "124, 212, 255", // teal
+  "124, 212, 255",
+  "196, 167, 255", // lilac
+  "196, 167, 255",
+  "139, 245, 208", // mint
+  "255, 216, 138", // amber
+  "255, 180, 138", // coral
+  "255, 255, 255",
+  "255, 255, 255",
+];
+
+const COMET_COLORS = [
+  "255, 154, 230",
+  "124, 212, 255",
+  "196, 167, 255",
+  "255, 216, 138",
+];
+
+/** Build an off-screen sprite of a glowing dot in a given color.
+ *  Center = bright core, edges = smooth transparent. */
+function buildSprite(color, radius) {
+  const d = radius * 2;
+  const cvs = document.createElement("canvas");
+  cvs.width = d;
+  cvs.height = d;
+  const c = cvs.getContext("2d");
+  const g = c.createRadialGradient(radius, radius, 0, radius, radius, radius);
+  g.addColorStop(0, `rgba(${color}, 1)`);
+  g.addColorStop(0.35, `rgba(${color}, 0.45)`);
+  g.addColorStop(1, `rgba(${color}, 0)`);
+  c.fillStyle = g;
+  c.beginPath();
+  c.arc(radius, radius, radius, 0, Math.PI * 2);
+  c.fill();
+  return cvs;
+}
+
 export default function GlitterStorm() {
   const canvasRef = useRef(null);
   const reduced = useReducedMotion();
@@ -35,59 +81,49 @@ export default function GlitterStorm() {
     };
     resize();
 
-    const isTablet = window.matchMedia("(max-width: 1023px)").matches;
-    // 480 caused framerate dips on fast scroll; 340 keeps density high
-    // while leaving headroom for the halo fills + cursor attraction pass.
-    const count = isTablet ? 200 : 340;
+    // Pre-render one halo sprite per unique color (radius 36 → good quality
+    // when scaled down; shared across all particles of that color).
+    const SPRITE_R = 36;
+    const sprites = {};
+    PALETTE.forEach((c) => {
+      if (!sprites[c]) sprites[c] = buildSprite(c, SPRITE_R);
+    });
 
-    // Warm + cool iridescent confetti palette
-    const palette = [
-      "255, 154, 230",   // soft pink
-      "255, 154, 230",
-      "124, 212, 255",   // sky teal
-      "124, 212, 255",
-      "196, 167, 255",   // lilac
-      "139, 245, 208",   // mint
-      "255, 216, 138",   // amber
-      "255, 180, 138",   // coral
-      "255, 255, 255",   // white
-      "255, 255, 255",
-    ];
+    const isTablet = window.matchMedia("(max-width: 1023px)").matches;
+    const count = isTablet ? 220 : 360;
 
     const parts = Array.from({ length: count }, () => {
-      const d = Math.random();
-      // 45% back, 35% mid, 20% front
-      const depth = d < 0.45 ? 1 : d < 0.8 ? 2 : 3;
+      const r = Math.random();
+      const depth = r < 0.5 ? 1 : r < 0.82 ? 2 : 3;
+      const size =
+        depth === 1
+          ? 0.8 + Math.random() * 0.6
+          : depth === 2
+          ? 1.2 + Math.random() * 1
+          : 1.8 + Math.random() * 1.4;
       return {
-        x: Math.random() * W,
-        y: Math.random() * H,
+        x: Math.random() * (W || window.innerWidth),
+        y: Math.random() * (H || window.innerHeight),
         depth,
-        // Size scales with depth
-        size:
-          depth === 1
-            ? 0.8 + Math.random() * 0.8
-            : depth === 2
-            ? 1.2 + Math.random() * 1.1
-            : 1.8 + Math.random() * 1.6,
+        size,
         baseAlpha:
           depth === 3
-            ? 0.7 + Math.random() * 0.3
+            ? 0.75 + Math.random() * 0.25
             : depth === 2
-            ? 0.42 + Math.random() * 0.28
-            : 0.22 + Math.random() * 0.22,
-        twinkle: 0.0003 + Math.random() * 0.0012,
+            ? 0.48 + Math.random() * 0.27
+            : 0.28 + Math.random() * 0.22,
+        // Much faster continuous drift — particles are now visibly alive
+        // even when scroll/cursor are still (this was the 'feels dead on
+        // About' fix)
+        dx: (Math.random() - 0.5) * (depth === 3 ? 0.55 : depth === 2 ? 0.4 : 0.25),
+        dy: (Math.random() - 0.5) * (depth === 3 ? 0.55 : depth === 2 ? 0.4 : 0.25),
+        twinkle: 0.0006 + Math.random() * 0.0018,
         phase: Math.random() * Math.PI * 2,
-        color: palette[Math.floor(Math.random() * palette.length)],
-        // Gentle drift (slow)
-        dx: (Math.random() - 0.5) * 0.12,
-        dy: (Math.random() - 0.5) * 0.12,
+        color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
       };
     });
 
-    let lastScrollY = window.scrollY;
-    let rafId;
-
-    // Cursor state — particles drift toward + brighten inside the radius
+    // Cursor reactivity
     const cursor = { x: -1000, y: -1000, active: false };
     const onMove = (e) => {
       cursor.x = e.clientX;
@@ -99,15 +135,12 @@ export default function GlitterStorm() {
     };
     window.addEventListener("mousemove", onMove, { passive: true });
     window.addEventListener("mouseleave", onLeave);
+    const CURSOR_R = 220;
+    const CURSOR_R_SQ = CURSOR_R * CURSOR_R;
 
-    const CURSOR_RADIUS = 220;
-    const CURSOR_RADIUS_SQ = CURSOR_RADIUS * CURSOR_RADIUS;
-
-    // Occasional colored comet streaks — adds rare bursts of motion so long
-    // sections don't feel static. Each comet has a short trail.
+    // Comet streaks for visual life on long scroll sections
     const comets = [];
-    let nextCometAt = performance.now() + 5000 + Math.random() * 7000;
-    const cometPalette = ["255, 154, 230", "124, 212, 255", "196, 167, 255", "255, 216, 138"];
+    let nextCometAt = performance.now() + 4000 + Math.random() * 6000;
     const spawnComet = () => {
       const fromLeft = Math.random() < 0.5;
       comets.push({
@@ -117,71 +150,72 @@ export default function GlitterStorm() {
         vy: (Math.random() - 0.5) * 1.4,
         life: 1,
         trail: [],
-        color: cometPalette[Math.floor(Math.random() * cometPalette.length)],
+        color: COMET_COLORS[Math.floor(Math.random() * COMET_COLORS.length)],
       });
     };
+
+    let lastScrollY = window.scrollY;
+    let rafId;
 
     const tick = (now) => {
       const currentScrollY = window.scrollY;
       const rawDelta = currentScrollY - lastScrollY;
       lastScrollY = currentScrollY;
-
-      // Clamp per-frame scroll contribution so a fast flick of Lenis's
-      // smooth-scroll doesn't teleport particles across the viewport —
-      // that was visually reading as the animation "breaking" when scrolling
-      // into lower sections.
-      const scrollDelta = Math.max(-40, Math.min(40, rawDelta));
+      // Clamp so a fast Lenis flick can't teleport the field
+      const scrollDelta = Math.max(-30, Math.min(30, rawDelta));
 
       ctx.clearRect(0, 0, W, H);
-      ctx.globalCompositeOperation = "lighter"; // additive glow
+      ctx.globalCompositeOperation = "lighter"; // additive
 
       for (const p of parts) {
-        // Parallax by depth — reduced multiplier so the drift reads smoothly
-        // instead of shearing on fast scroll
-        p.y -= scrollDelta * p.depth * 0.09;
+        // Gentle parallax + strong intrinsic drift
+        p.y -= scrollDelta * p.depth * 0.08;
         p.x += p.dx;
         p.y += p.dy;
 
-        // Cursor attraction — pulls nearby particles toward cursor + boosts alpha
+        // Cursor attraction
         let cursorBoost = 1;
         if (cursor.active) {
           const dx = cursor.x - p.x;
           const dy = cursor.y - p.y;
           const dSq = dx * dx + dy * dy;
-          if (dSq < CURSOR_RADIUS_SQ) {
+          if (dSq < CURSOR_R_SQ) {
             const d = Math.sqrt(dSq) || 1;
-            const falloff = 1 - d / CURSOR_RADIUS; // 0..1
+            const falloff = 1 - d / CURSOR_R;
             const force = falloff * 0.35 * p.depth;
             p.x += (dx / d) * force;
             p.y += (dy / d) * force;
-            // Brighten near cursor — max 2.4x at the center
             cursorBoost = 1 + falloff * 1.4;
           }
         }
 
+        // Wrap around viewport
         if (p.x < -20) p.x = W + 20;
         else if (p.x > W + 20) p.x = -20;
         if (p.y < -20) p.y = H + 20;
         else if (p.y > H + 20) p.y = -20;
 
-        const tw = 1 + 0.5 * Math.sin(p.phase + now * p.twinkle);
-        const alpha = p.baseAlpha * tw * cursorBoost;
+        const tw = 1 + 0.55 * Math.sin(p.phase + now * p.twinkle);
+        const alpha = Math.min(1, p.baseAlpha * tw * cursorBoost);
 
-        // Core + shadow-glow halo in one fill (much cheaper than building a
-        // radial gradient every frame for every particle)
-        ctx.shadowColor = `rgba(${p.color}, ${alpha})`;
-        ctx.shadowBlur = p.size * 6;
-        ctx.fillStyle = `rgba(${p.color}, ${Math.min(1, alpha * 1.6)})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fill();
+        // Draw pre-rendered halo sprite, scaled to the particle's size
+        const drawR = p.size * 5;
+        const sprite = sprites[p.color];
+        ctx.globalAlpha = alpha;
+        ctx.drawImage(
+          sprite,
+          p.x - drawR,
+          p.y - drawR,
+          drawR * 2,
+          drawR * 2
+        );
       }
-      ctx.shadowBlur = 0;
+      ctx.globalAlpha = 1;
 
-      // Spawn + render comets
+      // Comet streaks
       if (now > nextCometAt) {
         spawnComet();
-        nextCometAt = now + 6000 + Math.random() * 10000;
+        nextCometAt = now + 5000 + Math.random() * 9000;
       }
       for (let i = comets.length - 1; i >= 0; i--) {
         const c = comets[i];
@@ -191,12 +225,12 @@ export default function GlitterStorm() {
         c.y += c.vy;
         c.life -= 0.006;
 
-        c.trail.forEach((p, j) => {
+        c.trail.forEach((pt, j) => {
           const fade = 1 - j / c.trail.length;
           const a = fade * fade * c.life * 0.9;
           ctx.fillStyle = `rgba(${c.color}, ${a})`;
           ctx.beginPath();
-          ctx.arc(p.x, p.y, Math.max(0.3, 2.2 - j * 0.08), 0, Math.PI * 2);
+          ctx.arc(pt.x, pt.y, Math.max(0.3, 2.2 - j * 0.08), 0, Math.PI * 2);
           ctx.fill();
         });
 
