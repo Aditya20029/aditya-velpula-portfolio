@@ -3,6 +3,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ScrollProgress from "@/components/layout/ScrollProgress";
 import SmoothScroll from "@/components/layout/SmoothScroll";
+import Starfield from "@/components/canvas/Starfield";
 import NeuralBackground from "@/components/canvas/NeuralBackground";
 import CursorSystem from "@/components/canvas/CursorSystem";
 import GrainOverlay from "@/components/canvas/GrainOverlay";
@@ -20,6 +21,7 @@ export default function Home() {
     <>
       <Preloader />
       <SmoothScroll />
+      <Starfield />
       <NeuralBackground />
       <CursorSystem />
       <GrainOverlay />
