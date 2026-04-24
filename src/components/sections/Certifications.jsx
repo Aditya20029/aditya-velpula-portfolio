@@ -5,6 +5,7 @@ import { certifications, CERT_TIERS, CERT_COUNT } from "@/data/certifications";
 import SectionHeading from "@/components/ui/SectionHeading";
 import HexBadge from "@/components/ui/HexBadge";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
+import CopyButton from "@/components/ui/CopyButton";
 
 function CertCard({ cert, index, featured = false }) {
   const tier = CERT_TIERS[cert.tier];
@@ -137,8 +138,16 @@ function CertCard({ cert, index, featured = false }) {
               <ShieldCheck size={14} style={{ color: tier.accent }} />
               ID&nbsp;<span className="text-[var(--text-secondary)]">{short}</span>
             </span>
+            {cert.validationId && (
+              <CopyButton
+                value={cert.validationId}
+                label="Copy ID"
+                ariaLabel={`Copy validation ID for ${cert.fullName}`}
+                accent={tier.accent}
+              />
+            )}
             <span
-              className="inline-flex items-center gap-1.5 t-mono-sm opacity-0 group-hover:opacity-100 transition-opacity"
+              className="inline-flex items-center gap-1.5 t-mono-sm transition-opacity"
               style={{ color: tier.accent }}
             >
               Verify <ExternalLink size={11} />
