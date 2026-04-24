@@ -5,11 +5,12 @@ import Badge from "@/components/ui/Badge";
 import ProjectPreview from "./ProjectPreview";
 
 const ACCENT_MAP = {
-  "--accent-primary": "59, 130, 246",
-  "--accent-secondary": "6, 182, 212",
-  "--accent-tertiary": "139, 92, 246",
-  "--accent-warm": "245, 158, 11",
-  "--accent-success": "16, 185, 129",
+  "--accent-primary": "124, 212, 255",
+  "--accent-secondary": "255, 154, 230",
+  "--accent-tertiary": "196, 167, 255",
+  "--accent-warm": "255, 216, 138",
+  "--accent-success": "139, 245, 208",
+  "--accent-coral": "255, 180, 138",
 };
 
 export default function ProjectModal({ project, onClose }) {

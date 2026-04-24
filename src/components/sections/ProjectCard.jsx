@@ -11,6 +11,7 @@ const ACCENT_MAP = {
   "--accent-tertiary": "196, 167, 255",
   "--accent-warm": "255, 216, 138",
   "--accent-success": "139, 245, 208",
+  "--accent-coral": "255, 180, 138",
 };
 
 export default function ProjectCard({ project, onOpen, index }) {
