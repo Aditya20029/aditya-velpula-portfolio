@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, Lightformer, Float, Sparkles } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
-import { KernelSize, BlendFunction } from "postprocessing";
+import { KernelSize } from "postprocessing";
 import * as THREE from "three";
 
 /**
@@ -85,15 +85,15 @@ function ChromeCore() {
         <icosahedronGeometry ref={geom} args={[1, 24]} />
         <meshPhysicalMaterial
           ref={material}
-          color="#d8d4e0"
-          metalness={1}
-          roughness={0.18}
+          color="#c8c6d0"
+          metalness={0.92}
+          roughness={0.28}
           iridescence={1}
-          iridescenceIOR={1.65}
+          iridescenceIOR={1.55}
           iridescenceThicknessRange={[120, 520]}
-          clearcoat={1}
-          clearcoatRoughness={0.12}
-          envMapIntensity={1.1}
+          clearcoat={0.8}
+          clearcoatRoughness={0.22}
+          envMapIntensity={0.7}
         />
       </mesh>
     </Float>
@@ -108,31 +108,31 @@ function OrbitalAccents() {
   });
   return (
     <group ref={g}>
-      <mesh position={[1.8, 0.25, 0.2]} scale={0.06}>
+      <mesh position={[1.8, 0.25, 0.2]} scale={0.05}>
         <sphereGeometry args={[1, 20, 20]} />
         <meshStandardMaterial
           color="#ff9ae6"
           emissive="#ff9ae6"
-          emissiveIntensity={3}
-          toneMapped={false}
+          emissiveIntensity={1.4}
+          toneMapped
         />
       </mesh>
-      <mesh position={[-1.7, -0.35, 0.3]} scale={0.045}>
+      <mesh position={[-1.7, -0.35, 0.3]} scale={0.04}>
         <sphereGeometry args={[1, 20, 20]} />
         <meshStandardMaterial
           color="#7cd4ff"
           emissive="#7cd4ff"
-          emissiveIntensity={3}
-          toneMapped={false}
+          emissiveIntensity={1.4}
+          toneMapped
         />
       </mesh>
-      <mesh position={[0.2, 1.6, 0.2]} scale={0.04}>
+      <mesh position={[0.2, 1.6, 0.2]} scale={0.035}>
         <sphereGeometry args={[1, 20, 20]} />
         <meshStandardMaterial
           color="#ffd88a"
           emissive="#ffd88a"
-          emissiveIntensity={2.6}
-          toneMapped={false}
+          emissiveIntensity={1.2}
+          toneMapped
         />
       </mesh>
     </group>
@@ -153,7 +153,7 @@ function EnvCage() {
       />
       <Lightformer
         form="rect"
-        intensity={7}
+        intensity={4.5}
         color="#ff9ae6"
         position={[0, 4, 3]}
         rotation={[-Math.PI / 4, 0, 0]}
@@ -161,7 +161,7 @@ function EnvCage() {
       />
       <Lightformer
         form="rect"
-        intensity={6}
+        intensity={4}
         color="#7cd4ff"
         position={[-5, 0.5, 2]}
         rotation={[0, Math.PI / 2, 0]}
@@ -169,7 +169,7 @@ function EnvCage() {
       />
       <Lightformer
         form="rect"
-        intensity={6}
+        intensity={4}
         color="#c4a7ff"
         position={[5, 0.5, 2]}
         rotation={[0, -Math.PI / 2, 0]}
@@ -177,7 +177,7 @@ function EnvCage() {
       />
       <Lightformer
         form="rect"
-        intensity={4}
+        intensity={2.5}
         color="#ffd88a"
         position={[0, -3.5, 1]}
         rotation={[Math.PI / 2, 0, 0]}
@@ -185,14 +185,14 @@ function EnvCage() {
       />
       <Lightformer
         form="rect"
-        intensity={3.5}
+        intensity={2.2}
         color="#8bf5d0"
         position={[0, 0, 5]}
         scale={[6, 6, 1]}
       />
       <Lightformer
         form="ring"
-        intensity={4}
+        intensity={2.5}
         color="#ffb48a"
         position={[2.5, 1.2, 4]}
         scale={1.6}
@@ -251,31 +251,29 @@ export default function HeroScene() {
         alpha: true,
         powerPreference: "high-performance",
       }}
+      onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
       camera={{ position: [0, 0, 5.5], fov: 32 }}
       style={{ width: "100%", height: "100%" }}
     >
-      <color attach="background" args={["#00000000"]} />
-
-      {/* Heavier fog — pulls the chrome into the background, lets text sit on top */}
+      {/* Heavier fog pulls the chrome into the background so text sits on top */}
       <fog attach="fog" args={["#07070d", 4, 10]} />
 
-      <ambientLight intensity={0.15} />
+      <ambientLight intensity={0.12} />
 
       <EnvCage />
       <ChromeCore />
       <OrbitalAccents />
       <ParticleField />
 
-      {/* Cinematic bloom — iridescent highlights feather out, chrome reads as
-          glowing liquid metal instead of flat pastels */}
+      {/* Subtle bloom — catches only the very brightest highlights on the
+          chrome + emissive orbs. Kept tight so it doesn't wash out into a
+          viewport-wide halo. */}
       <EffectComposer multisampling={0} disableNormalPass>
         <Bloom
-          intensity={0.8}
-          luminanceThreshold={0.35}
-          luminanceSmoothing={0.2}
-          kernelSize={KernelSize.LARGE}
-          blendFunction={BlendFunction.ADD}
-          mipmapBlur
+          intensity={0.22}
+          luminanceThreshold={0.85}
+          luminanceSmoothing={0.15}
+          kernelSize={KernelSize.SMALL}
         />
       </EffectComposer>
     </Canvas>
