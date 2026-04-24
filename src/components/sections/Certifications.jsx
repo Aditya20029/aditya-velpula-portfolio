@@ -1,80 +1,191 @@
 "use client";
 import { motion } from "framer-motion";
-import { Award, Check } from "lucide-react";
-import { certifications } from "@/data/certifications";
+import { ShieldCheck, ExternalLink, Calendar, Clock } from "lucide-react";
+import { certifications, CERT_TIERS, CERT_COUNT } from "@/data/certifications";
 import SectionHeading from "@/components/ui/SectionHeading";
+import HexBadge from "@/components/ui/HexBadge";
+import AnimatedCounter from "@/components/ui/AnimatedCounter";
+
+function CertCard({ cert, index, featured = false }) {
+  const tier = CERT_TIERS[cert.tier];
+  const short = cert.validationId
+    ? `${cert.validationId.slice(0, 8)}…${cert.validationId.slice(-4)}`
+    : "ACADEMY";
+
+  return (
+    <motion.a
+      href={cert.verifyUrl}
+      target="_blank"
+      rel="noreferrer"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{
+        duration: 0.8,
+        delay: index * 0.07,
+        ease: [0.16, 1, 0.3, 1],
+      }}
+      whileHover={{ y: -6 }}
+      data-cursor
+      data-cursor-label="Verify"
+      className={`group relative block ${featured ? "md:col-span-2" : ""}`}
+    >
+      {/* Outer aura on hover */}
+      <motion.div
+        aria-hidden
+        className="absolute -inset-3 rounded-[28px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        style={{
+          background: `radial-gradient(circle at 50% 50%, rgba(${tier.accentRgb}, 0.2), transparent 70%)`,
+          filter: "blur(16px)",
+        }}
+      />
+
+      <div
+        className="relative glass-card overflow-hidden p-6 md:p-8 h-full flex flex-col md:flex-row items-center gap-6"
+        style={{
+          borderColor: `rgba(${tier.accentRgb}, 0.2)`,
+        }}
+      >
+        {/* Corner accent gradient */}
+        <div
+          aria-hidden
+          className="absolute -top-24 -right-24 w-56 h-56 rounded-full opacity-40 group-hover:opacity-60 transition-opacity duration-700"
+          style={{
+            background: `radial-gradient(circle, rgba(${tier.accentRgb}, 0.35), transparent 70%)`,
+          }}
+        />
+
+        {/* Shimmer sweep on hover */}
+        <span
+          aria-hidden
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.06) 50%, transparent 70%)",
+            animation: "shimmer 1.2s ease-out",
+          }}
+        />
+
+        {/* Hex badge */}
+        <div className="shrink-0 relative z-10">
+          <HexBadge
+            name={cert.name}
+            subtitle={cert.subtitle}
+            tier={cert.tier}
+            accent={tier.accent}
+            earlyAdopter={cert.earlyAdopter}
+            size={featured ? 200 : 170}
+          />
+        </div>
+
+        {/* Info column */}
+        <div className="flex-1 min-w-0 relative z-10 flex flex-col gap-3 text-center md:text-left">
+          <div className="flex items-center gap-2 justify-center md:justify-start">
+            <span
+              className="t-mono-sm px-2.5 py-1 rounded-full border"
+              style={{
+                color: tier.accent,
+                borderColor: `rgba(${tier.accentRgb}, 0.4)`,
+                background: `rgba(${tier.accentRgb}, 0.08)`,
+              }}
+            >
+              {tier.label}
+            </span>
+            {cert.earlyAdopter && (
+              <span
+                className="t-mono-sm px-2.5 py-1 rounded-full border"
+                style={{
+                  color: "#f59e0b",
+                  borderColor: "rgba(245, 158, 11, 0.4)",
+                  background: "rgba(245, 158, 11, 0.08)",
+                }}
+              >
+                EARLY ADOPTER
+              </span>
+            )}
+          </div>
+
+          <h3 className="t-h3 text-[var(--text-primary)] leading-tight">
+            {cert.fullName}
+          </h3>
+
+          <div className="t-body-sm text-[var(--text-secondary)]">
+            {cert.issuer}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 justify-center md:justify-start t-mono-sm text-[var(--text-muted)]">
+            <span className="inline-flex items-center gap-1.5">
+              <Calendar size={12} />
+              Issued {cert.issued}
+            </span>
+            {cert.expires && (
+              <span className="inline-flex items-center gap-1.5">
+                <Clock size={12} />
+                Valid until {cert.expires}
+              </span>
+            )}
+            {cert.hours && (
+              <span className="inline-flex items-center gap-1.5">
+                <Clock size={12} />
+                {cert.hours}
+              </span>
+            )}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 pt-2 justify-center md:justify-start">
+            <span className="inline-flex items-center gap-2 t-mono-sm text-[var(--text-muted)]">
+              <ShieldCheck size={14} style={{ color: tier.accent }} />
+              ID&nbsp;<span className="text-[var(--text-secondary)]">{short}</span>
+            </span>
+            <span
+              className="inline-flex items-center gap-1.5 t-mono-sm opacity-0 group-hover:opacity-100 transition-opacity"
+              style={{ color: tier.accent }}
+            >
+              Verify <ExternalLink size={11} />
+            </span>
+          </div>
+        </div>
+      </div>
+    </motion.a>
+  );
+}
 
 export default function Certifications() {
+  const featured = certifications.find((c) => c.featured);
+  const rest = certifications.filter((c) => !c.featured);
+
   return (
     <section id="certifications" className="section" aria-label="Certifications">
       <div className="container-site">
         <SectionHeading
           kicker="ACT IV · VERIFIED"
-          title="Certifications"
-          subtitle="Official credentials, earned through examination."
+          title="AWS Certifications"
+          subtitle="Official credentials, earned through examination. Every badge below links to its public verification page."
           align="center"
         />
+
+        {/* Big count stat */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="flex items-baseline justify-center gap-3 mt-8"
+        >
+          <span className="t-counter text-gradient">
+            <AnimatedCounter value={CERT_COUNT} />
+          </span>
+          <span className="t-mono text-[var(--text-muted)]">
+            active certifications
+          </span>
+        </motion.div>
+
         <div className="section-divider my-12" />
-        <div className="flex flex-wrap justify-center gap-6">
-          {certifications.map((c, i) => (
-            <motion.div
-              key={c.id}
-              initial={{ opacity: 0, y: 40, rotateX: 15 }}
-              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -4 }}
-              className={`relative overflow-hidden glass-card p-6 flex items-center gap-5 min-w-[280px] group ${
-                c.featured ? "border-[var(--accent-warm)]/40" : ""
-              }`}
-              style={{
-                borderColor: c.featured
-                  ? "rgba(245, 158, 11, 0.4)"
-                  : undefined,
-              }}
-              data-cursor
-            >
-              {/* Shimmer */}
-              <span
-                aria-hidden
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none"
-                style={{
-                  background:
-                    "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.08) 50%, transparent 70%)",
-                  animation: "shimmer 0.8s ease-in-out",
-                }}
-              />
-              <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                style={{
-                  background: c.featured
-                    ? "rgba(245, 158, 11, 0.12)"
-                    : "var(--surface-glass)",
-                  color: c.featured ? "var(--accent-warm)" : "var(--accent-primary)",
-                }}
-              >
-                <Award size={22} />
-              </div>
-              <div className="flex-1">
-                <div className="t-h3 text-[var(--text-primary)] leading-tight">
-                  {c.name}
-                </div>
-                <div className="t-mono-sm text-[var(--text-muted)] mt-1">
-                  {c.issuer} · {c.date}
-                </div>
-              </div>
-              <motion.span
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.3 + i * 0.1, type: "spring" }}
-                className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
-                style={{ background: "var(--accent-success)" }}
-                aria-label="Verified"
-              >
-                <Check size={16} color="white" strokeWidth={3} />
-              </motion.span>
-            </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {featured && <CertCard cert={featured} index={0} featured />}
+          {rest.map((c, i) => (
+            <CertCard key={c.id} cert={c} index={i + 1} />
           ))}
         </div>
       </div>

@@ -1,0 +1,47 @@
+"use client";
+import { useEffect } from "react";
+import Lenis from "lenis";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
+
+export default function SmoothScroll() {
+  const reduced = useReducedMotion();
+
+  useEffect(() => {
+    if (reduced) return;
+    const lenis = new Lenis({
+      duration: 1.1,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.6,
+    });
+
+    let rafId;
+    const raf = (time) => {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    };
+    rafId = requestAnimationFrame(raf);
+
+    // Intercept in-page anchor navigation so it's buttery too
+    const onClick = (e) => {
+      const anchor = e.target.closest?.('a[href^="#"]');
+      if (!anchor) return;
+      const id = anchor.getAttribute("href").slice(1);
+      if (!id) return;
+      const target = document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target, { offset: -40, duration: 1.4 });
+    };
+    document.addEventListener("click", onClick);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      document.removeEventListener("click", onClick);
+      lenis.destroy();
+    };
+  }, [reduced]);
+
+  return null;
+}
