@@ -101,6 +101,14 @@ export default function GlitterStorm() {
           : depth === 2
           ? 1.2 + Math.random() * 1
           : 1.8 + Math.random() * 1.4;
+      // CONSTANT UPWARD FLOW — all particles float up like fireflies, with
+      // horizontal swirl. Foreground moves fastest, back layer slowest, so
+      // depth reads as parallax. This is deliberately visible so motion
+      // reads on every section, not just the hero.
+      const baseUp =
+        depth === 3 ? 0.9 : depth === 2 ? 0.55 : 0.32; // px/frame upward
+      const sideSwing =
+        depth === 3 ? 0.45 : depth === 2 ? 0.3 : 0.18;
       return {
         x: Math.random() * (W || window.innerWidth),
         y: Math.random() * (H || window.innerHeight),
@@ -112,12 +120,13 @@ export default function GlitterStorm() {
             : depth === 2
             ? 0.48 + Math.random() * 0.27
             : 0.28 + Math.random() * 0.22,
-        // Much faster continuous drift — particles are now visibly alive
-        // even when scroll/cursor are still (this was the 'feels dead on
-        // About' fix)
-        dx: (Math.random() - 0.5) * (depth === 3 ? 0.55 : depth === 2 ? 0.4 : 0.25),
-        dy: (Math.random() - 0.5) * (depth === 3 ? 0.55 : depth === 2 ? 0.4 : 0.25),
-        twinkle: 0.0006 + Math.random() * 0.0018,
+        // Upward drift (negative y) — always
+        vy: -baseUp - Math.random() * baseUp * 0.4,
+        // Horizontal swing via a sinusoidal term on a per-particle phase
+        swingAmp: sideSwing,
+        swingPhase: Math.random() * Math.PI * 2,
+        swingFreq: 0.0004 + Math.random() * 0.0008,
+        twinkle: 0.0008 + Math.random() * 0.002,
         phase: Math.random() * Math.PI * 2,
         color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
       };
@@ -138,9 +147,10 @@ export default function GlitterStorm() {
     const CURSOR_R = 220;
     const CURSOR_R_SQ = CURSOR_R * CURSOR_R;
 
-    // Comet streaks for visual life on long scroll sections
+    // Comet streaks for visual life on long scroll sections — more frequent
+    // now so even still viewers see one every few seconds
     const comets = [];
-    let nextCometAt = performance.now() + 4000 + Math.random() * 6000;
+    let nextCometAt = performance.now() + 1500 + Math.random() * 3000;
     const spawnComet = () => {
       const fromLeft = Math.random() < 0.5;
       comets.push({
@@ -168,10 +178,12 @@ export default function GlitterStorm() {
       ctx.globalCompositeOperation = "lighter"; // additive
 
       for (const p of parts) {
-        // Gentle parallax + strong intrinsic drift
+        // 1. Gentle parallax on scroll (clamped above)
         p.y -= scrollDelta * p.depth * 0.08;
-        p.x += p.dx;
-        p.y += p.dy;
+        // 2. Always-on upward drift
+        p.y += p.vy;
+        // 3. Horizontal sinusoidal swing — gives each particle a slow S-path
+        p.x += Math.sin(p.swingPhase + now * p.swingFreq) * p.swingAmp;
 
         // Cursor attraction
         let cursorBoost = 1;
@@ -215,7 +227,7 @@ export default function GlitterStorm() {
       // Comet streaks
       if (now > nextCometAt) {
         spawnComet();
-        nextCometAt = now + 5000 + Math.random() * 9000;
+        nextCometAt = now + 2500 + Math.random() * 4000;
       }
       for (let i = comets.length - 1; i >= 0; i--) {
         const c = comets[i];
