@@ -91,7 +91,7 @@ export default function About() {
         >
           <div
             className="relative rounded-2xl p-6 md:p-8 glass-card overflow-hidden font-mono-var"
-            style={{ borderColor: "rgba(6, 182, 212, 0.3)" }}
+            style={{ borderColor: "rgba(124, 212, 255, 0.35)" }}
           >
             <div
               aria-hidden

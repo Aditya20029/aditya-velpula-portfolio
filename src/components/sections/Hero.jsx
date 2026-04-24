@@ -76,6 +76,18 @@ export default function Hero() {
         </motion.div>
       )}
 
+      {/* Dark radial vignette — sits between the 3D scene and the text so
+          content always reads against a legible surface while the chrome
+          stays visible as an atmospheric backdrop. */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none z-[5]"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 40% at 50% 50%, rgba(7, 7, 13, 0.72) 0%, rgba(7, 7, 13, 0.5) 35%, rgba(7, 7, 13, 0) 75%)",
+        }}
+      />
+
       <motion.div
         style={{ y: contentY, opacity: contentOpacity }}
         className="relative z-10 flex flex-col items-center gap-8 text-center max-w-4xl"
