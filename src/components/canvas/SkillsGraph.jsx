@@ -158,6 +158,16 @@ export default function SkillsGraph() {
       const dt = Math.min(32, now - t0);
       t0 = now;
 
+      // Theme-aware text colors so labels stay readable when the user
+      // toggles the light/dark switch.
+      const light = document.documentElement.dataset.theme === "light";
+      const categoryLabelColor = light ? "#0b1220" : "#ffffff";
+      const skillLabelColor = light ? "#334155" : "#e2e8f0";
+      const skillLabelDim = light
+        ? "rgba(100,116,139,0.35)"
+        : "rgba(148,163,184,0.3)";
+      const centerTextColor = "#ffffff"; // always white (sits on blue disc)
+
       // Spring back toward target positions with drift
       pulseTimer += dt;
       if (pulseTimer > 2800 && !reduced) {
@@ -254,7 +264,7 @@ export default function SkillsGraph() {
           ctx.arc(n.x, n.y, n.r * pulse, 0, Math.PI * 2);
           ctx.fill();
           ctx.shadowBlur = 0;
-          ctx.fillStyle = "#fff";
+          ctx.fillStyle = centerTextColor;
           ctx.font = "700 14px var(--font-mono), JetBrains Mono, monospace";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
@@ -267,8 +277,9 @@ export default function SkillsGraph() {
           ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
           ctx.fill();
           ctx.shadowBlur = 0;
-          ctx.fillStyle = "#fff";
-          ctx.font = "600 11px var(--font-sans), Inter, sans-serif";
+          // Category name label — needs to read on either background
+          ctx.fillStyle = categoryLabelColor;
+          ctx.font = "700 12px var(--font-sans), Inter, sans-serif";
           ctx.textAlign = "center";
           ctx.fillText(n.label, n.x, n.y + n.r + 16);
         } else {
@@ -280,8 +291,8 @@ export default function SkillsGraph() {
           ctx.arc(n.x, n.y, isHover ? n.r + 2 : n.r, 0, Math.PI * 2);
           ctx.fill();
           ctx.shadowBlur = 0;
-          ctx.fillStyle = dim ? "rgba(148,163,184,0.3)" : "#e2e8f0";
-          ctx.font = "400 10px var(--font-mono), monospace";
+          ctx.fillStyle = dim ? skillLabelDim : skillLabelColor;
+          ctx.font = "500 10px var(--font-mono), monospace";
           ctx.textAlign = "left";
           ctx.fillText(n.label, n.x + n.r + 6, n.y + 3);
         }
