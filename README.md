@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Aditya Velpula — AI Engineer Portfolio
 
-## Getting Started
+A living AI system experience. Not a resume. Not a template.
 
-First, run the development server:
+Built with **Next.js 14 (App Router)**, **Tailwind CSS**, and **Framer Motion**.
+
+---
+
+## What's inside
+
+- **Cinematic preloader** — system boot sequence on first visit
+- **Hero** with a canvas neural network that reacts to the cursor
+- **Custom three-state cursor** (glow + dot + label) on desktop
+- **Scroll-linked About** narrative with terminal "System Profile" card
+- **DAPSE showcase** — 4-tab interactive: animated architecture diagram, cost slider, live query simulation, tech stack
+- **Project modals** via Framer Motion shared-layout (`layoutId`)
+- **Interactive skills neural graph** — canvas, drag, tooltips, category highlighting, synaptic pulses
+- **Cost slider** and **odometer counters** for impact metrics
+- **Magnetic buttons** with proximity physics
+- **3D tilt cards** with cursor-tracking gradient
+- **Dark / light mode** with persisted preference
+- **Easter egg**: tap the `AV` logo 5 times
+
+Accessibility, reduced-motion, keyboard nav, and responsive breakpoints are wired in.
+
+---
+
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
+npm run build      # production build
+npm run start      # serve production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Bundle: **~155 KB** gzipped (budget: < 180 KB).
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Structure
 
-## Learn More
+```
+src/
+├── app/                    layout, page, globals.css
+├── components/
+│   ├── canvas/            NeuralBackground, CursorSystem, SkillsGraph
+│   ├── layout/            Navbar, Preloader, ThemeToggle, ScrollProgress, Footer
+│   ├── sections/          Hero, About, Experience, DapseShowcase, DapseDiagram,
+│   │                      DapseQuerySim, ExperienceCard, Projects, ProjectCard,
+│   │                      ProjectModal, ProjectPreview, Skills, Certifications, Contact
+│   └── ui/                GlassCard, MagneticButton, TiltCard, AnimatedCounter,
+│                          TextReveal, TabSwitcher, Modal, CostSlider, Badge,
+│                          SectionHeading
+├── data/                  personal, experience, projects, skills, certifications
+├── hooks/                 useMagnetic, useTilt, useTheme, useInView,
+│                          useReducedMotion, useScrollVelocity, useMousePosition,
+│                          useActiveSection
+└── utils/                 math, animations, perlin, constants
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Editing content
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- **Personal info + contact links**: `src/data/personal.js` (update the `links` object with your real email, LinkedIn, GitHub)
+- **Experience (incl. DAPSE)**: `src/data/experience.js`
+- **Projects**: `src/data/projects.js`
+- **Skills graph**: `src/data/skills.js`
+- **Certifications**: `src/data/certifications.js`
 
-## Deploy on Vercel
+No other file needs to be touched for content changes.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Design tokens
+
+All colors, easings, and type scales live as CSS custom properties in
+`src/app/globals.css`. Tailwind utilities reference them through
+`tailwind.config.js`, so the whole site retints if you change a single variable.
+
+---
+
+## Notes
+
+- The skills graph is a pure-canvas force-directed simulation (no D3).
+- The neural background runs at 30fps with `requestAnimationFrame` frame-skipping.
+- All motion respects `prefers-reduced-motion: reduce`.
+- On mobile, expensive systems (custom cursor, canvas, tilt) are disabled automatically.
+
+---
+
+## Deploy
+
+One-click to Vercel (push this repo, import it on vercel.com, done).
+
+## License
+
+MIT — use this codebase freely.
