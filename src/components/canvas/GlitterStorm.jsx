@@ -36,7 +36,7 @@ export default function GlitterStorm() {
     resize();
 
     const isTablet = window.matchMedia("(max-width: 1023px)").matches;
-    const count = isTablet ? 180 : 360;
+    const count = isTablet ? 240 : 480;
 
     // Warm + cool iridescent confetti palette
     const palette = [
@@ -69,10 +69,10 @@ export default function GlitterStorm() {
             : 1.8 + Math.random() * 1.6,
         baseAlpha:
           depth === 3
-            ? 0.55 + Math.random() * 0.3
+            ? 0.7 + Math.random() * 0.3
             : depth === 2
-            ? 0.3 + Math.random() * 0.25
-            : 0.12 + Math.random() * 0.18,
+            ? 0.42 + Math.random() * 0.28
+            : 0.22 + Math.random() * 0.22,
         twinkle: 0.0003 + Math.random() * 0.0012,
         phase: Math.random() * Math.PI * 2,
         color: palette[Math.floor(Math.random() * palette.length)],
@@ -100,6 +100,24 @@ export default function GlitterStorm() {
 
     const CURSOR_RADIUS = 220;
     const CURSOR_RADIUS_SQ = CURSOR_RADIUS * CURSOR_RADIUS;
+
+    // Occasional colored comet streaks — adds rare bursts of motion so long
+    // sections don't feel static. Each comet has a short trail.
+    const comets = [];
+    let nextCometAt = performance.now() + 5000 + Math.random() * 7000;
+    const cometPalette = ["255, 154, 230", "124, 212, 255", "196, 167, 255", "255, 216, 138"];
+    const spawnComet = () => {
+      const fromLeft = Math.random() < 0.5;
+      comets.push({
+        x: fromLeft ? -30 : W + 30,
+        y: Math.random() * H,
+        vx: (fromLeft ? 1 : -1) * (3.5 + Math.random() * 2),
+        vy: (Math.random() - 0.5) * 1.4,
+        life: 1,
+        trail: [],
+        color: cometPalette[Math.floor(Math.random() * cometPalette.length)],
+      });
+    };
 
     const tick = (now) => {
       const currentScrollY = window.scrollY;
@@ -156,6 +174,39 @@ export default function GlitterStorm() {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
+      }
+
+      // Spawn + render comets
+      if (now > nextCometAt) {
+        spawnComet();
+        nextCometAt = now + 6000 + Math.random() * 10000;
+      }
+      for (let i = comets.length - 1; i >= 0; i--) {
+        const c = comets[i];
+        c.trail.unshift({ x: c.x, y: c.y });
+        if (c.trail.length > 26) c.trail.pop();
+        c.x += c.vx;
+        c.y += c.vy;
+        c.life -= 0.006;
+
+        c.trail.forEach((p, j) => {
+          const fade = 1 - j / c.trail.length;
+          const a = fade * fade * c.life * 0.9;
+          ctx.fillStyle = `rgba(${c.color}, ${a})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, Math.max(0.3, 2.2 - j * 0.08), 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        if (
+          c.life <= 0 ||
+          c.x < -80 ||
+          c.x > W + 80 ||
+          c.y < -80 ||
+          c.y > H + 80
+        ) {
+          comets.splice(i, 1);
+        }
       }
 
       ctx.globalCompositeOperation = "source-over";
