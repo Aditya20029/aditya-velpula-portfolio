@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import { TrendingDown, Database, Target, FileText, Globe } from "lucide-react";
 import TabSwitcher from "@/components/ui/TabSwitcher";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
-import Badge from "@/components/ui/Badge";
 import CostSlider from "@/components/ui/CostSlider";
 import DapseDiagram from "./DapseDiagram";
 import DapseQuerySim from "./DapseQuerySim";
+import DapseTechStack from "./DapseTechStack";
 
 const ICONS = {
   "trending-down": TrendingDown,
@@ -74,21 +74,7 @@ export default function DapseShowcase({ role }) {
     {
       id: "stack",
       label: "Tech Stack",
-      content: (
-        <div className="flex flex-wrap gap-3">
-          {role.techStack.map((t, i) => (
-            <motion.div
-              key={t}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.05 }}
-            >
-              <Badge>{t}</Badge>
-            </motion.div>
-          ))}
-        </div>
-      ),
+      content: <DapseTechStack />,
     },
     {
       id: "live",
