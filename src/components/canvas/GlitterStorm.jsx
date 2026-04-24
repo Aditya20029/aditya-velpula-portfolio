@@ -36,7 +36,9 @@ export default function GlitterStorm() {
     resize();
 
     const isTablet = window.matchMedia("(max-width: 1023px)").matches;
-    const count = isTablet ? 240 : 480;
+    // 480 caused framerate dips on fast scroll; 340 keeps density high
+    // while leaving headroom for the halo fills + cursor attraction pass.
+    const count = isTablet ? 200 : 340;
 
     // Warm + cool iridescent confetti palette
     const palette = [
@@ -121,15 +123,22 @@ export default function GlitterStorm() {
 
     const tick = (now) => {
       const currentScrollY = window.scrollY;
-      const scrollDelta = currentScrollY - lastScrollY;
+      const rawDelta = currentScrollY - lastScrollY;
       lastScrollY = currentScrollY;
+
+      // Clamp per-frame scroll contribution so a fast flick of Lenis's
+      // smooth-scroll doesn't teleport particles across the viewport —
+      // that was visually reading as the animation "breaking" when scrolling
+      // into lower sections.
+      const scrollDelta = Math.max(-40, Math.min(40, rawDelta));
 
       ctx.clearRect(0, 0, W, H);
       ctx.globalCompositeOperation = "lighter"; // additive glow
 
       for (const p of parts) {
-        // Parallax by depth
-        p.y -= scrollDelta * p.depth * 0.22;
+        // Parallax by depth — reduced multiplier so the drift reads smoothly
+        // instead of shearing on fast scroll
+        p.y -= scrollDelta * p.depth * 0.09;
         p.x += p.dx;
         p.y += p.dy;
 
@@ -158,23 +167,16 @@ export default function GlitterStorm() {
         const tw = 1 + 0.5 * Math.sin(p.phase + now * p.twinkle);
         const alpha = p.baseAlpha * tw * cursorBoost;
 
-        // Bokeh halo
-        const haloR = p.size * 6;
-        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, haloR);
-        g.addColorStop(0, `rgba(${p.color}, ${alpha * 0.9})`);
-        g.addColorStop(0.4, `rgba(${p.color}, ${alpha * 0.35})`);
-        g.addColorStop(1, `rgba(${p.color}, 0)`);
-        ctx.fillStyle = g;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, haloR, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Crisp core
-        ctx.fillStyle = `rgba(${p.color}, ${Math.min(1, alpha * 2)})`;
+        // Core + shadow-glow halo in one fill (much cheaper than building a
+        // radial gradient every frame for every particle)
+        ctx.shadowColor = `rgba(${p.color}, ${alpha})`;
+        ctx.shadowBlur = p.size * 6;
+        ctx.fillStyle = `rgba(${p.color}, ${Math.min(1, alpha * 1.6)})`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
       }
+      ctx.shadowBlur = 0;
 
       // Spawn + render comets
       if (now > nextCometAt) {
