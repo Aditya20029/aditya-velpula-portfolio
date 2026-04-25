@@ -1,12 +1,7 @@
 "use client";
-import dynamic from "next/dynamic";
 import SectionHeading from "@/components/ui/SectionHeading";
 import SectionAccent from "@/components/ui/SectionAccent";
-
-const SkillsGraph = dynamic(
-  () => import("@/components/canvas/SkillsGraph"),
-  { ssr: false, loading: () => <div className="h-[600px] rounded-2xl glass-subtle" /> }
-);
+import SkillsMatrix from "./SkillsMatrix";
 
 export default function Skills() {
   return (
@@ -20,12 +15,12 @@ export default function Skills() {
       />
       <div className="container-site relative z-10">
         <SectionHeading
-          kicker="ACT III · SKILL GRAPH"
-          title="The Neural Network"
-          subtitle="Hover a category to highlight its connections. Drag any skill to feel the physics. This is a living map of what I work with daily."
+          kicker="WHAT I WORK WITH"
+          title="Skills & Stack"
+          subtitle="The tools I use daily, grouped by domain. Bars indicate depth — Primary marks my daily-driver, Working denotes hands-on familiarity."
         />
         <div className="section-divider my-12" />
-        <SkillsGraph />
+        <SkillsMatrix />
       </div>
     </section>
   );
