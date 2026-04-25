@@ -35,7 +35,7 @@ export default function SectionHeading({ kicker, title, subtitle, align = "left"
         className="t-h1 holo-text"
         style={{
           filter:
-            "drop-shadow(0 0 22px rgba(255,154,230,0.2)) drop-shadow(0 0 44px rgba(124,212,255,0.1))",
+            "drop-shadow(0 0 22px var(--glow-cyan)) drop-shadow(0 0 44px var(--glow-purple))",
           fontWeight: 700,
         }}
       >

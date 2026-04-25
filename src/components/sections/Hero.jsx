@@ -70,7 +70,7 @@ export default function Hero() {
           className="t-display-xl holo-text"
           style={{
             filter:
-              "drop-shadow(0 0 30px rgba(255, 154, 230, 0.3)) drop-shadow(0 0 60px rgba(124, 212, 255, 0.18))",
+              "drop-shadow(0 0 30px var(--glow-cyan)) drop-shadow(0 0 60px var(--glow-purple))",
             fontWeight: 800,
           }}
         >

@@ -71,48 +71,62 @@
 }
 
 :root[data-theme="light"] {
-  /* Warm off-white, NOT pure white — reduces eye strain */
-  --void: #eef1f6;
-  --bg-primary: #f7f8fc;
+  /* Warm pearl, never pure white */
+  --void: #e8edf6;
+  --bg-primary: #f3f5fb;
   --bg-elevated: #ffffff;
-  --bg-hover: #eef1f6;
-  --bg-active: #e2e7f0;
+  --bg-hover: #e8edf6;
+  --bg-active: #d8dfeb;
 
-  --surface-glass: rgba(255, 255, 255, 0.6);
-  --surface-glass-hover: rgba(255, 255, 255, 0.85);
+  --surface-glass: rgba(255, 255, 255, 0.7);
+  --surface-glass-hover: rgba(255, 255, 255, 0.92);
 
-  --border-subtle: rgba(15, 23, 42, 0.08);
-  --border-hover: rgba(15, 23, 42, 0.16);
-  --border-active: rgba(37, 99, 235, 0.35);
+  --border-subtle: rgba(15, 23, 42, 0.1);
+  --border-hover: rgba(15, 23, 42, 0.2);
+  --border-active: rgba(37, 99, 235, 0.45);
 
-  /* Slightly deeper accents to keep contrast on light surfaces */
-  --accent-primary: #2563eb;
-  --accent-secondary: #0891b2;
-  --accent-tertiary: #7c3aed;
-  --accent-success: #059669;
-  --accent-warm: #c2410c;
+  /* Saturated jewel accents that pop on white surfaces */
+  --accent-primary: #1d4ed8;     /* deep electric blue */
+  --accent-secondary: #be185d;   /* magenta */
+  --accent-tertiary: #6d28d9;    /* royal purple */
+  --accent-success: #047857;     /* emerald */
+  --accent-warm: #b45309;        /* burnt amber */
+  --accent-coral: #c2410c;
 
-  /* Deep navy text, NOT pure black — softer on the eyes */
-  --text-primary: #0b1220;
-  --text-body: #1f2937;
-  --text-secondary: #4b5563;
-  --text-muted: #6b7280;
-  --text-ghost: #b0b8c4;
+  /* Strong navy text \u2014 readable but not pure black */
+  --text-primary: #050816;
+  --text-body: #111827;
+  --text-secondary: #1f2937;
+  --text-muted: #475569;
+  --text-ghost: #94a3b8;
 
-  --glow-blue: rgba(37, 99, 235, 0.08);
-  --glow-cyan: rgba(8, 145, 178, 0.06);
-  --glow-purple: rgba(124, 58, 237, 0.06);
+  --glow-blue: rgba(29, 78, 216, 0.18);
+  --glow-cyan: rgba(190, 24, 93, 0.18);
+  --glow-purple: rgba(109, 40, 217, 0.16);
 
   --gradient-hero: radial-gradient(
-    ellipse 80% 50% at 50% -20%,
-    rgba(37, 99, 235, 0.05),
-    rgba(124, 58, 237, 0.03) 50%,
-    transparent
+    ellipse 80% 60% at 50% -10%,
+    rgba(190, 24, 93, 0.16),
+    rgba(109, 40, 217, 0.10) 35%,
+    rgba(29, 78, 216, 0.08) 65%,
+    transparent 85%
   );
   --gradient-accent: linear-gradient(
     135deg,
     var(--accent-primary),
-    var(--accent-tertiary)
+    var(--accent-tertiary),
+    var(--accent-secondary)
+  );
+
+  /* Saturated holo gradient for headings \u2014 readable on white,
+     still iridescent and brand-consistent. */
+  --gradient-holo: conic-gradient(
+    from 180deg at 50% 50%,
+    #1d4ed8 0%,
+    #6d28d9 25%,
+    #be185d 50%,
+    #b45309 75%,
+    #1d4ed8 100%
   );
 }
 
@@ -205,12 +219,15 @@ a {
   background: rgba(15, 23, 42, 0.2);
 }
 
-/* Subtle ambient texture on body in light mode — avoids flat white */
+/* Atmospheric body background in light mode \u2014 jewel-toned haze, never flat white */
 :root[data-theme="light"] body {
+  background-color: #f3f5fb;
   background-image:
-    radial-gradient(ellipse 80% 40% at 10% 0%, rgba(37, 99, 235, 0.04), transparent 50%),
-    radial-gradient(ellipse 60% 30% at 90% 20%, rgba(124, 58, 237, 0.03), transparent 50%),
-    radial-gradient(ellipse 100% 40% at 50% 100%, rgba(8, 145, 178, 0.03), transparent 50%);
+    radial-gradient(ellipse 70% 40% at 15% 5%, rgba(190, 24, 93, 0.16), transparent 55%),
+    radial-gradient(ellipse 60% 35% at 88% 18%, rgba(109, 40, 217, 0.14), transparent 55%),
+    radial-gradient(ellipse 80% 45% at 50% 55%, rgba(29, 78, 216, 0.10), transparent 60%),
+    radial-gradient(ellipse 70% 40% at 18% 92%, rgba(180, 83, 9, 0.10), transparent 55%),
+    radial-gradient(ellipse 70% 40% at 85% 90%, rgba(4, 120, 87, 0.09), transparent 55%);
   background-attachment: fixed;
 }
 
@@ -256,15 +273,17 @@ a {
     0 8px 32px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 :root[data-theme="light"] .glass-card {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px) saturate(1.5);
-  -webkit-backdrop-filter: blur(20px) saturate(1.5);
-  border: 1px solid rgba(15, 23, 42, 0.06);
+  /* Crisp white card with proper depth shadow that pops on the
+     gradient body. Override the dark cushion above. */
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  border: 1px solid rgba(15, 23, 42, 0.08);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    0 1px 2px rgba(15, 23, 42, 0.03),
-    0 6px 16px -4px rgba(15, 23, 42, 0.06),
-    0 20px 40px -12px rgba(15, 23, 42, 0.08);
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 6px 16px -4px rgba(15, 23, 42, 0.1),
+    0 24px 48px -16px rgba(29, 78, 216, 0.12);
 }
 
 .glass-elevated {
