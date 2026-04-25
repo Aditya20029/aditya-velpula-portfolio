@@ -4,7 +4,7 @@ export const experience = [
     role: "AI Engineer",
     company: "DAPSE — NSI",
     location: "Arlington, VA",
-    period: "2024 – Present",
+    period: "Feb 2026 – Present",
     isHero: true,
     summary:
       "Built Arctic policy intelligence system using RAG architecture for legal and strategic analysis across 9 nations.",
@@ -38,7 +38,7 @@ export const experience = [
     role: "Graduate Teaching Assistant",
     company: "George Mason University",
     location: "Fairfax, VA",
-    period: "2023 – 2024",
+    period: "Aug 2025 – Present",
     isHero: false,
     summary:
       "Mentored 50+ students in data analytics, machine learning, and statistical methods.",
@@ -50,9 +50,9 @@ export const experience = [
   {
     id: "indgeos",
     role: "AI Engineer",
-    company: "Indgeos",
-    location: "Remote",
-    period: "2022 – 2023",
+    company: "Indgeos Geospatial",
+    location: "Telangana, India",
+    period: "Nov 2023 – Jul 2024",
     isHero: false,
     summary:
       "Built geospatial ML pipelines and full-stack web applications for location intelligence.",

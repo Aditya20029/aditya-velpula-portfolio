@@ -95,7 +95,7 @@ function SkillRow({ skill, color, idx }) {
 /* -------------------------------------------------------------------- */
 /* Category card with cursor-follow gradient                            */
 /* -------------------------------------------------------------------- */
-function CategoryCard({ category, idx, dim }) {
+function CategoryCard({ category }) {
   const color = ACCENT_RGB[category.color] || "124, 212, 255";
   const Icon = ICON_MAP[category.icon] || Code2;
   const ref = useRef(null);
@@ -114,19 +114,10 @@ function CategoryCard({ category, idx, dim }) {
   };
 
   return (
-    <motion.div
+    <div
       ref={ref}
       onMouseMove={onMouseMove}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      animate={{ opacity: dim ? 0.45 : 1, scale: dim ? 0.985 : 1 }}
-      transition={{
-        duration: 0.7,
-        delay: idx * 0.08,
-        ease: [0.16, 1, 0.3, 1],
-      }}
-      className="group relative"
+      className="group relative h-full"
       style={{ "--mx": "50%", "--my": "50%" }}
     >
       {/* Iridescent edge */}
@@ -204,7 +195,7 @@ function CategoryCard({ category, idx, dim }) {
           ))}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -346,25 +337,38 @@ export default function SkillsMatrix() {
         </div>
       </div>
 
-      {/* Grid */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={filter || "all"}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4 }}
-          className="grid md:grid-cols-2 gap-6"
-        >
-          {skills.categories.map((cat, i) => (
-            <CategoryCard
-              key={cat.id}
-              category={cat}
-              idx={i}
-              dim={filter && filter !== cat.id}
-            />
-          ))}
-        </motion.div>
-      </AnimatePresence>
+      {/* Grid \u2014 when a filter is active we render ONLY the matching
+          card (full width). 'All' shows the regular 2-column grid. */}
+      <motion.div
+        layout
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        className={
+          filter
+            ? "grid grid-cols-1 gap-6"
+            : "grid md:grid-cols-2 gap-6"
+        }
+      >
+        <AnimatePresence mode="popLayout">
+          {skills.categories
+            .filter((c) => !filter || c.id === filter)
+            .map((cat, i) => (
+              <motion.div
+                key={cat.id}
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{
+                  duration: 0.45,
+                  delay: i * 0.06,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                <CategoryCard category={cat} idx={i} />
+              </motion.div>
+            ))}
+        </AnimatePresence>
+      </motion.div>
     </div>
   );
 }

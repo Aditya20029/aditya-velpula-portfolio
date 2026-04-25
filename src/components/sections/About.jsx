@@ -10,7 +10,7 @@ import SectionAccent from "@/components/ui/SectionAccent";
 const IDENTITY_CARDS = [
   {
     icon: GraduationCap,
-    text: "M.S. Data Analytics — George Mason University",
+    text: "M.S. Data Analytics — George Mason University · 2024–2026",
     from: { x: -100, y: -60 },
     delay: 0,
   },

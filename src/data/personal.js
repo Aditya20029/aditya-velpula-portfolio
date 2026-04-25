@@ -8,6 +8,7 @@ export const personal = {
     degree: "Master of Science in Data Analytics",
     school: "George Mason University",
     location: "Fairfax, VA",
+    period: "2024 – 2026",
   },
   bio: "Specializing in building scalable intelligent systems that bridge raw data and actionable insight. From RAG architectures that process thousands of policy documents to LLM orchestration systems that cut costs by 80% — I engineer solutions at the intersection of AI and infrastructure.",
   quote: "I don't just analyze data. I architect systems that think.",

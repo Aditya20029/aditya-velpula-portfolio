@@ -91,7 +91,7 @@ export default function Contact() {
         </div>
 
         <div className="t-mono-sm text-[var(--text-muted)] mt-10">
-          {personal.education.degree} · {personal.education.school}
+          {personal.education.degree} · {personal.education.school} · {personal.education.period}
         </div>
       </div>
     </section>
