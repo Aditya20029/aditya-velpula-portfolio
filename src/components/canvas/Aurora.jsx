@@ -19,10 +19,10 @@ export default function Aurora() {
         { color: "rgba(253, 186, 116, 0.08)", size: 380, x: "85%", y: "12%", duration: 22 },
       ]
     : [
-        { color: "rgba(59, 130, 246, 0.22)", size: 520, x: "10%", y: "20%", duration: 18 },
-        { color: "rgba(139, 92, 246, 0.18)", size: 460, x: "75%", y: "55%", duration: 22 },
-        { color: "rgba(6, 182, 212, 0.18)", size: 420, x: "45%", y: "70%", duration: 25 },
-        { color: "rgba(245, 158, 11, 0.08)", size: 360, x: "85%", y: "15%", duration: 20 },
+        { color: "rgba(59, 130, 246, 0.10)", size: 520, x: "10%", y: "20%", duration: 18 },
+        { color: "rgba(139, 92, 246, 0.08)", size: 460, x: "75%", y: "55%", duration: 22 },
+        { color: "rgba(6, 182, 212, 0.08)", size: 420, x: "45%", y: "70%", duration: 25 },
+        { color: "rgba(245, 158, 11, 0.04)", size: 360, x: "85%", y: "15%", duration: 20 },
       ];
 
   return (

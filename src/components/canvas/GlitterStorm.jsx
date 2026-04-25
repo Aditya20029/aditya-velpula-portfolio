@@ -15,18 +15,20 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
  *   - scrollDelta clamped per frame so fast Lenis flicks don't shear.
  */
 
+// Mostly-white with very occasional pastel tints — keeps the page from
+// looking like a confetti party
 const PALETTE = [
-  "255, 154, 230", // pink
-  "255, 154, 230",
-  "124, 212, 255", // teal
-  "124, 212, 255",
-  "196, 167, 255", // lilac
-  "196, 167, 255",
-  "139, 245, 208", // mint
-  "255, 216, 138", // amber
-  "255, 180, 138", // coral
   "255, 255, 255",
   "255, 255, 255",
+  "255, 255, 255",
+  "255, 255, 255",
+  "255, 255, 255",
+  "230, 240, 255",
+  "230, 240, 255",
+  "215, 225, 245", // cool white
+  "255, 215, 240", // very faint pink
+  "215, 235, 255", // very faint teal
+  "230, 225, 250", // very faint lilac
 ];
 
 const COMET_COLORS = [
@@ -90,7 +92,9 @@ export default function GlitterStorm() {
     });
 
     const isTablet = window.matchMedia("(max-width: 1023px)").matches;
-    const count = isTablet ? 220 : 360;
+    // Restrained particle density — site reads as professional first,
+    // ambient effects second
+    const count = isTablet ? 80 : 140;
 
     const parts = Array.from({ length: count }, () => {
       const r = Math.random();
@@ -101,25 +105,24 @@ export default function GlitterStorm() {
           : depth === 2
           ? 1.2 + Math.random() * 1
           : 1.8 + Math.random() * 1.4;
-      // CONSTANT UPWARD FLOW — all particles float up like fireflies, with
-      // horizontal swirl. Foreground moves fastest, back layer slowest, so
-      // depth reads as parallax. This is deliberately visible so motion
-      // reads on every section, not just the hero.
+      // Slow, ambient upward drift — present but never demanding attention
       const baseUp =
-        depth === 3 ? 0.9 : depth === 2 ? 0.55 : 0.32; // px/frame upward
+        depth === 3 ? 0.32 : depth === 2 ? 0.2 : 0.12;
       const sideSwing =
-        depth === 3 ? 0.45 : depth === 2 ? 0.3 : 0.18;
+        depth === 3 ? 0.18 : depth === 2 ? 0.12 : 0.07;
       return {
         x: Math.random() * (W || window.innerWidth),
         y: Math.random() * (H || window.innerHeight),
         depth,
         size,
+        // Significantly dimmer — these are background ornaments, not the
+        // focal point of the page
         baseAlpha:
           depth === 3
-            ? 0.75 + Math.random() * 0.25
+            ? 0.32 + Math.random() * 0.18
             : depth === 2
-            ? 0.48 + Math.random() * 0.27
-            : 0.28 + Math.random() * 0.22,
+            ? 0.18 + Math.random() * 0.14
+            : 0.08 + Math.random() * 0.1,
         // Upward drift (negative y) — always
         vy: -baseUp - Math.random() * baseUp * 0.4,
         // Horizontal swing via a sinusoidal term on a per-particle phase
@@ -147,10 +150,10 @@ export default function GlitterStorm() {
     const CURSOR_R = 220;
     const CURSOR_R_SQ = CURSOR_R * CURSOR_R;
 
-    // Comet streaks for visual life on long scroll sections — more frequent
-    // now so even still viewers see one every few seconds
+    // Comet streaks — rare so they read as a moment of delight rather than
+    // background noise
     const comets = [];
-    let nextCometAt = performance.now() + 1500 + Math.random() * 3000;
+    let nextCometAt = performance.now() + 12000 + Math.random() * 18000;
     const spawnComet = () => {
       const fromLeft = Math.random() < 0.5;
       comets.push({
@@ -227,7 +230,7 @@ export default function GlitterStorm() {
       // Comet streaks
       if (now > nextCometAt) {
         spawnComet();
-        nextCometAt = now + 2500 + Math.random() * 4000;
+        nextCometAt = now + 18000 + Math.random() * 22000;
       }
       for (let i = comets.length - 1; i >= 0; i--) {
         const c = comets[i];
@@ -239,10 +242,10 @@ export default function GlitterStorm() {
 
         c.trail.forEach((pt, j) => {
           const fade = 1 - j / c.trail.length;
-          const a = fade * fade * c.life * 0.9;
+          const a = fade * fade * c.life * 0.5;
           ctx.fillStyle = `rgba(${c.color}, ${a})`;
           ctx.beginPath();
-          ctx.arc(pt.x, pt.y, Math.max(0.3, 2.2 - j * 0.08), 0, Math.PI * 2);
+          ctx.arc(pt.x, pt.y, Math.max(0.3, 1.8 - j * 0.07), 0, Math.PI * 2);
           ctx.fill();
         });
 

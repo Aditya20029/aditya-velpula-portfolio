@@ -204,39 +204,30 @@ function EnvCage() {
 function ParticleField() {
   return (
     <group>
-      {/* Particles pushed outward so they don't cover the center where text sits */}
-      <Sparkles
-        count={140}
-        scale={[8, 6, 5]}
-        size={3}
-        speed={0.22}
-        opacity={0.6}
-        color="#ffb6f0"
-        position={[0, 0, 0]}
-      />
-      <Sparkles
-        count={100}
-        scale={[10, 8, 6]}
-        size={4}
-        speed={0.15}
-        opacity={0.55}
-        color="#9ee0ff"
-      />
+      {/* Quieter particle field — fewer points, lower opacity, white-leaning */}
       <Sparkles
         count={70}
-        scale={[13, 11, 8]}
-        size={6}
-        speed={0.1}
-        opacity={0.4}
-        color="#d6c4ff"
+        scale={[8, 6, 5]}
+        size={2.5}
+        speed={0.18}
+        opacity={0.35}
+        color="#ffe4f3"
       />
       <Sparkles
-        count={30}
-        scale={[11, 9, 7]}
-        size={5}
+        count={50}
+        scale={[10, 8, 6]}
+        size={3}
         speed={0.12}
-        opacity={0.45}
-        color="#ffd88a"
+        opacity={0.32}
+        color="#cce8ff"
+      />
+      <Sparkles
+        count={35}
+        scale={[13, 11, 8]}
+        size={4}
+        speed={0.08}
+        opacity={0.22}
+        color="#e0d4ff"
       />
     </group>
   );

@@ -16,9 +16,12 @@ export default function SectionAccent({
   variant = "ring",
   size = 280,
   position = { top: "0%", left: "50%" },
-  opacity = 0.35,
+  opacity: passedOpacity = 0.18,
   reverse = false,
 }) {
+  // Halve whatever opacity was passed so the existing per-section calls
+  // don't need editing — gives the whole site a calmer ambient layer.
+  const opacity = passedOpacity * 0.5;
   const reduced = useReducedMotion();
 
   return (
