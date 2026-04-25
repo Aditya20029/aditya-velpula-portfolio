@@ -1,8 +1,7 @@
-// Levels render as a 3-bar indicator on the skill chip.
-// Recruiters can scan in <2s; engineers can read the proficiency line.
+// Levels render as a 4-bar indicator on the skill chip.
 export const SKILL_LEVELS = {
   primary: { label: "Primary", bars: 4 },
-  expert: { label: "Expert", bars: 3 },
+  expert: { label: "Expert", bars: 4 },
   advanced: { label: "Advanced", bars: 3 },
   proficient: { label: "Proficient", bars: 2 },
   intermediate: { label: "Intermediate", bars: 2 },
@@ -22,10 +21,14 @@ export const skills = {
         { name: "RAG", level: "expert", proficiency: "Production RAG systems" },
         { name: "LangChain", level: "expert", proficiency: "Agent orchestration" },
         { name: "FAISS", level: "expert", proficiency: "Vector search at scale" },
+        { name: "Pinecone", level: "advanced", proficiency: "Managed vector index" },
+        { name: "Hugging Face", level: "advanced", proficiency: "Transformers, model hub" },
         { name: "PyTorch", level: "advanced", proficiency: "Research + production" },
         { name: "TensorFlow", level: "advanced", proficiency: "Model training" },
+        { name: "scikit-learn", level: "expert", proficiency: "Classical ML pipelines" },
+        { name: "XGBoost", level: "advanced", proficiency: "Gradient boosting" },
         { name: "NLP", level: "advanced", proficiency: "Text processing pipelines" },
-        { name: "Hugging Face", level: "advanced", proficiency: "Transformers, model hub" },
+        { name: "OpenAI API", level: "expert", proficiency: "Completions, embeddings, tools" },
       ],
     },
     {
@@ -37,10 +40,12 @@ export const skills = {
       skills: [
         { name: "Python", level: "primary", proficiency: "5+ years, every project" },
         { name: "SQL", level: "advanced", proficiency: "Complex queries, optimization" },
+        { name: "TypeScript", level: "proficient", proficiency: "Typed full-stack web" },
         { name: "JavaScript", level: "proficient", proficiency: "Full-stack web" },
         { name: "C++", level: "proficient", proficiency: "Systems programming" },
         { name: "Java", level: "proficient", proficiency: "Enterprise applications" },
         { name: "R", level: "proficient", proficiency: "Statistical analysis" },
+        { name: "Bash", level: "proficient", proficiency: "Automation, ops scripts" },
       ],
     },
     {
@@ -51,9 +56,12 @@ export const skills = {
       icon: "cloud",
       skills: [
         { name: "AWS", level: "advanced", proficiency: "Certified, primary platform" },
+        { name: "S3 / Glue / Athena", level: "advanced", proficiency: "Lake-house pipelines" },
+        { name: "Lambda / API Gateway", level: "advanced", proficiency: "Serverless APIs" },
         { name: "Docker", level: "advanced", proficiency: "Containerized deployments" },
         { name: "Kubernetes", level: "intermediate", proficiency: "Orchestration" },
         { name: "Terraform", level: "intermediate", proficiency: "Infrastructure-as-code" },
+        { name: "CI / CD", level: "advanced", proficiency: "GitHub Actions, deploys" },
         { name: "Azure", level: "working", proficiency: "Working knowledge" },
         { name: "GCP", level: "working", proficiency: "Working knowledge" },
       ],
@@ -66,12 +74,17 @@ export const skills = {
       icon: "wrench",
       skills: [
         { name: "FastAPI", level: "expert", proficiency: "Production APIs" },
+        { name: "Flask", level: "advanced", proficiency: "Lightweight services" },
         { name: "Pandas", level: "expert", proficiency: "Data manipulation" },
         { name: "NumPy", level: "expert", proficiency: "Numerical computing" },
-        { name: "Git", level: "advanced", proficiency: "Branching, CI/CD" },
+        { name: "Plotly / Matplotlib", level: "advanced", proficiency: "Visualization" },
+        { name: "Power BI / Tableau", level: "advanced", proficiency: "BI dashboards" },
+        { name: "Git", level: "advanced", proficiency: "Branching, code review" },
         { name: "Spark", level: "intermediate", proficiency: "Distributed computing" },
         { name: "Airflow", level: "intermediate", proficiency: "Workflow orchestration" },
         { name: "MLflow", level: "intermediate", proficiency: "Experiment tracking" },
+        { name: "PostgreSQL", level: "advanced", proficiency: "Relational data" },
+        { name: "Redis", level: "intermediate", proficiency: "Caching, sessions" },
       ],
     },
   ],
