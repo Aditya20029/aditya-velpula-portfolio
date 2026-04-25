@@ -1,34 +1,13 @@
 "use client";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import dynamic from "next/dynamic";
+import { useRef } from "react";
 import { ArrowRight, FileText, ChevronDown } from "lucide-react";
 import { personal } from "@/data/personal";
 import { EASE } from "@/utils/constants";
 import MagneticButton from "@/components/ui/MagneticButton";
-import ReelChromeCore from "@/components/canvas/ReelChromeCore";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
-
-/* WebGL scene is client-only + chunk-split so it never blocks the initial
-   HTML / CSS render. The CSS ReelChromeCore stays behind it as a fallback
-   for mobile + reduced-motion + during the brief chunk load. */
-const HeroScene = dynamic(() => import("@/components/webgl/HeroScene"), {
-  ssr: false,
-  loading: () => null,
-});
 
 export default function Hero() {
   const ref = useRef(null);
-  const reduced = useReducedMotion();
-  const [useWebGL, setUseWebGL] = useState(false);
-
-  useEffect(() => {
-    if (reduced) return;
-    // Skip WebGL on mobile (GPU + battery) + on devices that hint low
-    if (window.matchMedia("(max-width: 767px)").matches) return;
-    if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) return;
-    setUseWebGL(true);
-  }, [reduced]);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -36,8 +15,6 @@ export default function Hero() {
   });
   const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.9], [1, 0]);
-  const coreY = useTransform(scrollYProgress, [0, 1], ["0%", "-35%"]);
-  const coreScale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
 
   return (
     <section
@@ -53,40 +30,6 @@ export default function Hero() {
         style={{ background: "var(--gradient-hero)" }}
       />
 
-      {/* Chrome centerpiece — WebGL on capable devices, CSS fallback otherwise */}
-      {useWebGL ? (
-        <motion.div
-          style={{ y: coreY, scale: coreScale }}
-          className="absolute inset-0 z-0"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.6, delay: 2.3, ease: EASE.outExpo }}
-        >
-          <HeroScene />
-        </motion.div>
-      ) : (
-        <motion.div
-          style={{ y: coreY, scale: coreScale }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0"
-          initial={{ opacity: 0, scale: 0.7 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.6, delay: 2.3, ease: EASE.outExpo }}
-        >
-          <ReelChromeCore size={520} />
-        </motion.div>
-      )}
-
-      {/* Dark radial vignette — sits between the 3D scene and the text so
-          content always reads against a legible surface while the chrome
-          stays visible as an atmospheric backdrop. */}
-      <div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none z-[5]"
-        style={{
-          background:
-            "radial-gradient(ellipse 60% 40% at 50% 50%, rgba(7, 7, 13, 0.72) 0%, rgba(7, 7, 13, 0.5) 35%, rgba(7, 7, 13, 0) 75%)",
-        }}
-      />
 
       <motion.div
         style={{ y: contentY, opacity: contentOpacity }}
