@@ -43,9 +43,9 @@ function CertCard({ cert, index, featured = false }) {
       />
 
       <div
-        className="relative glass-card overflow-hidden p-6 md:p-8 h-full flex flex-col md:flex-row items-center gap-6"
+        className="relative glass-card overflow-hidden p-6 md:p-8 h-full flex flex-col md:flex-row items-center gap-6 md:gap-8"
         style={{
-          borderColor: `rgba(${tier.accentRgb}, 0.2)`,
+          borderColor: `rgba(${tier.accentRgb}, 0.22)`,
         }}
       >
         {/* Corner accent gradient */}
@@ -69,14 +69,14 @@ function CertCard({ cert, index, featured = false }) {
         />
 
         {/* Hex badge */}
-        <div className="shrink-0 relative z-10">
+        <div className="shrink-0 relative z-10 flex items-center justify-center">
           <HexBadge
             name={cert.name}
             subtitle={cert.subtitle}
             tier={cert.tier}
             accent={tier.accent}
             earlyAdopter={cert.earlyAdopter}
-            size={featured ? 200 : 170}
+            size={featured ? 220 : 180}
           />
         </div>
 
@@ -180,9 +180,9 @@ export default function Certifications() {
       />
       <div className="container-site relative z-10">
         <SectionHeading
-          kicker="ACT IV · VERIFIED"
+          kicker="VERIFIED CREDENTIALS"
           title="AWS Certifications"
-          subtitle="Official credentials, earned through examination. Every badge below links to its public verification page."
+          subtitle="Click any badge or 'Verify' to open the official AWS verification page. Use 'Copy ID' to grab the validation hash."
           align="center"
         />
 
