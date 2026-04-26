@@ -93,7 +93,7 @@ export const certifications = [
     id: "aws-academy-data",
     name: "Data Engineering",
     subtitle: "Academy Graduate",
-    fullName: "AWS Academy Graduate — Data Engineering",
+    fullName: "AWS Academy Graduate · Data Engineering",
     issuer: "AWS Academy",
     tier: "academy",
     issued: "Nov 28, 2024",

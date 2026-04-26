@@ -287,7 +287,7 @@ export default function DapseTechStack() {
         transition={{ delay: 0.8, duration: 0.6 }}
         className="t-mono-sm text-[var(--text-muted)] text-center pt-4"
       >
-        — Every service in production. Every query goes through all of them. —
+        Every service in production. Every query goes through all of them.
       </motion.div>
     </div>
   );

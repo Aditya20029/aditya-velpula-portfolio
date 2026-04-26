@@ -60,7 +60,7 @@ export default function CostSlider() {
               letterSpacing: "-0.01em",
             }}
           >
-            {state === "before" ? "Baseline" : "75–80% less"}
+            {state === "before" ? "Baseline" : "75 to 80% less"}
           </motion.span>
         </div>
       </div>

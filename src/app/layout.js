@@ -24,14 +24,14 @@ const fraunces = Fraunces({
 });
 
 export const metadata = {
-  title: "Aditya Velpula — AI Engineer",
+  title: "Aditya Velpula · AI Engineer",
   description:
     "Building intelligent systems at scale. RAG pipelines, LLM orchestration, and cloud data infrastructure.",
   icons: {
     icon: "/favicon.ico",
   },
   openGraph: {
-    title: "Aditya Velpula — AI Engineer",
+    title: "Aditya Velpula · AI Engineer",
     description:
       "Building intelligent systems at scale. RAG pipelines, LLM orchestration, and cloud data infrastructure.",
     type: "website",

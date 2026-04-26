@@ -43,12 +43,12 @@ function TimelineAside({ role, reversed }) {
             color: "transparent",
           }}
         >
-          {role.period.split("–")[0].trim()}
+          {role.period.split(" to ")[0].trim()}
         </div>
       </div>
 
       <div className="t-mono text-[var(--text-muted)] mt-1">
-        — {role.period.split("–")[1]?.trim() || "Present"}
+        to {role.period.split(" to ")[1]?.trim() || "Present"}
       </div>
 
       <div className="flex items-center gap-2 t-mono-sm text-[var(--text-secondary)] mt-6">
@@ -134,7 +134,7 @@ export default function Experience() {
         <SectionHeading
           kicker="ACT III"
           title="The Architecture"
-          subtitle="Roles where I built intelligence systems from first principles — not dashboards, not demos. Real systems with real impact."
+          subtitle="Roles where I built intelligence systems from first principles. Not dashboards, not demos. Real systems with real impact."
         />
 
         <div className="section-divider my-12" />

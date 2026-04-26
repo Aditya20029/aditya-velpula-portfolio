@@ -2,7 +2,7 @@ export const projects = [
   {
     id: "sla-breach-prediction",
     title: "Ticket Resolution & SLA Breach Prediction",
-    subtitle: "ITSM Analytics · Oct – Nov 2025",
+    subtitle: "ITSM Analytics · Oct to Nov 2025",
     description:
       "End-to-end ITSM analytics pipeline predicting ticket resolution time and flagging SLA breach risk before closure. Built on a realistic 5,000-ticket synthetic dataset simulating ServiceNow/Jira logs. Gradient-boosting models beat baselines for both regression and classification; results surface through a Power BI dashboard for proactive service management.",
     tags: ["Python", "XGBoost", "Scikit-learn", "Pandas", "Power BI", "Predictive Analytics"],
@@ -30,7 +30,7 @@ export const projects = [
     title: "U.S. Electricity-Rate Analytics",
     subtitle: "DIKW-Driven IOU vs Non-IOU Pricing Study",
     description:
-      "Analysed 320K+ electricity rate records (2020–2023) through the DIKW framework, using Python, SQL, and statistical testing (t-tests, regression) to expose material pricing differences between IOU and Non-IOU utilities across sectors and states. Cluster models + forecasts highlight geographic trends and inflation effects for regulators.",
+      "Analysed 320K+ electricity rate records (2020 to 2023) through the DIKW framework, using Python, SQL, and statistical testing (t-tests, regression) to expose material pricing differences between IOU and Non-IOU utilities across sectors and states. Cluster models + forecasts highlight geographic trends and inflation effects for regulators.",
     tags: ["Python", "SQL", "Statistical Modeling", "Clustering", "Forecasting", "Plotly"],
     previewType: "chart",
     accentColor: "--accent-secondary", // magenta

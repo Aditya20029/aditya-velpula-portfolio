@@ -17,7 +17,7 @@ export default function Skills() {
         <SectionHeading
           kicker="WHAT I WORK WITH"
           title="Skills & Stack"
-          subtitle="The tools I use daily, grouped by domain. Bars indicate depth — Primary marks my daily-driver, Working denotes hands-on familiarity."
+          subtitle="The tools I use daily, grouped by domain. Bars indicate depth. Primary marks my daily-driver, Working denotes hands-on familiarity."
         />
         <div className="section-divider my-12" />
         <SkillsMatrix />
