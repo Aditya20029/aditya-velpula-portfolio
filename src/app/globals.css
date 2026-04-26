@@ -26,6 +26,7 @@
   --accent-success: #8bf5d0;      /* mint */
   --accent-warm: #ffd88a;         /* warm amber */
   --accent-coral: #ffb48a;        /* coral */
+  --accent-rose: #f87171;         /* rose */
 
   --text-primary: #f1f5f9;
   --text-body: #cbd5e1;
@@ -91,7 +92,8 @@
   --accent-tertiary: #6d28d9;    /* royal purple */
   --accent-success: #047857;     /* emerald */
   --accent-warm: #b45309;        /* burnt amber */
-  --accent-coral: #c2410c;
+  --accent-coral: #0e7490;       /* deep cyan-teal (was orange-red, collided with warm) */
+  --accent-rose: #be123c;        /* deep rose */
 
   /* Strong navy text \u2014 readable but not pure black */
   --text-primary: #050816;

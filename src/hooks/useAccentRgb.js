@@ -19,6 +19,7 @@ const DARK = {
   "--accent-success": "139, 245, 208",
   "--accent-warm": "255, 216, 138",
   "--accent-coral": "255, 180, 138",
+  "--accent-rose": "248, 113, 113",
 };
 
 const LIGHT = {
@@ -27,7 +28,8 @@ const LIGHT = {
   "--accent-tertiary": "109, 40, 217",    // royal purple
   "--accent-success": "4, 120, 87",       // emerald
   "--accent-warm": "180, 83, 9",          // burnt amber
-  "--accent-coral": "194, 65, 12",        // coral
+  "--accent-coral": "14, 116, 144",       // deep cyan-teal
+  "--accent-rose": "190, 18, 60",         // deep rose
 };
 
 export function useAccentRgb() {
