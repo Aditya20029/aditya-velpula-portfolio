@@ -97,8 +97,10 @@ export default function GlitterStorm() {
 
     const isTablet = window.matchMedia("(max-width: 1023px)").matches;
     // Restrained particle density — site reads as professional first,
-    // ambient effects second
-    const count = isTablet ? 54 : 96;
+    // ambient effects second. Desktop dropped 96 -> 64 for smoother
+    // scroll: at 96 each frame walks the full array twice (update +
+    // draw); 64 cuts that ~33% with no visible field-density change.
+    const count = isTablet ? 54 : 64;
 
     const parts = Array.from({ length: count }, () => {
       const r = Math.random();
