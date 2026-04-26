@@ -40,7 +40,7 @@ export default function Hero() {
     <section
       ref={ref}
       id="hero"
-      className="relative min-h-[100svh] flex flex-col items-center justify-center px-4 z-10 overflow-hidden"
+      className="relative min-h-[100svh] lg:min-h-[100svh] [@media(pointer:coarse)]:min-h-[100dvh] flex flex-col items-center justify-center px-4 z-10 overflow-hidden"
       aria-label="Hero"
     >
       {/* Dreamy radial gradient */}

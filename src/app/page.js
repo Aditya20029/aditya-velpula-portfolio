@@ -8,6 +8,7 @@ import NeuralBackground from "@/components/canvas/NeuralBackground";
 import CursorSystem from "@/components/canvas/CursorSystem";
 import GrainOverlay from "@/components/canvas/GrainOverlay";
 import PremiumBackdrop from "@/components/layout/PremiumBackdrop";
+import MobileMotion from "@/components/layout/MobileMotion";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Experience from "@/components/sections/Experience";
@@ -19,7 +20,7 @@ import TechMarquee from "@/components/ui/TechMarquee";
 
 export default function Home() {
   return (
-    <>
+    <MobileMotion>
       <Preloader />
       <SmoothScroll />
       <GlitterStorm />
@@ -41,6 +42,6 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
-    </>
+    </MobileMotion>
   );
 }

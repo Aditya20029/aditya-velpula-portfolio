@@ -1034,3 +1034,13 @@ a {
     transition: none !important;
   }
 }
+
+/* Mobile smoothness step 6c: hide TiltCard's cursor-tracking gradient
+   overlay on touch. Element is rendered with opacity:0 and only fades
+   in on hover - which never fires on phones. Strip it from the layer
+   tree entirely. */
+@media (pointer: coarse) {
+  .tilt-card > span[aria-hidden] {
+    display: none !important;
+  }
+}
