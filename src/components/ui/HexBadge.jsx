@@ -242,11 +242,13 @@ export default function HexBadge({
         strokeWidth="1"
       />
 
-      {/* Title */}
+      {/* Title \u2014 width inset enough to clear the hex diagonals at this band.
+          Font auto-scales by character count so long names like
+          'Machine Learning Engineer' or 'Solutions Architect' fit. */}
       <foreignObject
-        x={W * 0.06}
+        x={W * 0.12}
         y={H * 0.37}
-        width={W * 0.88}
+        width={W * 0.76}
         height={H * 0.27}
       >
         <div
@@ -258,11 +260,19 @@ export default function HexBadge({
             fontWeight: 800,
             lineHeight: 1.05,
             letterSpacing: "-0.012em",
-            fontSize: `${size * 0.118}px`,
+            fontSize: (() => {
+              const len = (name || "").length;
+              if (len > 22) return `${size * 0.078}px`;
+              if (len > 16) return `${size * 0.092}px`;
+              if (len > 12) return `${size * 0.105}px`;
+              return `${size * 0.118}px`;
+            })(),
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             height: "100%",
+            wordBreak: "break-word",
+            hyphens: "auto",
           }}
         >
           {name}
@@ -280,11 +290,12 @@ export default function HexBadge({
         strokeWidth="1"
       />
 
-      {/* Tier banner — explicit foreignObject so text never clips */}
+      {/* Tier banner \u2014 inset from edges so wide labels don't run into the
+          hex diagonals; auto-shrink font + tracking based on label length. */}
       <foreignObject
-        x={0}
+        x={W * 0.1}
         y={H * 0.7}
-        width={W}
+        width={W * 0.8}
         height={H * 0.18}
       >
         <div
@@ -298,8 +309,13 @@ export default function HexBadge({
             color: "#ffffff",
             fontFamily: "var(--font-sans), Inter, sans-serif",
             fontWeight: 700,
-            fontSize: `${size * (tierLabel.length > 14 ? 0.055 : 0.07)}px`,
-            letterSpacing: tierLabel.length > 14 ? "0.22em" : "0.32em",
+            fontSize: (() => {
+              const len = tierLabel.length;
+              if (len > 13) return `${size * 0.05}px`;
+              if (len > 10) return `${size * 0.06}px`;
+              return `${size * 0.07}px`;
+            })(),
+            letterSpacing: tierLabel.length > 13 ? "0.18em" : "0.28em",
             whiteSpace: "nowrap",
             lineHeight: 1,
           }}
