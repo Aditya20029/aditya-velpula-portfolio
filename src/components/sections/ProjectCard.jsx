@@ -4,18 +4,11 @@ import { ArrowUpRight } from "lucide-react";
 import TiltCard from "@/components/ui/TiltCard";
 import Badge from "@/components/ui/Badge";
 import ProjectPreview from "./ProjectPreview";
-
-const ACCENT_MAP = {
-  "--accent-primary": "124, 212, 255",
-  "--accent-secondary": "255, 154, 230",
-  "--accent-tertiary": "196, 167, 255",
-  "--accent-warm": "255, 216, 138",
-  "--accent-success": "139, 245, 208",
-  "--accent-coral": "255, 180, 138",
-};
+import { useAccentRgb } from "@/hooks/useAccentRgb";
 
 export default function ProjectCard({ project, onOpen, index }) {
-  const rgb = ACCENT_MAP[project.accentColor] || "124, 212, 255";
+  const accents = useAccentRgb();
+  const rgb = accents[project.accentColor] || "29, 78, 216";
   return (
     <motion.div
       layoutId={`project-card-${project.id}`}

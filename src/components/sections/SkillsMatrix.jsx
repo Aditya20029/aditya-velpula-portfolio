@@ -4,20 +4,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Brain, Code2, Cloud, Wrench, Sparkles } from "lucide-react";
 import { skills, SKILL_LEVELS } from "@/data/skills";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
+import { useAccentRgb } from "@/hooks/useAccentRgb";
 
 const ICON_MAP = {
   brain: Brain,
   code: Code2,
   cloud: Cloud,
   wrench: Wrench,
-};
-
-const ACCENT_RGB = {
-  "--accent-primary": "124, 212, 255",
-  "--accent-secondary": "255, 154, 230",
-  "--accent-tertiary": "196, 167, 255",
-  "--accent-success": "139, 245, 208",
-  "--accent-warm": "255, 216, 138",
 };
 
 /* -------------------------------------------------------------------- */
@@ -38,7 +31,7 @@ function LevelBars({ level, color, animate = false }) {
             className="block w-[3px] rounded-[1px] origin-bottom"
             style={{
               height: `${i * 3 + 4}px`,
-              background: lit ? `rgb(${color})` : "rgba(255, 255, 255, 0.12)",
+              background: lit ? `rgb(${color})` : "var(--border-hover)",
               boxShadow: lit ? `0 0 6px rgba(${color}, 0.7)` : "none",
             }}
           />
@@ -83,8 +76,12 @@ function SkillRow({ skill, color, idx }) {
         </div>
       </div>
       <span
-        className="t-mono-sm shrink-0 opacity-70 group-hover/row:opacity-100 transition-opacity"
-        style={{ color: `rgb(${color})`, letterSpacing: "0.16em" }}
+        className="t-mono-sm shrink-0 transition-opacity font-semibold"
+        style={{
+          color: `rgb(${color})`,
+          letterSpacing: "0.16em",
+          opacity: 0.95,
+        }}
       >
         {def.label}
       </span>
@@ -95,8 +92,8 @@ function SkillRow({ skill, color, idx }) {
 /* -------------------------------------------------------------------- */
 /* Category card with cursor-follow gradient                            */
 /* -------------------------------------------------------------------- */
-function CategoryCard({ category }) {
-  const color = ACCENT_RGB[category.color] || "124, 212, 255";
+function CategoryCard({ category, accents }) {
+  const color = accents[category.color] || "29, 78, 216";
   const Icon = ICON_MAP[category.icon] || Code2;
   const ref = useRef(null);
 
@@ -203,6 +200,7 @@ function CategoryCard({ category }) {
 /* Animated stats strip (totals + level histogram)                      */
 /* -------------------------------------------------------------------- */
 function StatsStrip() {
+  const accents = useAccentRgb();
   const stats = useMemo(() => {
     const all = skills.categories.flatMap((c) => c.skills);
     const total = all.length;
@@ -223,10 +221,10 @@ function StatsStrip() {
       className="relative grid grid-cols-2 md:grid-cols-4 gap-3 mb-8"
     >
       {[
-        { label: "Total Skills", value: stats.total, color: "124, 212, 255" },
-        { label: "Expert / Primary", value: stats.expertish, color: "196, 167, 255" },
-        { label: "Advanced", value: stats.advanced, color: "255, 154, 230" },
-        { label: "Domains", value: stats.cats, color: "139, 245, 208" },
+        { label: "Total Skills", value: stats.total, color: accents["--accent-primary"] },
+        { label: "Expert / Primary", value: stats.expertish, color: accents["--accent-tertiary"] },
+        { label: "Advanced", value: stats.advanced, color: accents["--accent-secondary"] },
+        { label: "Domains", value: stats.cats, color: accents["--accent-success"] },
       ].map((s) => (
         <div
           key={s.label}
@@ -261,6 +259,7 @@ function StatsStrip() {
 /* -------------------------------------------------------------------- */
 export default function SkillsMatrix() {
   const [filter, setFilter] = useState(null); // null = all
+  const accents = useAccentRgb();
 
   return (
     <div>
@@ -284,7 +283,7 @@ export default function SkillsMatrix() {
             All
           </button>
           {skills.categories.map((c) => {
-            const color = ACCENT_RGB[c.color] || "124, 212, 255";
+            const color = accents[c.color] || "29, 78, 216";
             const active = filter === c.id;
             return (
               <button
@@ -325,8 +324,8 @@ export default function SkillsMatrix() {
                       height: `${i * 2 + 3}px`,
                       background:
                         i <= def.bars
-                          ? "rgba(255, 255, 255, 0.55)"
-                          : "rgba(255, 255, 255, 0.12)",
+                          ? "var(--text-secondary)"
+                          : "var(--border-hover)",
                     }}
                   />
                 ))}
@@ -364,7 +363,7 @@ export default function SkillsMatrix() {
                   ease: [0.16, 1, 0.3, 1],
                 }}
               >
-                <CategoryCard category={cat} idx={i} />
+                <CategoryCard category={cat} accents={accents} />
               </motion.div>
             ))}
         </AnimatePresence>

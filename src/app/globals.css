@@ -96,8 +96,8 @@
   /* Strong navy text \u2014 readable but not pure black */
   --text-primary: #050816;
   --text-body: #111827;
-  --text-secondary: #1f2937;
-  --text-muted: #475569;
+  --text-secondary: #1e293b;
+  --text-muted: #334155;
   --text-ghost: #94a3b8;
 
   --glow-blue: rgba(29, 78, 216, 0.18);
