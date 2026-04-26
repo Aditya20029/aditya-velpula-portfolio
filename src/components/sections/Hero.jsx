@@ -86,19 +86,9 @@ export default function Hero() {
             letterSpacing: "0.16em",
           }}
         >
-          <span className="relative flex h-2.5 w-2.5">
-            <span
-              className="absolute inset-0 rounded-full opacity-80 animate-ping"
-              style={{ background: "#22c55e" }}
-            />
-            <span
-              className="relative rounded-full h-2.5 w-2.5"
-              style={{
-                background: "#22c55e",
-                boxShadow:
-                  "0 0 10px #22c55e, 0 0 20px rgba(34, 197, 94, 0.8)",
-              }}
-            />
+          <span className="available-dot relative flex h-2.5 w-2.5">
+            <span className="absolute inset-0 rounded-full opacity-80 animate-ping" />
+            <span className="relative rounded-full h-2.5 w-2.5" />
           </span>
           <span>Available for opportunities</span>
         </motion.div>

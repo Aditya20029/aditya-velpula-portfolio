@@ -33,7 +33,10 @@ export default function HeroName({
         fontWeight: 800,
         fontSize: "clamp(48px, 9vw, 110px)",
         letterSpacing: "-0.035em",
-        lineHeight: 1.02,
+        // line-height 1.02 was clipping descenders ('y', 'p', 'g'); 1.18 gives
+        // room for both the ink-trap and the hover scale-up without overflow
+        lineHeight: 1.18,
+        paddingBottom: "0.12em",
       }}
     >
       {words.map((word, wi) => (
@@ -84,7 +87,9 @@ function Letter({ ch, delay }) {
         display: "inline-block",
         cursor: "default",
         willChange: "transform, opacity, filter",
-        transformOrigin: "50% 70%",
+        // Scale anchored at baseline so descenders ('y', 'p') don't get
+        // clipped when a letter springs up on hover
+        transformOrigin: "50% 100%",
         textShadow: hovered
           ? "0 0 22px var(--glow-cyan), 0 0 48px var(--glow-purple)"
           : "0 0 14px var(--glow-cyan), 0 0 32px var(--glow-purple)",

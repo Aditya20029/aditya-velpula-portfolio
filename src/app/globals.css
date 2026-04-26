@@ -276,44 +276,77 @@ a {
 :root[data-theme="light"] .cursor-glow { mix-blend-mode: multiply; }
 
 /* "Available for opportunities" hero badge \u2014 first thing the eye should
-   land on. Vivid laser green, breathes a soft aura in both themes. */
+   land on. Theme-tuned green: deeper forest-green in light mode for
+   real readability, brighter laser green in dark mode where it shines. */
+
+/* Light theme defaults (the bare class) */
 .available-badge {
   position: relative;
-  border: 1.5px solid #22c55e;
-  background: rgba(34, 197, 94, 0.10);
+  border: 1.5px solid #15803d;
+  background: rgba(21, 128, 61, 0.07);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  color: #16a34a;
+  color: #14532d;        /* deep forest \u2014 readable on white */
   box-shadow:
-    0 0 0 4px rgba(34, 197, 94, 0.10),
-    0 0 24px rgba(34, 197, 94, 0.45),
-    0 8px 24px -8px rgba(34, 197, 94, 0.5);
-  animation: available-pulse 2.4s ease-in-out infinite;
+    0 0 0 3px rgba(21, 128, 61, 0.12),
+    0 0 16px rgba(21, 128, 61, 0.28),
+    0 8px 20px -8px rgba(21, 128, 61, 0.35);
+  animation: available-pulse-light 2.4s ease-in-out infinite;
 }
+
+/* Dark theme override */
 :root[data-theme="dark"] .available-badge {
-  /* Brighter laser green text on the dark canvas, slightly stronger glow */
-  color: #4ade80;
-  background: rgba(34, 197, 94, 0.10);
   border-color: #22c55e;
+  background: rgba(34, 197, 94, 0.10);
+  color: #4ade80;
   box-shadow:
     0 0 0 4px rgba(34, 197, 94, 0.12),
     0 0 32px rgba(34, 197, 94, 0.55),
     0 8px 32px -6px rgba(34, 197, 94, 0.55);
+  animation: available-pulse-dark 2.4s ease-in-out infinite;
 }
 
-@keyframes available-pulse {
+@keyframes available-pulse-light {
   0%, 100% {
     box-shadow:
-      0 0 0 4px rgba(34, 197, 94, 0.10),
-      0 0 24px rgba(34, 197, 94, 0.45),
-      0 8px 24px -8px rgba(34, 197, 94, 0.5);
+      0 0 0 3px rgba(21, 128, 61, 0.12),
+      0 0 16px rgba(21, 128, 61, 0.28),
+      0 8px 20px -8px rgba(21, 128, 61, 0.35);
   }
   50% {
     box-shadow:
-      0 0 0 6px rgba(34, 197, 94, 0.16),
-      0 0 36px rgba(34, 197, 94, 0.7),
-      0 8px 28px -6px rgba(34, 197, 94, 0.6);
+      0 0 0 5px rgba(21, 128, 61, 0.18),
+      0 0 24px rgba(21, 128, 61, 0.42),
+      0 8px 24px -6px rgba(21, 128, 61, 0.5);
   }
+}
+@keyframes available-pulse-dark {
+  0%, 100% {
+    box-shadow:
+      0 0 0 4px rgba(34, 197, 94, 0.12),
+      0 0 32px rgba(34, 197, 94, 0.55),
+      0 8px 32px -6px rgba(34, 197, 94, 0.55);
+  }
+  50% {
+    box-shadow:
+      0 0 0 6px rgba(34, 197, 94, 0.18),
+      0 0 40px rgba(34, 197, 94, 0.75),
+      0 8px 32px -4px rgba(34, 197, 94, 0.65);
+  }
+}
+
+/* Status dot inside the badge */
+.available-dot > span {
+  background: #15803d;
+}
+.available-dot > span:last-child {
+  box-shadow: 0 0 6px #15803d, 0 0 12px rgba(21, 128, 61, 0.7);
+}
+:root[data-theme="dark"] .available-dot > span {
+  background: #22c55e;
+}
+:root[data-theme="dark"] .available-dot > span:last-child {
+  box-shadow: 0 0 10px #22c55e, 0 0 20px rgba(34, 197, 94, 0.8);
 }
 
 @media (prefers-reduced-motion: reduce) {
