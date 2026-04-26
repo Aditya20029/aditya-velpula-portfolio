@@ -6,7 +6,7 @@ export const projects = [
     description:
       "End-to-end ITSM analytics pipeline predicting ticket resolution time and flagging SLA breach risk before closure. Built on a realistic 5,000-ticket synthetic dataset simulating ServiceNow/Jira logs. Gradient-boosting models beat baselines for both regression and classification; results surface through a Power BI dashboard for proactive service management.",
     tags: ["Python", "XGBoost", "Scikit-learn", "Pandas", "Power BI", "Predictive Analytics"],
-    previewType: "pipeline",
+    previewType: "gauge",
     accentColor: "--accent-success",   // emerald
     metrics: [
       { value: 5000, suffix: "+", label: "Tickets Modelled" },
@@ -44,7 +44,7 @@ export const projects = [
     description:
       "Real-time license plate recognition combining YOLO object detection, OCR, and OpenCV image preprocessing. Peak detection accuracy achieved through dataset augmentation, bounding-box refinement, and localisation tuning. Senior-year capstone.",
     tags: ["Python", "YOLO", "OCR", "OpenCV", "Computer Vision", "Deep Learning"],
-    previewType: "heatmap",
+    previewType: "plate",
     accentColor: "--accent-coral",     // deep cyan-teal
     metrics: [],
     github: null,
@@ -80,7 +80,7 @@ export const projects = [
     description:
       "Full-stack virtual support platform helping people fight addictions. React frontend for a responsive chat-first UX, Python backend handling auth, data management, and secure real-time messaging + notifications so users get continuous peer support during recovery.",
     tags: ["React", "Python", "Flask", "WebSockets", "Authentication", "Full-Stack"],
-    previewType: "grid",
+    previewType: "chat",
     accentColor: "--accent-rose",      // deep rose
     metrics: [],
     github: null,
