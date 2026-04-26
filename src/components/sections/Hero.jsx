@@ -5,6 +5,20 @@ import { ArrowRight, FileText, ChevronDown } from "lucide-react";
 import { personal } from "@/data/personal";
 import { EASE } from "@/utils/constants";
 import MagneticButton from "@/components/ui/MagneticButton";
+import HeroName from "@/components/ui/HeroName";
+import TypeReveal from "@/components/ui/TypeReveal";
+
+/* Timing budget (s)
+   2.30  available badge
+   2.50  name letters start cascading (each +0.05s)
+   3.55  name finishes
+   3.55  underline + tagline decode start
+   4.30  spec chips slide in
+   4.65  CTAs
+   5.20  scroll cue
+*/
+const NAME_START = 2.5;
+const TAGLINE_START_MS = 3550;
 
 export default function Hero() {
   const ref = useRef(null);
@@ -30,23 +44,49 @@ export default function Hero() {
         style={{ background: "var(--gradient-hero)" }}
       />
 
+      {/* Slow breathing iridescent orb behind the name */}
+      <motion.div
+        aria-hidden
+        className="absolute pointer-events-none rounded-full"
+        style={{
+          width: "min(720px, 92vw)",
+          height: "min(720px, 92vw)",
+          top: "42%",
+          left: "50%",
+          translateX: "-50%",
+          translateY: "-50%",
+          background:
+            "radial-gradient(circle at 35% 30%, var(--glow-cyan), transparent 50%), radial-gradient(circle at 70% 70%, var(--glow-purple), transparent 55%)",
+          filter: "blur(60px)",
+        }}
+        initial={{ opacity: 0, scale: 0.85 }}
+        animate={{
+          opacity: [0, 0.9, 0.7, 0.9],
+          scale: [0.85, 1, 1.04, 1],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
 
       <motion.div
         style={{ y: contentY, opacity: contentOpacity }}
-        className="relative z-10 flex flex-col items-center gap-8 text-center max-w-4xl"
+        className="relative z-10 flex flex-col items-center gap-7 text-center max-w-5xl"
       >
         {/* Available badge */}
         <motion.div
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 2.6, ease: EASE.outExpo }}
+          transition={{ duration: 0.7, delay: 2.3, ease: EASE.outExpo }}
           className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full t-mono-sm"
           style={{
-            border: "1px solid rgba(255, 154, 230, 0.25)",
-            background: "rgba(255, 255, 255, 0.03)",
+            border: "1px solid rgba(190, 24, 93, 0.35)",
+            background: "rgba(255, 255, 255, 0.04)",
             backdropFilter: "blur(10px)",
             color: "var(--text-secondary)",
-            letterSpacing: "0.12em",
+            letterSpacing: "0.14em",
           }}
         >
           <span className="relative flex h-2 w-2">
@@ -62,39 +102,56 @@ export default function Hero() {
           <span>Available for opportunities</span>
         </motion.div>
 
-        {/* Name — soft holographic iridescent */}
-        <motion.h1
-          initial={{ clipPath: "inset(0 100% 0 0)", opacity: 0 }}
-          animate={{ clipPath: "inset(0 0% 0 0)", opacity: 1 }}
-          transition={{ duration: 1.1, delay: 2.8, ease: EASE.outExpo }}
-          className="t-display-xl holo-text"
-          style={{
-            filter:
-              "drop-shadow(0 0 30px var(--glow-cyan)) drop-shadow(0 0 60px var(--glow-purple))",
-            fontWeight: 800,
-          }}
-        >
-          {personal.name}
-        </motion.h1>
+        {/* Letter-pop name (Fraunces serif, holographic, hover-reactive) */}
+        <HeroName text={personal.name} startDelay={NAME_START} />
 
-        {/* Tagline */}
-        <motion.p
-          initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 0.8, delay: 3.8, ease: EASE.outExpo }}
-          className="t-h2 max-w-3xl"
+        {/* Animated underline that draws under the name */}
+        <motion.span
+          aria-hidden
+          initial={{ scaleX: 0, opacity: 0 }}
+          animate={{ scaleX: 1, opacity: 0.8 }}
+          transition={{
+            duration: 1.0,
+            delay: NAME_START + personal.name.replace(" ", "").length * 0.05 + 0.1,
+            ease: EASE.outExpo,
+          }}
+          className="block h-px -mt-3 origin-center rounded"
+          style={{
+            width: "min(380px, 60vw)",
+            background:
+              "linear-gradient(90deg, transparent, var(--accent-primary) 25%, var(--accent-tertiary) 50%, var(--accent-secondary) 75%, transparent)",
+            boxShadow: "0 0 18px var(--glow-cyan)",
+          }}
+        />
+
+        {/* Tagline — decode reveal */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 3.55, ease: EASE.outExpo }}
+          className="t-h2 max-w-3xl flex flex-wrap items-center justify-center gap-x-3 gap-y-1"
           style={{ color: "var(--text-body)", fontWeight: 500 }}
         >
-          {personal.role}
-          <span className="mx-3 text-[var(--text-ghost)]">·</span>
-          <span className="holo-text">{personal.tagline}</span>
-        </motion.p>
+          <TypeReveal
+            text={personal.role}
+            delay={TAGLINE_START_MS}
+            speed={36}
+          />
+          <span className="text-[var(--text-ghost)]">·</span>
+          <span className="holo-text" style={{ fontWeight: 600 }}>
+            <TypeReveal
+              text={personal.tagline}
+              delay={TAGLINE_START_MS + 480}
+              speed={26}
+            />
+          </span>
+        </motion.div>
 
         {/* Spec chips */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 4.1 }}
+          transition={{ delay: 4.3 }}
           className="flex flex-wrap items-center justify-center gap-2.5"
         >
           {personal.specialties.map((s, i) => (
@@ -104,19 +161,20 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 0.5,
-                delay: 4.15 + i * 0.08,
+                delay: 4.3 + i * 0.08,
                 ease: EASE.outExpo,
               }}
-              className="px-4 py-1.5 rounded-full t-mono-sm"
+              whileHover={{ y: -2 }}
+              className="relative px-4 py-1.5 rounded-full t-mono-sm overflow-hidden cursor-default"
               style={{
-                border: "1px solid rgba(255, 255, 255, 0.08)",
-                background: "rgba(7, 7, 13, 0.5)",
+                border: "1px solid var(--border-subtle)",
+                background: "var(--surface-glass)",
                 backdropFilter: "blur(10px)",
                 color: "var(--text-secondary)",
                 letterSpacing: "0.08em",
               }}
             >
-              {s}
+              <span className="relative z-10">{s}</span>
             </motion.span>
           ))}
         </motion.div>
@@ -125,7 +183,7 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 4.45 }}
+          transition={{ delay: 4.65 }}
           className="flex flex-wrap items-center justify-center gap-4 mt-2"
         >
           <MagneticButton
@@ -155,15 +213,12 @@ export default function Hero() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 5.1 }}
+        transition={{ delay: 5.2 }}
         style={{ opacity: contentOpacity }}
         className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 text-[var(--text-muted)]"
         aria-hidden
       >
-        <span
-          className="t-mono-sm"
-          style={{ letterSpacing: "0.3em" }}
-        >
+        <span className="t-mono-sm" style={{ letterSpacing: "0.3em" }}>
           SCROLL
         </span>
         <motion.div

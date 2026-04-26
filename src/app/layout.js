@@ -1,4 +1,4 @@
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -13,6 +13,14 @@ const jetbrains = JetBrains_Mono({
   display: "swap",
   variable: "--font-mono",
   weight: ["400", "500", "700"],
+});
+
+/* Fraunces \u2014 editorial serif for the hero display name */
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-display",
+  weight: ["400", "600", "700", "800", "900"],
 });
 
 export const metadata = {
@@ -37,7 +45,7 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="dark">
-      <body className={`${inter.variable} ${jetbrains.variable}`}>
+      <body className={`${inter.variable} ${jetbrains.variable} ${fraunces.variable}`}>
         <a href="#main" className="skip-link">
           Skip to main content
         </a>
