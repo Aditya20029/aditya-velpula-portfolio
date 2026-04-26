@@ -19,9 +19,8 @@ export const projects = [
     ],
     previewType: "pipeline",
     accentColor: "--accent-primary",
-    // Card preview swaps to scenario-tab.png automatically once that file
-    // exists in /public/projects/dapse/. Until then, the animated pipeline
-    // SVG renders as the preview.
+    image: "/projects/dapse/scenario-tab.png",
+    imageAlt: "DAPSE scenario analysis interface — Arctic Policy Intelligence Engine",
     metrics: [
       { value: 224000, suffix: "+", label: "Embeddings indexed" },
       { value: 80, suffix: "+", label: "Backend modules" },
