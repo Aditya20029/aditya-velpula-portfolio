@@ -351,11 +351,12 @@ export default function HexBadge({
                 Z`}
             fill="#1A9DB2"
           />
-          {/* Banner text */}
+          {/* Banner text \u2014 inset further so EARLY ADOPTER doesn't clip
+              on the curved ribbon edges. Tracking trimmed to 0.22em. */}
           <foreignObject
-            x={W * 0.06}
+            x={W * 0.12}
             y={H * 0.86}
-            width={W * 0.88}
+            width={W * 0.76}
             height={H * 0.13}
           >
             <div
@@ -369,8 +370,8 @@ export default function HexBadge({
                 color: "#ffffff",
                 fontFamily: "var(--font-sans), Inter, sans-serif",
                 fontWeight: 800,
-                fontSize: `${size * 0.075}px`,
-                letterSpacing: "0.32em",
+                fontSize: `${size * 0.062}px`,
+                letterSpacing: "0.22em",
                 whiteSpace: "nowrap",
                 lineHeight: 1,
               }}
