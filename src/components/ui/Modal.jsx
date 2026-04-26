@@ -46,10 +46,10 @@ export default function Modal({ open, onClose, layoutId, children, accentColor =
             ref={ref}
             className="relative glass-elevated w-full max-w-5xl max-h-[90vh] overflow-y-auto p-6 pt-16 md:p-10 md:pt-10"
             style={{ borderColor: accentColor }}
-            initial={layoutId ? undefined : { opacity: 0, scale: 0.96, y: 20 }}
-            animate={layoutId ? undefined : { opacity: 1, scale: 1, y: 0 }}
-            exit={layoutId ? undefined : { opacity: 0, scale: 0.96, y: 20 }}
-            transition={{ duration: 0.5, ease: EASE.outExpo }}
+            initial={layoutId ? undefined : { opacity: 0, scale: 0.92, y: 12 }}
+            animate={layoutId ? undefined : { opacity: 1, scale: 0.97, y: 0 }}
+            exit={layoutId ? undefined : { opacity: 0, scale: 0.92, y: 12 }}
+            transition={{ duration: 0.4, ease: EASE.outExpo }}
           >
             <button
               onClick={onClose}
