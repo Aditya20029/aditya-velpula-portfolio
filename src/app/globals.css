@@ -1008,3 +1008,15 @@ a {
     animation: none !important;
   }
 }
+
+/* Mobile smoothness step 4: hide section accents on touch.
+   Each section ships 1-2 SectionAccent ornaments (rotating holographic
+   rings, drifting orbs, sweeping arcs). Their motion is JS-driven via
+   framer-motion so CSS 'animation: none' does not pause it. The cheapest
+   correct fix: stop rendering them on touch. They are decorative, not
+   content; sections still have their gradients, headings, and bodies. */
+@media (pointer: coarse) {
+  .section-accent {
+    display: none !important;
+  }
+}

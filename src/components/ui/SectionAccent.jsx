@@ -27,7 +27,7 @@ export default function SectionAccent({
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute z-0"
+      className="section-accent pointer-events-none absolute z-0"
       style={{
         width: size,
         height: size,
