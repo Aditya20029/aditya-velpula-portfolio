@@ -8,6 +8,16 @@ export default function SmoothScroll() {
 
   useEffect(() => {
     if (reduced) return;
+    /* Skip Lenis on touch devices. iOS/Android native momentum scroll is
+       already 60fps; Lenis re-driving the scroll on top of it produces
+       visible stutter. Desktop wheel users still get the smoothing. */
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(pointer: coarse)").matches
+    ) {
+      return;
+    }
+
     const lenis = new Lenis({
       duration: 0.9,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),

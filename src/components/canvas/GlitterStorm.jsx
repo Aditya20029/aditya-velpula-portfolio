@@ -65,8 +65,12 @@ export default function GlitterStorm() {
     if (reduced) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
+    /* Skip on phones AND any touch device. Canvas particle loops are the
+       single biggest mobile stutter cause; native scroll + paint can't
+       keep up while we redraw 96+ sprites every frame. */
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
-    if (isMobile) return;
+    const isTouch = window.matchMedia("(pointer: coarse)").matches;
+    if (isMobile || isTouch) return;
 
     const ctx = canvas.getContext("2d");
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);

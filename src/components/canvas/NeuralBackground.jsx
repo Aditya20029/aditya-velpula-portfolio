@@ -12,8 +12,11 @@ export default function NeuralBackground() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    /* Skip on phones AND any touch device. The neural mesh's per-frame
+       redraw is heavy enough to drop scroll fps on mobile GPUs. */
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
-    if (isMobile) return;
+    const isTouch = window.matchMedia("(pointer: coarse)").matches;
+    if (isMobile || isTouch) return;
 
     const ctx = canvas.getContext("2d");
     let width = (canvas.width = window.innerWidth);
