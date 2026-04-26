@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import TiltCard from "@/components/ui/TiltCard";
@@ -9,9 +10,20 @@ import { useAccentRgb } from "@/hooks/useAccentRgb";
 export default function ProjectCard({ project, onOpen, index }) {
   const accents = useAccentRgb();
   const rgb = accents[project.accentColor] || "29, 78, 216";
+
+  /* Skip the shared-element layoutId animation on touch devices.
+     Framer's layout projection mid-tap on mobile leaves the card in a
+     half-promoted state with broken styling - what users see as a
+     "stuck" modal. Plain modal fade-in works reliably instead. */
+  const [isTouch, setIsTouch] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setIsTouch(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
+
   return (
     <motion.div
-      layoutId={`project-card-${project.id}`}
+      layoutId={isTouch ? undefined : `project-card-${project.id}`}
       onClick={() => onOpen(project)}
       initial={{ opacity: 0, y: 60, scale: 0.95 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}

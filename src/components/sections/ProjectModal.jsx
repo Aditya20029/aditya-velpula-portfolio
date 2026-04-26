@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import { Github, ExternalLink } from "lucide-react";
 import Modal from "@/components/ui/Modal";
 import Badge from "@/components/ui/Badge";
@@ -7,6 +8,14 @@ import { useAccentRgb } from "@/hooks/useAccentRgb";
 
 export default function ProjectModal({ project, onClose }) {
   const accents = useAccentRgb();
+  /* Match ProjectCard: skip the shared-element layoutId on touch so the
+     modal opens with a clean fade instead of a broken layout projection. */
+  const [isTouch, setIsTouch] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setIsTouch(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
+
   if (!project) return null;
   const rgb = accents[project.accentColor] || "29, 78, 216";
 
@@ -14,7 +23,7 @@ export default function ProjectModal({ project, onClose }) {
     <Modal
       open={!!project}
       onClose={onClose}
-      layoutId={`project-card-${project.id}`}
+      layoutId={isTouch ? undefined : `project-card-${project.id}`}
       accentColor={`rgba(${rgb}, 0.5)`}
     >
       <div className="flex flex-col gap-6">
