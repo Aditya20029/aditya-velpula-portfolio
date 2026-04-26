@@ -69,7 +69,7 @@ export default function GlitterStorm() {
     if (isMobile) return;
 
     const ctx = canvas.getContext("2d");
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     let W = 0;
     let H = 0;
     const resize = () => {
@@ -94,7 +94,7 @@ export default function GlitterStorm() {
     const isTablet = window.matchMedia("(max-width: 1023px)").matches;
     // Restrained particle density — site reads as professional first,
     // ambient effects second
-    const count = isTablet ? 80 : 140;
+    const count = isTablet ? 54 : 96;
 
     const parts = Array.from({ length: count }, () => {
       const r = Math.random();

@@ -19,7 +19,7 @@ export default function NeuralBackground() {
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
     const isTablet = window.matchMedia("(max-width: 1023px)").matches;
-    const nodeCount = isTablet ? 40 : 80;
+    const nodeCount = isTablet ? 28 : 54;
 
     const nodes = Array.from({ length: nodeCount }, () => ({
       x: Math.random() * width,
@@ -37,8 +37,8 @@ export default function NeuralBackground() {
     const getColors = () => {
       const light = document.documentElement.dataset.theme === "light";
       return light
-        ? { node: "15, 23, 42", edge: "37, 99, 235" } // deep navy dots, blue edges
-        : { node: "59, 130, 246", edge: "59, 130, 246" };
+        ? { node: "0, 87, 255", edge: "0, 87, 255" }
+        : { node: "56, 207, 255", edge: "167, 139, 255" };
     };
     const onMove = (e) => {
       mouse.x = e.clientX;
@@ -57,7 +57,7 @@ export default function NeuralBackground() {
     let t = 0;
 
     const tick = (now) => {
-      if (now - last < 33) {
+      if (now - last < 16) {
         rafId = requestAnimationFrame(tick);
         return;
       }
@@ -103,7 +103,7 @@ export default function NeuralBackground() {
           const dy = a.y - b.y;
           const dist = Math.hypot(dx, dy);
           if (dist < 160) {
-            const alpha = (1 - dist / 160) * 0.15;
+            const alpha = (1 - dist / 160) * 0.2;
             ctx.strokeStyle = `rgba(${edgeRgb}, ${alpha})`;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
@@ -121,7 +121,7 @@ export default function NeuralBackground() {
           .slice(0, 3);
         for (const { n, d } of scored) {
           if (d < 240) {
-            ctx.strokeStyle = `rgba(${edgeRgb}, ${(1 - d / 240) * 0.4})`;
+            ctx.strokeStyle = `rgba(${edgeRgb}, ${(1 - d / 240) * 0.5})`;
             ctx.beginPath();
             ctx.moveTo(mouse.x, mouse.y);
             ctx.lineTo(n.x, n.y);
@@ -154,7 +154,7 @@ export default function NeuralBackground() {
       ref={canvasRef}
       aria-hidden="true"
       className="fixed inset-0 z-0 pointer-events-none"
-      style={{ opacity: 0.15 }}
+      style={{ opacity: 0.22 }}
     />
   );
 }

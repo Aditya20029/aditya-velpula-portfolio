@@ -11,7 +11,7 @@ export default function Badge({ children, className, color = "default" }) {
   return (
     <span
       className={clsx(
-        "inline-flex items-center px-3 py-1.5 rounded-full t-mono-sm border bg-[var(--surface-glass)] transition-colors duration-300",
+        "premium-chip inline-flex items-center px-3 py-1.5 rounded-full t-mono-sm transition-colors duration-300",
         colorClass,
         className
       )}

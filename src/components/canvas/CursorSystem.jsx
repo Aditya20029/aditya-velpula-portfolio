@@ -85,7 +85,7 @@ export default function CursorSystem() {
 
   if (reduced) return null;
 
-  const glowSize = isPressing ? 250 : isInteractive ? 400 : 300;
+  const glowSize = isPressing ? 220 : isInteractive ? 320 : 240;
   const dotSize = isPressing ? 12 : isInteractive ? 20 : 8;
 
   return (
@@ -99,8 +99,9 @@ export default function CursorSystem() {
           height: `${glowSize}px`,
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(59,130,246,0.22), transparent 60%)",
-          opacity: isInteractive ? 1 : 0.7,
+            "radial-gradient(circle, rgba(56,207,255,0.2), rgba(167,139,255,0.1) 34%, transparent 62%)",
+          opacity: isInteractive ? 0.9 : 0.58,
+          willChange: "transform",
         }}
       />
       <div
@@ -115,6 +116,7 @@ export default function CursorSystem() {
           border: isInteractive
             ? `2px solid var(--accent-primary)`
             : "2px solid transparent",
+          willChange: "transform",
         }}
       />
       {label && (

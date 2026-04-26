@@ -52,29 +52,42 @@ export default function Navbar() {
           borderBottom: scrolled ? "1px solid var(--border-subtle)" : "1px solid transparent",
         }}
       >
-        <div className="container-site flex items-center justify-between h-16 px-4 md:px-8">
+        <div className="container-site flex items-start justify-between h-24 px-4 pt-6 md:px-8">
           <a
             href="#hero"
             onClick={onLogoClick}
-            className="t-mono font-bold text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors"
+            className="premium-nav-shell grid h-11 w-11 place-items-center t-mono font-bold text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors"
             data-cursor
+            aria-label="Back to top"
           >
             {personal.monogram}
           </a>
 
-          <div className="hidden md:flex items-center gap-1 t-mono-sm">
+          <div className="premium-nav-shell hidden md:flex items-center gap-1 p-1 t-mono-sm">
             {VISIBLE_SECTIONS.map((s) => (
               <a
                 key={s.id}
                 href={`#${s.id}`}
-                className="relative px-3 py-2 rounded-md text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                className="relative px-3.5 py-2 rounded-full text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
                 data-cursor
               >
-                {s.label}
+                {active === s.id && (
+                  <motion.span
+                    layoutId="nav-pill"
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, rgba(124,212,255,0.13), rgba(255,154,230,0.1))",
+                      border: "1px solid var(--border-subtle)",
+                    }}
+                    transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                  />
+                )}
+                <span className="relative z-10">{s.label}</span>
                 {active === s.id && (
                   <motion.span
                     layoutId="nav-indicator"
-                    className="absolute inset-x-2 -bottom-0.5 h-px"
+                    className="absolute inset-x-4 -bottom-px h-px"
                     style={{ background: "var(--accent-primary)" }}
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
@@ -91,7 +104,7 @@ export default function Navbar() {
               rel="noreferrer"
               data-cursor
               data-cursor-label="Open PDF"
-              className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full t-mono-sm border border-[var(--border-hover)] bg-[var(--surface-glass)] text-[var(--text-primary)] hover:border-[var(--border-active)] transition-colors"
+              className="premium-nav-shell hidden md:inline-flex items-center gap-2 px-4 py-2.5 t-mono-sm text-[var(--text-primary)] hover:border-[var(--border-active)] transition-colors"
             >
               <FileText size={14} /> Resume
             </a>

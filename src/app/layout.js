@@ -42,9 +42,46 @@ export const viewport = {
   themeColor: "#0a0a12",
 };
 
+const criticalShellCss = `
+  html,
+  body {
+    margin: 0;
+    background: #07070d;
+    color: #cbd5e1;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 16px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    z-index: 9999;
+  }
+
+  .skip-link:focus {
+    position: fixed;
+    left: 16px;
+    width: auto;
+    height: auto;
+    padding: 12px 20px;
+    background: #0e0e18;
+    color: #f1f5f9;
+    border: 1px solid rgba(255, 154, 230, 0.45);
+    border-radius: 8px;
+  }
+`;
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="dark">
+      <head>
+        <style
+          id="critical-shell"
+          dangerouslySetInnerHTML={{ __html: criticalShellCss }}
+        />
+      </head>
       <body className={`${inter.variable} ${jetbrains.variable} ${fraunces.variable}`}>
         <a href="#main" className="skip-link">
           Skip to main content

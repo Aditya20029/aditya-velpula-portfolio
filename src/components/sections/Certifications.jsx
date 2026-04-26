@@ -43,7 +43,9 @@ function CertCard({ cert, index, featured = false }) {
       />
 
       <div
-        className="relative glass-card overflow-hidden p-6 md:p-8 h-full flex flex-col md:flex-row items-center gap-6 md:gap-8"
+        className={`relative glass-card overflow-hidden p-6 h-full flex flex-col items-center gap-5 md:gap-6 ${
+          featured ? "md:p-8 lg:flex-row" : "md:p-7 justify-start"
+        }`}
         style={{
           borderColor: `rgba(${tier.accentRgb}, 0.22)`,
         }}
@@ -69,20 +71,28 @@ function CertCard({ cert, index, featured = false }) {
         />
 
         {/* Hex badge */}
-        <div className="shrink-0 relative z-10 flex items-center justify-center">
+        <div className="shrink-0 relative z-10 flex w-full items-center justify-center lg:w-auto">
           <HexBadge
             name={cert.name}
             subtitle={cert.subtitle}
             tier={cert.tier}
             accent={tier.accent}
             earlyAdopter={cert.earlyAdopter}
-            size={featured ? 220 : 180}
+            size={featured ? 220 : 170}
           />
         </div>
 
         {/* Info column */}
-        <div className="flex-1 min-w-0 relative z-10 flex flex-col gap-3 text-center md:text-left">
-          <div className="flex items-center gap-2 justify-center md:justify-start">
+        <div
+          className={`relative z-10 flex min-w-0 flex-col gap-3 text-center ${
+            featured ? "lg:text-left" : ""
+          } ${featured ? "flex-1" : "w-full flex-none"}`}
+        >
+          <div
+            className={`flex flex-wrap items-center gap-2 justify-center ${
+              featured ? "lg:justify-start" : ""
+            }`}
+          >
             <span
               className="t-mono-sm px-2.5 py-1 rounded-full border"
               style={{
@@ -115,7 +125,11 @@ function CertCard({ cert, index, featured = false }) {
             {cert.issuer}
           </div>
 
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 justify-center md:justify-start t-mono-sm text-[var(--text-muted)]">
+          <div
+            className={`flex flex-wrap items-center gap-x-4 gap-y-2 justify-center t-mono-sm text-[var(--text-muted)] ${
+              featured ? "lg:justify-start" : ""
+            }`}
+          >
             <span className="inline-flex items-center gap-1.5">
               <Calendar size={12} />
               Issued {cert.issued}
@@ -134,7 +148,11 @@ function CertCard({ cert, index, featured = false }) {
             )}
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 pt-2 justify-center md:justify-start">
+          <div
+            className={`flex flex-wrap items-center gap-3 pt-2 justify-center ${
+              featured ? "lg:justify-start" : ""
+            }`}
+          >
             <span className="inline-flex items-center gap-2 t-mono-sm text-[var(--text-muted)]">
               <ShieldCheck size={14} style={{ color: tier.accent }} />
               ID&nbsp;<span className="text-[var(--text-secondary)]">{short}</span>

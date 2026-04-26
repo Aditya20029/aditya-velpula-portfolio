@@ -7,6 +7,7 @@ import GlitterStorm from "@/components/canvas/GlitterStorm";
 import NeuralBackground from "@/components/canvas/NeuralBackground";
 import CursorSystem from "@/components/canvas/CursorSystem";
 import GrainOverlay from "@/components/canvas/GrainOverlay";
+import PremiumBackdrop from "@/components/layout/PremiumBackdrop";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Experience from "@/components/sections/Experience";
@@ -25,6 +26,7 @@ export default function Home() {
       <NeuralBackground />
       <CursorSystem />
       <GrainOverlay />
+      <PremiumBackdrop />
       <ScrollProgress />
       <Navbar />
       <div aria-hidden className="context-tint" />

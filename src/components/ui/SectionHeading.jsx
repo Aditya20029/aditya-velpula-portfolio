@@ -17,13 +17,18 @@ export default function SectionHeading({ kicker, title, subtitle, align = "left"
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.6, ease: EASE.outExpo }}
-          className="t-mono"
+          className="premium-chip inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 t-mono"
           style={{
             color: "var(--accent-secondary)",
             letterSpacing: "0.22em",
             opacity: 0.85,
           }}
         >
+          <span
+            aria-hidden
+            className="h-1.5 w-1.5 rounded-full bg-[var(--accent-secondary)]"
+            style={{ boxShadow: "0 0 12px var(--accent-secondary)" }}
+          />
           {kicker}
         </motion.span>
       )}

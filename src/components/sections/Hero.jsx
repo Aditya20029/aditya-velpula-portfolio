@@ -20,6 +20,12 @@ import TypeReveal from "@/components/ui/TypeReveal";
 const NAME_START = 2.5;
 const TAGLINE_START_MS = 3550;
 
+const HERO_PROOF = [
+  { value: "25,565", label: "Chunks Processed" },
+  { value: "1,192", label: "Policy Sources" },
+  { value: "75-80%", label: "LLM Cost Reduction" },
+];
+
 export default function Hero() {
   const ref = useRef(null);
 
@@ -156,10 +162,8 @@ export default function Hero() {
                 ease: EASE.outExpo,
               }}
               whileHover={{ y: -2 }}
-              className="relative px-4 py-1.5 rounded-full t-mono-sm overflow-hidden cursor-default"
+              className="premium-chip relative px-4 py-1.5 rounded-full t-mono-sm overflow-hidden cursor-default"
               style={{
-                border: "1px solid var(--border-subtle)",
-                background: "var(--surface-glass)",
                 backdropFilter: "blur(10px)",
                 color: "var(--text-secondary)",
                 letterSpacing: "0.08em",
@@ -198,6 +202,33 @@ export default function Hero() {
             <span>View Resume</span>
           </MagneticButton>
         </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 18, filter: "blur(10px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ delay: 4.95, duration: 0.8, ease: EASE.outExpo }}
+          className="hero-proof-panel grid grid-cols-1 sm:grid-cols-3 mt-2 overflow-hidden"
+        >
+          {HERO_PROOF.map((item, i) => (
+            <motion.div
+              key={item.label}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 5.1 + i * 0.08, duration: 0.45, ease: EASE.outExpo }}
+              className="hero-proof-panel__item px-5 py-4"
+            >
+              <div className="t-h3 leading-none text-[var(--text-primary)]">
+                {item.value}
+              </div>
+              <div
+                className="t-mono-sm mt-1 text-[var(--text-muted)]"
+                style={{ letterSpacing: "0.12em" }}
+              >
+                {item.label}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </motion.div>
 
       {/* Scroll indicator */}
@@ -206,10 +237,10 @@ export default function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 5.2 }}
         style={{ opacity: contentOpacity }}
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 text-[var(--text-muted)]"
+        className="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 text-[var(--text-muted)]"
         aria-hidden
       >
-        <span className="t-mono-sm" style={{ letterSpacing: "0.3em" }}>
+        <span className="hidden sm:block t-mono-sm" style={{ letterSpacing: "0.3em" }}>
           SCROLL
         </span>
         <motion.div

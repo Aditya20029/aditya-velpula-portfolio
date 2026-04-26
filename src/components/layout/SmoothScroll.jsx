@@ -9,11 +9,11 @@ export default function SmoothScroll() {
   useEffect(() => {
     if (reduced) return;
     const lenis = new Lenis({
-      duration: 1.1,
+      duration: 0.9,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.6,
+      wheelMultiplier: 0.88,
+      touchMultiplier: 1.35,
     });
 
     let rafId;
@@ -32,7 +32,7 @@ export default function SmoothScroll() {
       const target = document.getElementById(id);
       if (!target) return;
       e.preventDefault();
-      lenis.scrollTo(target, { offset: -40, duration: 1.4 });
+      lenis.scrollTo(target, { offset: -40, duration: 1.05 });
     };
     document.addEventListener("click", onClick);
 
