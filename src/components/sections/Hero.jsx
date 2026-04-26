@@ -53,7 +53,7 @@ export default function Hero() {
     <section
       ref={ref}
       id="hero"
-      className="relative min-h-[100svh] flex flex-col items-center justify-center px-4 z-10 overflow-hidden"
+      className="relative min-h-[100svh] flex flex-col items-center justify-start lg:justify-center px-4 pt-24 pb-16 lg:py-0 z-10 overflow-visible lg:overflow-hidden"
       aria-label="Hero"
     >
       {/* Dreamy radial gradient */}

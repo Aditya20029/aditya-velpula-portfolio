@@ -53,11 +53,12 @@ export default function HeroName({
         style={{
           fontFamily: 'var(--font-display), "Fraunces", Georgia, serif',
           fontWeight: 800,
-          fontSize: "clamp(48px, 9vw, 110px)",
-          letterSpacing: "-0.035em",
-          lineHeight: 1.12,
+          fontSize: "clamp(40px, 11vw, 72px)",
+          letterSpacing: "-0.03em",
+          lineHeight: 1.05,
           paddingBottom: "0.06em",
           color: "var(--text-primary)",
+          textAlign: "center",
         }}
       >
         {text}
