@@ -94,12 +94,12 @@ export default function Hero() {
         style={isCompact ? undefined : { y: contentY, opacity: contentOpacity }}
         className="relative z-10 flex flex-col items-center gap-7 text-center max-w-5xl"
       >
-        {/* Available badge \u2014 laser green, bright in both themes, primary
+        {/* Available badge — laser green, bright in both themes, primary
             visual hook on page load */}
         <motion.div
-          initial={{ opacity: 0, y: -8, scale: 0.95 }}
+          initial={isCompact ? false : { opacity: 0, y: -8, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.7, delay: 2.3, ease: EASE.outExpo }}
+          transition={{ duration: 0.7, delay: isCompact ? 0 : 2.3, ease: EASE.outExpo }}
           className="available-badge inline-flex items-center gap-2.5 px-5 py-2 rounded-full t-mono-sm font-semibold"
           style={{
             letterSpacing: "0.16em",
@@ -118,11 +118,13 @@ export default function Hero() {
         {/* Animated underline that draws under the name */}
         <motion.span
           aria-hidden
-          initial={{ scaleX: 0, opacity: 0 }}
+          initial={isCompact ? false : { scaleX: 0, opacity: 0 }}
           animate={{ scaleX: 1, opacity: 0.8 }}
           transition={{
             duration: 1.0,
-            delay: NAME_START + personal.name.replace(" ", "").length * 0.05 + 0.1,
+            delay: isCompact
+              ? 0
+              : NAME_START + personal.name.replace(" ", "").length * 0.05 + 0.1,
             ease: EASE.outExpo,
           }}
           className="block h-px -mt-3 origin-center rounded"
@@ -134,11 +136,11 @@ export default function Hero() {
           }}
         />
 
-        {/* Tagline — decode reveal */}
+        {/* Tagline */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={isCompact ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 3.55, ease: EASE.outExpo }}
+          transition={{ duration: 0.6, delay: isCompact ? 0 : 3.55, ease: EASE.outExpo }}
           className="t-h2 max-w-3xl flex flex-wrap items-center justify-center gap-x-3 gap-y-1"
           style={{ color: "var(--text-body)", fontWeight: 500 }}
         >
@@ -148,7 +150,10 @@ export default function Hero() {
             speed={36}
           />
           <span className="text-[var(--text-ghost)]">·</span>
-          <span className="holo-text" style={{ fontWeight: 600 }}>
+          <span
+            className={isCompact ? undefined : "holo-text"}
+            style={{ fontWeight: 600, color: isCompact ? "var(--accent-primary)" : undefined }}
+          >
             <TypeReveal
               text={personal.tagline}
               delay={TAGLINE_START_MS + 480}
@@ -159,25 +164,24 @@ export default function Hero() {
 
         {/* Spec chips */}
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={isCompact ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 4.3 }}
+          transition={{ delay: isCompact ? 0 : 4.3 }}
           className="flex flex-wrap items-center justify-center gap-2.5"
         >
           {personal.specialties.map((s, i) => (
             <motion.span
               key={s}
-              initial={{ opacity: 0, y: 10 }}
+              initial={isCompact ? false : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 0.5,
-                delay: 4.3 + i * 0.08,
+                delay: isCompact ? 0 : 4.3 + i * 0.08,
                 ease: EASE.outExpo,
               }}
               whileHover={{ y: -2 }}
               className="premium-chip relative px-4 py-1.5 rounded-full t-mono-sm overflow-hidden cursor-default"
               style={{
-                backdropFilter: "blur(10px)",
                 color: "var(--text-secondary)",
                 letterSpacing: "0.08em",
               }}
@@ -189,9 +193,9 @@ export default function Hero() {
 
         {/* CTAs */}
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={isCompact ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 4.65 }}
+          transition={{ delay: isCompact ? 0 : 4.65 }}
           className="flex flex-wrap items-center justify-center gap-4 mt-2"
         >
           <MagneticButton
@@ -217,17 +221,21 @@ export default function Hero() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 18, filter: "blur(10px)" }}
+          initial={isCompact ? false : { opacity: 0, y: 18, filter: "blur(10px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ delay: 4.95, duration: 0.8, ease: EASE.outExpo }}
+          transition={{ delay: isCompact ? 0 : 4.95, duration: 0.8, ease: EASE.outExpo }}
           className="hero-proof-panel grid grid-cols-1 sm:grid-cols-3 mt-2 overflow-hidden"
         >
           {HERO_PROOF.map((item, i) => (
             <motion.div
               key={item.label}
-              initial={{ opacity: 0, y: 8 }}
+              initial={isCompact ? false : { opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 5.1 + i * 0.08, duration: 0.45, ease: EASE.outExpo }}
+              transition={{
+                delay: isCompact ? 0 : 5.1 + i * 0.08,
+                duration: 0.45,
+                ease: EASE.outExpo,
+              }}
               className="hero-proof-panel__item px-5 py-4"
             >
               <div className="t-h3 leading-none text-[var(--text-primary)]">

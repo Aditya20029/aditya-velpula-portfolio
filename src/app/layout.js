@@ -39,15 +39,15 @@ export const metadata = {
 };
 
 export const viewport = {
-  themeColor: "#0a0a12",
+  themeColor: "#f3f5fb",
 };
 
 const criticalShellCss = `
   html,
   body {
     margin: 0;
-    background: #07070d;
-    color: #cbd5e1;
+    background: #f3f5fb;
+    color: #111827;
   }
 
   .skip-link {
@@ -66,16 +66,16 @@ const criticalShellCss = `
     width: auto;
     height: auto;
     padding: 12px 20px;
-    background: #0e0e18;
-    color: #f1f5f9;
-    border: 1px solid rgba(255, 154, 230, 0.45);
+    background: #ffffff;
+    color: #0b1220;
+    border: 1px solid rgba(29, 78, 216, 0.45);
     border-radius: 8px;
   }
 `;
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" data-theme="light">
       <head>
         <style
           id="critical-shell"

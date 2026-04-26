@@ -1,7 +1,24 @@
 "use client";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EASE } from "@/utils/constants";
+
+/* On touch / narrow viewports, skip the cinematic letter cascade entirely
+   and render the name visible immediately. The cascade was leaving letters
+   stuck at opacity:0 on some iOS Safari sessions (gradient + transform +
+   stagger combo). */
+function useIsCompact() {
+  const [c, setC] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(max-width: 1023px), (pointer: coarse)");
+    const update = () => setC(mq.matches);
+    update();
+    mq.addEventListener?.("change", update);
+    return () => mq.removeEventListener?.("change", update);
+  }, []);
+  return c;
+}
 
 /**
  * Premium hero-name display.
@@ -21,8 +38,32 @@ export default function HeroName({
   startDelay = 0,
   className = "",
 }) {
+  const isCompact = useIsCompact();
   // Split into words so we can preserve spaces visually but stagger letters
   const words = text.split(" ");
+
+  /* Mobile fallback: render the name as a single static heading. No
+     per-letter motion, no holo-text gradient (which can fail on iOS
+     Safari leaving transparent text on transparent bg). Solid white in
+     dark mode, solid navy in light. */
+  if (isCompact) {
+    return (
+      <h1
+        className={className}
+        style={{
+          fontFamily: 'var(--font-display), "Fraunces", Georgia, serif',
+          fontWeight: 800,
+          fontSize: "clamp(48px, 9vw, 110px)",
+          letterSpacing: "-0.035em",
+          lineHeight: 1.12,
+          paddingBottom: "0.06em",
+          color: "var(--text-primary)",
+        }}
+      >
+        {text}
+      </h1>
+    );
+  }
 
   return (
     <h1
