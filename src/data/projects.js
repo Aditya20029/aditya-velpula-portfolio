@@ -1,5 +1,34 @@
 export const projects = [
   {
+    id: "dapse",
+    title: "DAPSE · Arctic Policy Intelligence Engine",
+    subtitle: "AI Engineer · NSI · Feb 2026 to Present",
+    description:
+      "Production RAG platform supporting JAG officers analyzing Arctic geopolitical scenarios across nine nations. Five-layer FastAPI backend, ~15,000 lines of Python, 80+ modules. Hybrid retrieval (BM25 + FAISS + Exa.ai) fused via Reciprocal Rank Fusion, three-tier GPT-5 routing, and 12+ post-composition enforcement gates so unsupported claims never reach the response. Seven-stage scenario pipeline produces full intelligence reports under a 300s budget.",
+    tags: [
+      "Python",
+      "FastAPI",
+      "FAISS",
+      "BM25",
+      "OpenAI GPT-5",
+      "Exa.ai",
+      "RAG",
+      "Langfuse",
+      "SQLite",
+      "Pydantic v2",
+    ],
+    previewType: "pipeline",
+    accentColor: "--accent-primary",
+    // Card preview swaps to scenario-tab.png automatically once that file
+    // exists in /public/projects/dapse/. Until then, the animated pipeline
+    // SVG renders as the preview.
+    metrics: [
+      { value: 224000, suffix: "+", label: "Embeddings indexed" },
+      { value: 80, suffix: "+", label: "Backend modules" },
+    ],
+    github: null,
+  },
+  {
     id: "sla-breach-prediction",
     title: "Ticket Resolution & SLA Breach Prediction",
     subtitle: "ITSM Analytics · Oct to Nov 2025",

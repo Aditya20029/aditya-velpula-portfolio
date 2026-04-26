@@ -1,12 +1,34 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Github } from "lucide-react";
+import fs from "node:fs";
+import path from "node:path";
 import {
   caseStudies,
   caseStudySlugs,
   getCaseStudy,
 } from "@/data/caseStudies";
 import { projects } from "@/data/projects";
+
+/**
+ * Filter screenshots whose underlying file isn't on disk yet. Runs at
+ * build time (server component) so missing files don't render as broken
+ * <img> elements in production. Caller still passes the canonical list
+ * from caseStudies.js — this just narrows it.
+ */
+function existingScreenshots(screenshots) {
+  if (!Array.isArray(screenshots) || screenshots.length === 0) return [];
+  const publicDir = path.join(process.cwd(), "public");
+  return screenshots.filter((s) => {
+    if (!s?.src) return false;
+    const rel = s.src.replace(/^\//, "");
+    try {
+      return fs.existsSync(path.join(publicDir, rel));
+    } catch {
+      return false;
+    }
+  });
+}
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import GlitterStorm from "@/components/canvas/GlitterStorm";
@@ -32,6 +54,7 @@ export default function ProjectCaseStudy({ params }) {
   if (!study) notFound();
 
   const project = projects.find((p) => p.id === params.slug);
+  const screenshots = existingScreenshots(study.screenshots);
 
   return (
     <>
@@ -113,6 +136,14 @@ export default function ProjectCaseStudy({ params }) {
             items={study.tried}
           />
 
+          {/* Screenshot gallery (only when matching files exist on disk) */}
+          {screenshots.length > 0 && (
+            <ScreenshotGallery
+              accent={study.accent}
+              screenshots={screenshots}
+            />
+          )}
+
           {/* Stack chips */}
           <div className="mt-14">
             <div
@@ -163,6 +194,43 @@ function Section({ kicker, accent, body }) {
       <p className="t-body-lg text-[var(--text-body)] leading-relaxed">
         {body}
       </p>
+    </section>
+  );
+}
+
+function ScreenshotGallery({ accent, screenshots }) {
+  return (
+    <section className="mb-12">
+      <div
+        className="t-mono-sm mb-4"
+        style={{ color: `var(${accent})`, letterSpacing: "0.2em" }}
+      >
+        WHAT IT LOOKS LIKE
+      </div>
+      <div className="flex flex-col gap-8">
+        {screenshots.map((shot, i) => (
+          <figure key={shot.src} className="flex flex-col gap-3">
+            <div
+              className="rounded-2xl overflow-hidden border"
+              style={{
+                borderColor: "var(--border-subtle)",
+                background: "var(--surface-glass)",
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={shot.src}
+                alt={shot.alt}
+                loading={i === 0 ? "eager" : "lazy"}
+                className="w-full h-auto block"
+              />
+            </div>
+            <figcaption className="t-body-sm text-[var(--text-muted)] leading-relaxed">
+              {shot.caption}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
     </section>
   );
 }
