@@ -1,17 +1,12 @@
 "use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useTheme } from "@/hooks/useTheme";
 
 /**
- * Vertical pipeline, single spine.
- * Sizes chosen so the widest label ("Structured Response + Citations")
- * fits inside the node without clipping, and so User Query sits on the
- * same baseline as Hybrid Retrieval — giving a straight horizontal
- * connector, no diagonal, no crossing lines.
- *
- * viewBox = 520 × 620
- *   spine column: x ∈ [200, 480]   (W_NODE = 280)
- *   query column: x ∈ [20, 190]    (W_QUERY = 170)
+ * Vertical pipeline, single spine. Theme-aware: dark fill on dark mode,
+ * crisp white card fill on light mode so the labels read clearly against
+ * either body.
  */
 const VB_W = 520;
 const VB_H = 620;
@@ -40,7 +35,6 @@ const QUERY = {
 
 const byId = (id) => SPINE.find((n) => n.id === id);
 
-// Consecutive vertical edges
 const EDGES = [
   ["sources", "chunking"],
   ["chunking", "vector"],
@@ -49,7 +43,51 @@ const EDGES = [
   ["verify", "output"],
 ];
 
-function NodeBox({ x, y, w, h, label, sub, id, hovered, setHovered }) {
+/* Theme palette */
+function useDiagramPalette() {
+  const { theme } = useTheme();
+  if (theme === "light") {
+    return {
+      nodeFill: "#ffffff",
+      nodeStroke: "rgba(15, 23, 42, 0.16)",
+      nodeStrokeHover: "#1d4ed8",      // electric blue
+      labelColor: "#0b1220",            // deep navy
+      subColor: "#475569",              // slate
+      hoverShadow: "drop-shadow(0 0 14px rgba(29, 78, 216, 0.45))",
+      // Spine: blue → purple → magenta jewel
+      spine: [
+        { offset: "0%", color: "#0e7490", op: "0.85" },
+        { offset: "50%", color: "#1d4ed8", op: "0.95" },
+        { offset: "100%", color: "#6d28d9", op: "0.85" },
+      ],
+      dotColor: "#1d4ed8",
+      arrowColor: "#0e7490",
+      arrowOp: "0.95",
+      queryDotColor: "#0e7490",
+    };
+  }
+  // dark
+  return {
+    nodeFill: "rgba(255, 255, 255, 0.05)",
+    nodeStroke: "rgba(255, 255, 255, 0.14)",
+    nodeStrokeHover: "#7cd4ff",
+    labelColor: "#f1f5f9",
+    subColor: "#94a3b8",
+    hoverShadow: "drop-shadow(0 0 14px rgba(124, 212, 255, 0.55))",
+    spine: [
+      { offset: "0%", color: "#06b6d4", op: "0.8" },
+      { offset: "50%", color: "#3b82f6", op: "0.9" },
+      { offset: "100%", color: "#8b5cf6", op: "0.8" },
+    ],
+    dotColor: "#7cd4ff",
+    arrowColor: "#06b6d4",
+    arrowOp: "0.75",
+    queryDotColor: "#06b6d4",
+  };
+}
+
+function NodeBox({ x, y, w, h, label, sub, id, hovered, setHovered, palette }) {
+  const isHover = hovered === id;
   return (
     <g
       onMouseEnter={() => setHovered(id)}
@@ -62,15 +100,14 @@ function NodeBox({ x, y, w, h, label, sub, id, hovered, setHovered }) {
         width={w}
         height={h}
         rx="10"
-        fill="rgba(255,255,255,0.05)"
-        stroke={hovered === id ? "#3b82f6" : "rgba(255,255,255,0.14)"}
-        strokeWidth="1"
+        fill={palette.nodeFill}
+        stroke={isHover ? palette.nodeStrokeHover : palette.nodeStroke}
+        strokeWidth={isHover ? 1.5 : 1}
         animate={{
-          scale: hovered === id ? 1.03 : 1,
-          filter:
-            hovered === id
-              ? "drop-shadow(0 0 14px rgba(59,130,246,0.5))"
-              : "drop-shadow(0 0 0 rgba(0,0,0,0))",
+          scale: isHover ? 1.03 : 1,
+          filter: isHover
+            ? palette.hoverShadow
+            : "drop-shadow(0 0 0 rgba(0,0,0,0))",
         }}
         style={{ transformOrigin: `${x + w / 2}px ${y + h / 2}px` }}
         transition={{ duration: 0.25 }}
@@ -80,7 +117,7 @@ function NodeBox({ x, y, w, h, label, sub, id, hovered, setHovered }) {
         y={y + h / 2 - 3}
         textAnchor="middle"
         dominantBaseline="middle"
-        fill="#f1f5f9"
+        fill={palette.labelColor}
         fontSize="13"
         fontFamily="var(--font-sans), Inter, sans-serif"
         fontWeight="600"
@@ -92,7 +129,7 @@ function NodeBox({ x, y, w, h, label, sub, id, hovered, setHovered }) {
         y={y + h / 2 + 13}
         textAnchor="middle"
         dominantBaseline="middle"
-        fill="#64748b"
+        fill={palette.subColor}
         fontSize="9"
         fontFamily="var(--font-mono), monospace"
         letterSpacing="0.14em"
@@ -105,6 +142,7 @@ function NodeBox({ x, y, w, h, label, sub, id, hovered, setHovered }) {
 
 export default function DapseDiagram() {
   const [hovered, setHovered] = useState(null);
+  const palette = useDiagramPalette();
   const spineCenterX = SPINE_X + W_NODE / 2;
 
   return (
@@ -116,9 +154,14 @@ export default function DapseDiagram() {
       >
         <defs>
           <linearGradient id="spine-grad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.8" />
-            <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.8" />
+            {palette.spine.map((s) => (
+              <stop
+                key={s.offset}
+                offset={s.offset}
+                stopColor={s.color}
+                stopOpacity={s.op}
+              />
+            ))}
           </linearGradient>
           <filter id="dot-glow">
             <feGaussianBlur stdDeviation="3" />
@@ -136,7 +179,7 @@ export default function DapseDiagram() {
             markerHeight="6"
             orient="auto-start-reverse"
           >
-            <path d="M 0 0 L 10 5 L 0 10 z" fill="#06b6d4" />
+            <path d="M 0 0 L 10 5 L 0 10 z" fill={palette.arrowColor} />
           </marker>
         </defs>
 
@@ -162,7 +205,7 @@ export default function DapseDiagram() {
               />
               <motion.circle
                 r="3"
-                fill="#3b82f6"
+                fill={palette.dotColor}
                 cx={spineCenterX}
                 initial={{ opacity: 0 }}
                 animate={{
@@ -181,9 +224,8 @@ export default function DapseDiagram() {
           );
         })}
 
-        {/* User Query → Hybrid Retrieval — straight horizontal arrow */}
+        {/* User Query → Hybrid Retrieval */}
         {(() => {
-          const retrieval = byId("retrieval");
           const startX = QUERY.x + QUERY.w;
           const endX = SPINE_X;
           const y = QUERY.y + QUERY.h / 2;
@@ -194,8 +236,8 @@ export default function DapseDiagram() {
                 y1={y}
                 x2={endX - 4}
                 y2={y}
-                stroke="#06b6d4"
-                strokeOpacity="0.75"
+                stroke={palette.arrowColor}
+                strokeOpacity={palette.arrowOp}
                 strokeWidth="1.5"
                 strokeDasharray="4 4"
                 markerEnd="url(#arrow-head)"
@@ -203,7 +245,7 @@ export default function DapseDiagram() {
               />
               <motion.circle
                 r="3"
-                fill="#06b6d4"
+                fill={palette.queryDotColor}
                 cy={y}
                 initial={{ opacity: 0 }}
                 animate={{
@@ -235,6 +277,7 @@ export default function DapseDiagram() {
             sub={n.sub}
             hovered={hovered}
             setHovered={setHovered}
+            palette={palette}
           />
         ))}
 
@@ -249,6 +292,7 @@ export default function DapseDiagram() {
           sub={QUERY.sub}
           hovered={hovered}
           setHovered={setHovered}
+          palette={palette}
         />
 
         <style>{`@keyframes dash-flow { to { stroke-dashoffset: -16; } }`}</style>
