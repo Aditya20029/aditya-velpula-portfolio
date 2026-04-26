@@ -45,7 +45,7 @@ export const projects = [
       "Real-time license plate recognition combining YOLO object detection, OCR, and OpenCV image preprocessing. Peak detection accuracy achieved through dataset augmentation, bounding-box refinement, and localisation tuning. Senior-year capstone.",
     tags: ["Python", "YOLO", "OCR", "OpenCV", "Computer Vision", "Deep Learning"],
     previewType: "heatmap",
-    accentColor: "--accent-coral",
+    accentColor: "--accent-success",
     metrics: [],
     github: null,
   },
