@@ -52,7 +52,13 @@ export default function CostSlider() {
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="t-h3 text-white mix-blend-difference"
+            className="t-h3 font-bold"
+            style={{
+              color: "#ffffff",
+              textShadow:
+                "0 1px 2px rgba(0, 0, 0, 0.45), 0 0 12px rgba(0, 0, 0, 0.25)",
+              letterSpacing: "-0.01em",
+            }}
           >
             {state === "before" ? "Baseline" : "75–80% less"}
           </motion.span>
