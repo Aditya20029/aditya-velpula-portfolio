@@ -981,3 +981,30 @@ a {
     -webkit-backdrop-filter: none !important;
   }
 }
+
+/* Mobile smoothness step 3: pause always-on CSS animation loops on touch.
+   Each of these schedules a paint every frame regardless of scroll, which
+   keeps the GPU busy and competes with the scroll thread.
+
+   The colors, gradients, and final state stay exactly as designed; only
+   the looping motion stops. */
+@media (pointer: coarse) {
+  /* Light-mode body::before: 28s drift on a huge blurred full-viewport
+     element. Pausing reclaims the dominant idle paint cost. */
+  :root[data-theme="light"] body::before {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  /* Holographic-text gradient drift (hero name + tagline). Gradient fill
+     remains; just stops scrolling its background-position. */
+  .holo-text {
+    animation: none !important;
+  }
+
+  /* Available-badge pulsing box-shadow. Border + dot stay; aura no
+     longer animates. */
+  .available-badge {
+    animation: none !important;
+  }
+}
