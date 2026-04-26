@@ -1086,3 +1086,29 @@ a {
     box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08) !important;
   }
 }
+
+/* ─────────────────────────────────────────────────────────
+   THEME TRANSITION
+   When the user toggles dark <-> light, every themed surface (cards,
+   borders, text, accents) crossfades together over the same easing,
+   instead of body fading while card backgrounds, borders, and shadows
+   snap. One 500ms wave, applied via a class scoped to <html>.
+
+   The 'theme-transitioning' class is added by useTheme right before it
+   flips data-theme, then removed when the transition finishes. We never
+   leave the transition rules on permanently because a global
+   transition-on-everything makes hover states feel mushy.
+   ───────────────────────────────────────────────────────── */
+:root.theme-transitioning,
+:root.theme-transitioning *,
+:root.theme-transitioning *::before,
+:root.theme-transitioning *::after {
+  transition:
+    background-color 500ms var(--ease-smooth),
+    background 500ms var(--ease-smooth),
+    border-color 500ms var(--ease-smooth),
+    color 500ms var(--ease-smooth),
+    fill 500ms var(--ease-smooth),
+    stroke 500ms var(--ease-smooth),
+    box-shadow 500ms var(--ease-smooth) !important;
+}

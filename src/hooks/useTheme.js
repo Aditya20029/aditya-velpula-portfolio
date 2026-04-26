@@ -33,10 +33,21 @@ export function useTheme() {
     const html = document.documentElement;
     const current = html.getAttribute("data-theme") || "dark";
     const next = current === "dark" ? "light" : "dark";
+
+    /* Add 'theme-transitioning' to <html> so the global transition rule
+       in globals.css applies, flip the theme, then strip the class
+       after the 500ms crossfade so we don't leave a global
+       transition-on-everything rule active (it would make hover states
+       feel mushy). */
+    html.classList.add("theme-transitioning");
     html.setAttribute("data-theme", next);
     try {
       localStorage.setItem("av-theme", next);
     } catch (_) {}
+
+    window.setTimeout(() => {
+      html.classList.remove("theme-transitioning");
+    }, 550);
     // setState happens via the observer
   }, []);
 
