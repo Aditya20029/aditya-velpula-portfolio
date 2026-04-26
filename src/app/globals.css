@@ -1020,3 +1020,17 @@ a {
     display: none !important;
   }
 }
+
+/* Mobile smoothness step 5: drop GPU-layer promotion on TiltCard for
+   touch. The 3D tilt + cursor-following gradient never fire on phones
+   (the useTilt hook bails on touch) - but the card still sits on its
+   own GPU layer with will-change:transform + transform-style:preserve-3d.
+   That is paid memory + paint cost for a behavior that cannot run.
+   Drop both on touch; TiltCard becomes a plain <div> visually. */
+@media (pointer: coarse) {
+  .tilt-card {
+    will-change: auto !important;
+    transform-style: flat !important;
+    transition: none !important;
+  }
+}

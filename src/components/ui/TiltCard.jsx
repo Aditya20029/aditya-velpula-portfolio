@@ -15,7 +15,7 @@ export default function TiltCard({
     <div
       ref={ref}
       className={clsx(
-        "relative transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform",
+        "tilt-card relative transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform",
         className
       )}
       style={{ transformStyle: "preserve-3d" }}
