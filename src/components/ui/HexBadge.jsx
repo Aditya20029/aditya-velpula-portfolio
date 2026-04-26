@@ -3,15 +3,12 @@ import { motion } from "framer-motion";
 
 /**
  * Faithful re-creation of the official AWS Certified badge artwork.
+ * Geometry is normalised against `size` and tier banner has explicit
+ * vertical padding so labels never clip.
  *
- * Real AWS badges are flat-color filled hexagons (pointy top + bottom for
- * Professional, flat top + bottom for Associate/Foundational) with a soft
- * vertical gradient, a thin border in a slightly different shade, the
- * "aws \u2713 / certified" mark at the top with a hairline rule under it,
- * the certification name in bold white, another hairline below, and the
- * tier label in widely-spaced uppercase. The Generative AI Developer Pro
- * badge additionally has a teal "EARLY ADOPTER" ribbon banded across
- * the lower third with two ribbon-tail pennants underneath.
+ * GenAI Developer Pro is rendered in the cyan/teal palette (matches the
+ * 'EARLY ADOPTER' ribbon colour). Other tiers use the standard AWS-blue
+ * gradients sampled from the official artwork.
  */
 export default function HexBadge({
   name,
@@ -21,16 +18,13 @@ export default function HexBadge({
   size = 200,
   className = "",
 }) {
-  // Tier visual identity, sampled from the real AWS badges:
-  //   - Foundational: lighter blue
-  //   - Associate:    saturated AWS blue
-  //   - Professional: deeper indigo with teal trim
-  //   - Academy:      teal/dark
+  // Tier visual identity. Note: 'professional' is now cyan-blue to match
+  // the Early Adopter ribbon on the GenAI Developer Pro badge.
   const palette = {
     professional: {
-      top: "#2D6CC0",
-      bottom: "#1B3F8C",
-      ring: "#79C9F2",
+      top: "#1FA8C9",     // bright cyan-teal
+      bottom: "#0E5E78",  // deep teal
+      ring: "#7BE0F2",
       tier: "PROFESSIONAL",
     },
     associate: {
@@ -47,7 +41,7 @@ export default function HexBadge({
     },
     academy: {
       top: "#1F2937",
-      bottom: "#0f172a",
+      bottom: "#0F172A",
       ring: "#3FB39B",
       tier: "ACADEMY GRADUATE",
     },
@@ -55,19 +49,15 @@ export default function HexBadge({
   const p = palette[tier] || palette.associate;
   const tierLabel = subtitle?.toUpperCase() || p.tier;
 
+  // Canvas dimensions — H gives extra room when ribbon is present
   const W = size;
-  const H = size * 1.16;
+  const H = size * 1.18;
+  const ribbonH = earlyAdopter ? size * 0.22 : 0;
+  const VB_H = H + ribbonH;
+
   const uid = `${tier}-${name}-${size}`.replace(/\W+/g, "-");
 
-  // Shape geometry
-  // Professional / Associate / Foundational: pointy top + bottom (typical AWS hex)
-  // Hex points (W-wide, H-tall, pointy top/bottom):
-  //   top:    (W/2, 0)
-  //   tr:     (W,   H*0.27)
-  //   br:     (W,   H*0.73)
-  //   bottom: (W/2, H)
-  //   bl:     (0,   H*0.73)
-  //   tl:     (0,   H*0.27)
+  // Hex points — pointy top + bottom (matches official Pro/Associate art)
   const pts = [
     [W / 2, 4],
     [W - 4, H * 0.275],
@@ -79,11 +69,22 @@ export default function HexBadge({
     .map((pt) => pt.join(","))
     .join(" ");
 
+  // Vertical layout (all proportions of H)
+  //   0.00     top point
+  //   0.13     "aws ✓" lockup baseline
+  //   0.22     "certified" baseline
+  //   0.32     hairline rule above title
+  //   0.44     title baseline (foreignObject anchor)
+  //   0.66     hairline rule below title
+  //   0.74     tier banner top
+  //   0.81     tier banner mid (text)
+  //   0.88     tier banner bottom
+  //   1.00     bottom point
   return (
     <motion.svg
-      viewBox={`0 0 ${W} ${H + (earlyAdopter ? size * 0.18 : 0)}`}
+      viewBox={`0 0 ${W} ${VB_H}`}
       width={W}
-      height={H + (earlyAdopter ? size * 0.18 : 0)}
+      height={VB_H}
       className={`block ${className}`}
       initial="rest"
       whileHover="hover"
@@ -91,17 +92,14 @@ export default function HexBadge({
       style={{ overflow: "visible" }}
     >
       <defs>
-        {/* Body gradient (top -> bottom) */}
         <linearGradient id={`hex-body-${uid}`} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor={p.top} />
           <stop offset="100%" stopColor={p.bottom} />
         </linearGradient>
-        {/* Subtle inner highlight on top half */}
         <linearGradient id={`hex-sheen-${uid}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.16" />
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.18" />
           <stop offset="55%" stopColor="#ffffff" stopOpacity="0" />
         </linearGradient>
-        {/* Outer glow on hover */}
         <filter
           id={`hex-glow-${uid}`}
           x="-50%"
@@ -113,7 +111,7 @@ export default function HexBadge({
         </filter>
       </defs>
 
-      {/* Outer glow (hover only) */}
+      {/* Hover glow */}
       <motion.polygon
         points={pts}
         fill={p.ring}
@@ -124,6 +122,7 @@ export default function HexBadge({
 
       {/* Body */}
       <polygon points={pts} fill={`url(#hex-body-${uid})`} />
+
       {/* Sheen */}
       <clipPath id={`hex-clip-${uid}`}>
         <polygon points={pts} />
@@ -137,7 +136,7 @@ export default function HexBadge({
         clipPath={`url(#hex-clip-${uid})`}
       />
 
-      {/* Border ring */}
+      {/* Border */}
       <polygon
         points={pts}
         fill="none"
@@ -146,63 +145,98 @@ export default function HexBadge({
         strokeOpacity="0.95"
       />
 
-      {/* AWS mark — "aws" + orange hex check, then "certified" beneath */}
-      <g transform={`translate(${W / 2}, ${H * 0.2})`}>
-        <text
-          textAnchor="middle"
-          fill="#ffffff"
-          fontSize={size * 0.1}
-          fontFamily="var(--font-sans), Inter, sans-serif"
-          fontWeight="700"
-          letterSpacing="-0.01em"
+      {/* AWS lockup — single foreignObject keeps "aws ✓" + "certified"
+          centered together regardless of size */}
+      <foreignObject
+        x={W * 0.1}
+        y={H * 0.12}
+        width={W * 0.8}
+        height={H * 0.18}
+      >
+        <div
+          xmlns="http://www.w3.org/1999/xhtml"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: `${size * 0.012}px`,
+            height: "100%",
+            width: "100%",
+          }}
         >
-          aws
-        </text>
-        {/* Orange hexagonal check, sits to the right of "aws" */}
-        <g transform={`translate(${size * 0.1}, -${size * 0.03})`}>
-          <polygon
-            points={(() => {
-              const r = size * 0.038;
-              const vs = [];
-              for (let k = 0; k < 6; k++) {
-                const a = (Math.PI / 3) * k - Math.PI / 2;
-                vs.push(
-                  `${r * Math.cos(a)},${r * Math.sin(a)}`
-                );
-              }
-              return vs.join(" ");
-            })()}
-            fill="#ff9900"
-          />
-          <path
-            d={`M ${-size * 0.018} ${size * 0.001}
-                L ${-size * 0.005} ${size * 0.014}
-                L ${size * 0.022} ${-size * 0.014}`}
-            stroke="#ffffff"
-            strokeWidth={size * 0.0095}
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </g>
-        <text
-          textAnchor="middle"
-          y={size * 0.06}
-          fill="#ffffff"
-          fontSize={size * 0.062}
-          fontFamily="var(--font-sans), Inter, sans-serif"
-          fontWeight="400"
-        >
-          certified
-        </text>
-      </g>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: `${size * 0.025}px`,
+              lineHeight: 1,
+            }}
+          >
+            <span
+              style={{
+                color: "#fff",
+                fontFamily: "var(--font-sans), Inter, sans-serif",
+                fontWeight: 700,
+                fontSize: `${size * 0.115}px`,
+                letterSpacing: "-0.01em",
+                lineHeight: 1,
+              }}
+            >
+              aws
+            </span>
+            <span
+              style={{
+                position: "relative",
+                width: `${size * 0.082}px`,
+                height: `${size * 0.094}px`,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <svg
+                viewBox="0 0 100 110"
+                width="100%"
+                height="100%"
+                style={{ display: "block" }}
+              >
+                <polygon
+                  points="50,2 95,28 95,82 50,108 5,82 5,28"
+                  fill="#ff9900"
+                />
+                <path
+                  d="M 30 55 L 45 70 L 72 38"
+                  stroke="#ffffff"
+                  strokeWidth="11"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+          </div>
+          <span
+            style={{
+              color: "#ffffff",
+              fontFamily: "var(--font-sans), Inter, sans-serif",
+              fontWeight: 400,
+              fontSize: `${size * 0.07}px`,
+              lineHeight: 1,
+              letterSpacing: "0.005em",
+            }}
+          >
+            certified
+          </span>
+        </div>
+      </foreignObject>
 
-      {/* Hairline rule above the title */}
+      {/* Hairline above title */}
       <line
         x1={W * 0.18}
-        y1={H * 0.36}
+        y1={H * 0.35}
         x2={W * 0.82}
-        y2={H * 0.36}
+        y2={H * 0.35}
         stroke="#ffffff"
         strokeOpacity="0.55"
         strokeWidth="1"
@@ -211,7 +245,7 @@ export default function HexBadge({
       {/* Title */}
       <foreignObject
         x={W * 0.06}
-        y={H * 0.39}
+        y={H * 0.37}
         width={W * 0.88}
         height={H * 0.27}
       >
@@ -224,7 +258,7 @@ export default function HexBadge({
             fontWeight: 800,
             lineHeight: 1.05,
             letterSpacing: "-0.012em",
-            fontSize: `${size * 0.12}px`,
+            fontSize: `${size * 0.118}px`,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -235,87 +269,116 @@ export default function HexBadge({
         </div>
       </foreignObject>
 
-      {/* Hairline rule below the title */}
+      {/* Hairline below title */}
       <line
         x1={W * 0.18}
-        y1={H * 0.685}
+        y1={H * 0.665}
         x2={W * 0.82}
-        y2={H * 0.685}
+        y2={H * 0.665}
         stroke="#ffffff"
         strokeOpacity="0.55"
         strokeWidth="1"
       />
 
-      {/* Tier label */}
-      <text
-        textAnchor="middle"
-        x={W / 2}
-        y={H * 0.755}
-        fill="#ffffff"
-        fontSize={size * 0.07}
-        fontFamily="var(--font-sans), Inter, sans-serif"
-        fontWeight="700"
-        letterSpacing="0.32em"
+      {/* Tier banner — explicit foreignObject so text never clips */}
+      <foreignObject
+        x={0}
+        y={H * 0.7}
+        width={W}
+        height={H * 0.18}
       >
-        {tierLabel}
-      </text>
+        <div
+          xmlns="http://www.w3.org/1999/xhtml"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100%",
+            width: "100%",
+            color: "#ffffff",
+            fontFamily: "var(--font-sans), Inter, sans-serif",
+            fontWeight: 700,
+            fontSize: `${size * (tierLabel.length > 14 ? 0.055 : 0.07)}px`,
+            letterSpacing: tierLabel.length > 14 ? "0.22em" : "0.32em",
+            whiteSpace: "nowrap",
+            lineHeight: 1,
+          }}
+        >
+          {tierLabel}
+        </div>
+      </foreignObject>
 
-      {/* Early Adopter ribbon — teal banner with two pennants */}
+      {/* Early Adopter ribbon — anchored INSIDE the badge so pennant tails
+          don't poke out beyond the artwork. The ribbon banner sits at
+          ~88% of H, pennants extend to H + ribbonH (within VB_H). */}
       {earlyAdopter && (
         <g>
-          {/* Banner (slight downward arc) */}
+          {/* Banner curved arc */}
           <path
-            d={`M ${W * 0.05} ${H * 0.86}
-                Q ${W * 0.5} ${H * 0.95}
-                  ${W * 0.95} ${H * 0.86}
-                L ${W * 0.95} ${H * 0.94}
-                Q ${W * 0.5} ${H * 1.03}
-                  ${W * 0.05} ${H * 0.94}
+            d={`M ${W * 0.04} ${H * 0.86}
+                Q ${W * 0.5} ${H * 0.94}
+                  ${W * 0.96} ${H * 0.86}
+                L ${W * 0.96} ${H * 0.94}
+                Q ${W * 0.5} ${H * 1.02}
+                  ${W * 0.04} ${H * 0.94}
                 Z`}
             fill="#127E91"
           />
-          {/* Banner highlight */}
+          {/* Banner top highlight */}
           <path
-            d={`M ${W * 0.05} ${H * 0.86}
-                Q ${W * 0.5} ${H * 0.95}
-                  ${W * 0.95} ${H * 0.86}
-                L ${W * 0.95} ${H * 0.88}
-                Q ${W * 0.5} ${H * 0.97}
-                  ${W * 0.05} ${H * 0.88}
+            d={`M ${W * 0.04} ${H * 0.86}
+                Q ${W * 0.5} ${H * 0.94}
+                  ${W * 0.96} ${H * 0.86}
+                L ${W * 0.96} ${H * 0.882}
+                Q ${W * 0.5} ${H * 0.962}
+                  ${W * 0.04} ${H * 0.882}
                 Z`}
             fill="#1A9DB2"
           />
           {/* Banner text */}
-          <text
-            textAnchor="middle"
-            x={W / 2}
-            y={H * 0.93}
-            fill="#ffffff"
-            fontSize={size * 0.075}
-            fontFamily="var(--font-sans), Inter, sans-serif"
-            fontWeight="800"
-            letterSpacing="0.32em"
+          <foreignObject
+            x={W * 0.06}
+            y={H * 0.86}
+            width={W * 0.88}
+            height={H * 0.13}
           >
-            EARLY ADOPTER
-          </text>
+            <div
+              xmlns="http://www.w3.org/1999/xhtml"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "100%",
+                width: "100%",
+                color: "#ffffff",
+                fontFamily: "var(--font-sans), Inter, sans-serif",
+                fontWeight: 800,
+                fontSize: `${size * 0.075}px`,
+                letterSpacing: "0.32em",
+                whiteSpace: "nowrap",
+                lineHeight: 1,
+              }}
+            >
+              EARLY ADOPTER
+            </div>
+          </foreignObject>
 
-          {/* Left pennant tail */}
+          {/* Pennant tails — within the viewBox extension */}
           <path
-            d={`M ${W * 0.22} ${H * 0.97}
-                L ${W * 0.22} ${H + size * 0.13}
-                L ${W * 0.32} ${H + size * 0.05}
-                L ${W * 0.42} ${H + size * 0.13}
-                L ${W * 0.42} ${H * 0.97}
+            d={`M ${W * 0.24} ${H * 0.96}
+                L ${W * 0.24} ${H + ribbonH * 0.95}
+                L ${W * 0.34} ${H + ribbonH * 0.55}
+                L ${W * 0.44} ${H + ribbonH * 0.95}
+                L ${W * 0.44} ${H * 0.96}
                 Z`}
             fill="#127E91"
           />
-          {/* Right pennant tail */}
           <path
-            d={`M ${W * 0.58} ${H * 0.97}
-                L ${W * 0.58} ${H + size * 0.13}
-                L ${W * 0.68} ${H + size * 0.05}
-                L ${W * 0.78} ${H + size * 0.13}
-                L ${W * 0.78} ${H * 0.97}
+            d={`M ${W * 0.56} ${H * 0.96}
+                L ${W * 0.56} ${H + ribbonH * 0.95}
+                L ${W * 0.66} ${H + ribbonH * 0.55}
+                L ${W * 0.76} ${H + ribbonH * 0.95}
+                L ${W * 0.76} ${H * 0.96}
                 Z`}
             fill="#127E91"
           />
