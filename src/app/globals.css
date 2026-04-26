@@ -1103,12 +1103,20 @@ a {
 :root.theme-transitioning *,
 :root.theme-transitioning *::before,
 :root.theme-transitioning *::after {
+  /* 800ms with ease-glide (a softer S-curve than ease-smooth) reads as a
+     deliberate fade rather than a quick swap. opacity, filter, and
+     backdrop-filter added so iridescent fills and bloom layers also
+     fade in step. */
   transition:
-    background-color 500ms var(--ease-smooth),
-    background 500ms var(--ease-smooth),
-    border-color 500ms var(--ease-smooth),
-    color 500ms var(--ease-smooth),
-    fill 500ms var(--ease-smooth),
-    stroke 500ms var(--ease-smooth),
-    box-shadow 500ms var(--ease-smooth) !important;
+    background-color 800ms var(--ease-glide),
+    background 800ms var(--ease-glide),
+    background-image 800ms var(--ease-glide),
+    border-color 800ms var(--ease-glide),
+    color 800ms var(--ease-glide),
+    fill 800ms var(--ease-glide),
+    stroke 800ms var(--ease-glide),
+    box-shadow 800ms var(--ease-glide),
+    opacity 800ms var(--ease-glide),
+    filter 800ms var(--ease-glide),
+    backdrop-filter 800ms var(--ease-glide) !important;
 }

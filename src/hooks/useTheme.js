@@ -47,7 +47,7 @@ export function useTheme() {
 
     window.setTimeout(() => {
       html.classList.remove("theme-transitioning");
-    }, 550);
+    }, 850);
     // setState happens via the observer
   }, []);
 
