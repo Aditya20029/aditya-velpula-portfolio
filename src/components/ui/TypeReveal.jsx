@@ -2,71 +2,65 @@
 import { useEffect, useState } from "react";
 
 /**
- * Subtle "decode" reveal — characters resolve from a small randomised
- * scramble into the final string. Less playful than a movie hacker
- * effect, more like a system rendering text in real time. Fires once.
+ * Clean per-character typewriter reveal. Reveals one character at a time
+ * left-to-right with a soft trailing caret while typing. No scramble \u2014
+ * legible at every frame, even on long strings.
  */
-const SCRAMBLE = "AETIONRBCDFGHJKLMPQSUVWXYZ";
-
 export default function TypeReveal({
   text,
   delay = 0,
   speed = 32,        // ms per character
-  scrambleRounds = 2, // how many garbled chars before locking in
+  showCaret = true,
   className = "",
   as: Tag = "span",
 }) {
-  const [out, setOut] = useState(
-    text
-      .split("")
-      .map((c) => (c === " " ? " " : ""))
-      .join("")
-  );
+  const [shown, setShown] = useState(0);
+  const [done, setDone] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
+    let timeoutId;
+
     const start = setTimeout(() => {
       let i = 0;
       const tick = () => {
         if (cancelled) return;
-        if (i >= text.length) return;
-
-        const target = text[i];
-
-        if (target === " ") {
-          setOut((prev) => prev.slice(0, i) + " " + prev.slice(i + 1));
-          i++;
-          setTimeout(tick, speed);
+        if (i >= text.length) {
+          setDone(true);
           return;
         }
-
-        let r = 0;
-        const scramble = () => {
-          if (cancelled) return;
-          if (r < scrambleRounds) {
-            const rand = SCRAMBLE[Math.floor(Math.random() * SCRAMBLE.length)];
-            setOut((prev) => prev.slice(0, i) + rand + prev.slice(i + 1));
-            r++;
-            setTimeout(scramble, speed);
-          } else {
-            setOut((prev) => prev.slice(0, i) + target + prev.slice(i + 1));
-            i++;
-            setTimeout(tick, speed);
-          }
-        };
-        scramble();
+        i++;
+        setShown(i);
+        timeoutId = setTimeout(tick, speed);
       };
       tick();
     }, delay);
+
     return () => {
       cancelled = true;
       clearTimeout(start);
+      clearTimeout(timeoutId);
     };
-  }, [text, delay, speed, scrambleRounds]);
+  }, [text, delay, speed]);
 
   return (
     <Tag aria-label={text} className={className}>
-      {out}
+      {text.slice(0, shown)}
+      {showCaret && !done && (
+        <span
+          aria-hidden
+          style={{
+            display: "inline-block",
+            width: "0.5em",
+            marginLeft: "0.04em",
+            verticalAlign: "baseline",
+            color: "currentColor",
+            animation: "typewriter-cursor 0.9s steps(2) infinite",
+          }}
+        >
+          |
+        </span>
+      )}
     </Tag>
   );
 }
