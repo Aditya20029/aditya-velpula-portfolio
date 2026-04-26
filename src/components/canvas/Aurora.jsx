@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useTheme } from "@/hooks/useTheme";
@@ -9,19 +8,6 @@ export default function Aurora() {
   const reduced = useReducedMotion();
   const { theme } = useTheme();
   const light = theme === "light";
-
-  /* Disable the per-frame x/y/scale loops on touch devices + narrow
-     viewports. Mobile GPUs choke on 4 large blurred elements transforming
-     simultaneously while the user scrolls. Render the orbs static. */
-  const [isCompact, setIsCompact] = useState(false);
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const mq = window.matchMedia("(max-width: 1023px), (pointer: coarse)");
-    const update = () => setIsCompact(mq.matches);
-    update();
-    mq.addEventListener?.("change", update);
-    return () => mq.removeEventListener?.("change", update);
-  }, []);
 
   // Light mode uses softer pastel tints so the orbs feel like morning
   // haze rather than neon — matches the rest of the light palette.
@@ -60,7 +46,7 @@ export default function Aurora() {
             filter: light ? "blur(40px)" : "blur(24px)",
           }}
           animate={
-            reduced || isCompact
+            reduced
               ? {}
               : {
                   x: [0, 40, -30, 0],

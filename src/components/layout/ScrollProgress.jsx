@@ -1,56 +1,31 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 
-/**
- * Top-of-page scroll progress bar.
- *
- * Writes directly to the bar element's transform via a ref + RAF instead
- * of running React's reconciler on every scroll event. On mobile the
- * old setState-per-event was triggering up to 60 re-renders per second
- * during fast scroll. RAF caps it to one DOM write per frame.
- */
 export default function ScrollProgress() {
-  const barRef = useRef(null);
-
+  const [progress, setProgress] = useState(0);
   useEffect(() => {
-    let rafId = 0;
-    let queued = false;
-
-    const apply = () => {
-      queued = false;
+    const update = () => {
       const h = document.documentElement;
+      const scrolled = h.scrollTop;
       const max = h.scrollHeight - h.clientHeight;
-      const p = max > 0 ? h.scrollTop / max : 0;
-      if (barRef.current) {
-        barRef.current.style.transform = `scaleX(${p})`;
-      }
+      setProgress(max > 0 ? scrolled / max : 0);
     };
-
-    const onScroll = () => {
-      if (queued) return;
-      queued = true;
-      rafId = requestAnimationFrame(apply);
-    };
-
-    apply();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
     return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
     };
   }, []);
-
   return (
     <div
-      ref={barRef}
       aria-hidden
-      className="fixed top-0 left-0 h-[2px] z-[60] origin-left will-change-transform"
+      className="fixed top-0 left-0 h-[2px] z-[60] origin-left"
       style={{
         width: "100%",
         background: "var(--gradient-accent)",
-        transform: "scaleX(0)",
+        transform: `scaleX(${progress})`,
         transformOrigin: "left center",
       }}
     />

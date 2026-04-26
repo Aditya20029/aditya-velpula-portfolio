@@ -8,15 +8,6 @@ export default function SmoothScroll() {
 
   useEffect(() => {
     if (reduced) return;
-    // Touch / narrow viewports: skip Lenis entirely. iOS/Android momentum
-    // scrolling is already 60fps native, and any JS-driven smoothing on
-    // top of it produces visible stutter. Desktop only.
-    if (typeof window !== "undefined") {
-      const isTouch = window.matchMedia("(pointer: coarse)").matches;
-      const isNarrow = window.matchMedia("(max-width: 1023px)").matches;
-      if (isTouch || isNarrow) return;
-    }
-
     const lenis = new Lenis({
       duration: 0.9,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),

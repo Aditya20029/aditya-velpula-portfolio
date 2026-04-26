@@ -1,38 +1,23 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Clean per-character typewriter reveal. Reveals one character at a time
- * left-to-right with a soft trailing caret while typing. No scramble —
+ * left-to-right with a soft trailing caret while typing. No scramble \u2014
  * legible at every frame, even on long strings.
- *
- * On touch / narrow viewports, render the full string immediately. The
- * delay-based reveal would otherwise leave the line invisible until
- * its delay fires, which on phones can read as missing content.
  */
 export default function TypeReveal({
   text,
   delay = 0,
-  speed = 32,
+  speed = 32,        // ms per character
   showCaret = true,
   className = "",
   as: Tag = "span",
 }) {
   const [shown, setShown] = useState(0);
   const [done, setDone] = useState(false);
-  const skip = useRef(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const mq = window.matchMedia("(max-width: 1023px), (pointer: coarse)");
-    if (mq.matches) {
-      // Compact viewport: skip the typewriter entirely
-      skip.current = true;
-      setShown(text.length);
-      setDone(true);
-      return;
-    }
-
     let cancelled = false;
     let timeoutId;
 
@@ -61,7 +46,7 @@ export default function TypeReveal({
   return (
     <Tag aria-label={text} className={className}>
       {text.slice(0, shown)}
-      {showCaret && !done && !skip.current && (
+      {showCaret && !done && (
         <span
           aria-hidden
           style={{
