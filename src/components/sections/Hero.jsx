@@ -1,6 +1,6 @@
 "use client";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight, FileText, ChevronDown } from "lucide-react";
 import { personal } from "@/data/personal";
 import { EASE } from "@/utils/constants";
@@ -33,6 +33,19 @@ export default function Hero() {
     target: ref,
     offset: ["start start", "end start"],
   });
+  /* On mobile we render the hero without per-frame scroll-driven motion
+     values (still cheap CSS-only). Each motion-value subscription wakes
+     framer-motion every scroll tick, which on phones contributes to the
+     stutter once enough sections do it. */
+  const [isCompact, setIsCompact] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(max-width: 1023px), (pointer: coarse)");
+    const update = () => setIsCompact(mq.matches);
+    update();
+    mq.addEventListener?.("change", update);
+    return () => mq.removeEventListener?.("change", update);
+  }, []);
   const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.9], [1, 0]);
 
@@ -78,7 +91,7 @@ export default function Hero() {
       />
 
       <motion.div
-        style={{ y: contentY, opacity: contentOpacity }}
+        style={isCompact ? undefined : { y: contentY, opacity: contentOpacity }}
         className="relative z-10 flex flex-col items-center gap-7 text-center max-w-5xl"
       >
         {/* Available badge \u2014 laser green, bright in both themes, primary
@@ -236,7 +249,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 5.2 }}
-        style={{ opacity: contentOpacity }}
+        style={isCompact ? undefined : { opacity: contentOpacity }}
         className="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 text-[var(--text-muted)]"
         aria-hidden
       >
