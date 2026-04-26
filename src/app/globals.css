@@ -1044,3 +1044,45 @@ a {
     display: none !important;
   }
 }
+
+/* Mobile smoothness step 7: cut the heaviest remaining background paint.
+   Three targets: (a) the premium-backdrop mesh layer's 18px blur + 30s
+   drift animation, (b) the SVG noise grain overlay, (c) layered card
+   box-shadows. None of these are content - they're decorative finishes
+   that cost real GPU time per scroll frame on a phone. */
+@media (pointer: coarse) {
+  /* Drop the animated mesh entirely. The body still gets its grid
+     pattern + frame outline + scan lines, the iridescent gradient
+     just stops drifting and clearing the GPU layer. */
+  .premium-backdrop__mesh {
+    animation: none !important;
+    filter: none !important;
+    will-change: auto !important;
+    opacity: 0.55;
+  }
+
+  /* SVG noise overlay: small visual contribution, real per-frame paint
+     cost on a fixed full-viewport element. Hide on touch. */
+  .grain-overlay {
+    display: none !important;
+  }
+
+  /* Collapse stacked box-shadows on glass surfaces to a single layer.
+     Cards still float; compositor stops compositing 3-4 layers per
+     card per frame. */
+  .glass-card,
+  .glass-elevated,
+  .project-card-surface,
+  .premium-nav-shell,
+  .hero-proof-panel {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18) !important;
+  }
+
+  :root[data-theme="light"] .glass-card,
+  :root[data-theme="light"] .glass-elevated,
+  :root[data-theme="light"] .project-card-surface,
+  :root[data-theme="light"] .premium-nav-shell,
+  :root[data-theme="light"] .hero-proof-panel {
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08) !important;
+  }
+}
