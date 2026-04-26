@@ -963,3 +963,21 @@ a {
     scroll-behavior: auto !important;
   }
 }
+
+/* Mobile smoothness step 2: strip backdrop-filter on touch devices.
+   Each blurred surface re-runs a Gaussian on whatever is behind it
+   every paint frame; on a phone with 30+ glass panels visible during
+   scroll that is the dominant cost. Keep all other styling identical. */
+@media (pointer: coarse) {
+  .glass-subtle,
+  .glass-card,
+  .glass-elevated,
+  .project-card-surface,
+  .premium-chip,
+  .premium-nav-shell,
+  .hero-proof-panel,
+  .available-badge {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
