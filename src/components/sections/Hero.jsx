@@ -75,28 +75,29 @@ export default function Hero() {
         style={{ y: contentY, opacity: contentOpacity }}
         className="relative z-10 flex flex-col items-center gap-7 text-center max-w-5xl"
       >
-        {/* Available badge */}
+        {/* Available badge \u2014 laser green, bright in both themes, primary
+            visual hook on page load */}
         <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: -8, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.7, delay: 2.3, ease: EASE.outExpo }}
-          className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full t-mono-sm"
+          className="available-badge inline-flex items-center gap-2.5 px-5 py-2 rounded-full t-mono-sm font-semibold"
           style={{
-            border: "1px solid rgba(190, 24, 93, 0.35)",
-            background: "rgba(255, 255, 255, 0.04)",
-            backdropFilter: "blur(10px)",
-            color: "var(--text-secondary)",
-            letterSpacing: "0.14em",
+            letterSpacing: "0.16em",
           }}
         >
-          <span className="relative flex h-2 w-2">
+          <span className="relative flex h-2.5 w-2.5">
             <span
-              className="absolute inset-0 rounded-full opacity-60 animate-ping"
-              style={{ background: "var(--accent-secondary)" }}
+              className="absolute inset-0 rounded-full opacity-80 animate-ping"
+              style={{ background: "#22c55e" }}
             />
             <span
-              className="relative rounded-full h-2 w-2"
-              style={{ background: "var(--accent-secondary)" }}
+              className="relative rounded-full h-2.5 w-2.5"
+              style={{
+                background: "#22c55e",
+                boxShadow:
+                  "0 0 10px #22c55e, 0 0 20px rgba(34, 197, 94, 0.8)",
+              }}
             />
           </span>
           <span>Available for opportunities</span>
