@@ -92,8 +92,26 @@ All colors, easings, and type scales live as CSS custom properties in
 
 ## Deploy
 
-One-click to Vercel (push this repo, import it on vercel.com, done).
+This repo is preconfigured for **Vercel**.
+
+1. Sign in at [vercel.com](https://vercel.com) with GitHub.
+2. **Add New > Project**, import `aditya-velpula-portfolio`.
+3. Leave defaults. Vercel reads `vercel.json` and `.npmrc` automatically:
+   - Framework: Next.js
+   - Install command: `npm install --legacy-peer-deps`
+   - Build command: `next build`
+   - Output: `.next`
+4. Click **Deploy**. First build takes about 90 seconds.
+5. Optional: Project > Settings > Domains, add a custom domain. Vercel
+   issues SSL automatically.
+
+Every `git push` to `main` triggers a production build. PRs get preview
+URLs automatically.
+
+The `--legacy-peer-deps` flag is required because `@react-three/fiber`
+8.x and React 18 advertise mismatched peer ranges; the runtime works
+fine, npm just refuses to install without the override.
 
 ## License
 
-MIT — use this codebase freely.
+MIT, use this codebase freely.
