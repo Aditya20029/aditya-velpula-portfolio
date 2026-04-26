@@ -55,14 +55,8 @@ export default function ProjectCard({ project, onOpen, index }) {
           }}
         />
 
-        {/* Content surface */}
-        <div
-          className="relative p-6 md:p-8 h-full flex flex-col gap-5"
-          style={{
-            background: "rgba(10, 10, 18, 0.72)",
-            backdropFilter: "blur(16px) saturate(1.3)",
-          }}
-        >
+        {/* Content surface — theme-aware via .project-card-surface */}
+        <div className="project-card-surface relative p-6 md:p-8 h-full flex flex-col gap-5">
           {/* Preview */}
           <div
             className="relative h-40 rounded-xl overflow-hidden"
