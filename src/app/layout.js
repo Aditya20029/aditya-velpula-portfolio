@@ -24,6 +24,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata = {
+  metadataBase: new URL("https://adityavelpula.com"),
   title: "Aditya Velpula · AI Engineer",
   description:
     "Building intelligent systems at scale. RAG pipelines, LLM orchestration, and cloud data infrastructure.",
@@ -35,6 +36,14 @@ export const metadata = {
     description:
       "Building intelligent systems at scale. RAG pipelines, LLM orchestration, and cloud data infrastructure.",
     type: "website",
+    url: "https://adityavelpula.com",
+    siteName: "Aditya Velpula",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Aditya Velpula · AI Engineer",
+    description:
+      "Building intelligent systems at scale. RAG pipelines, LLM orchestration, and cloud data infrastructure.",
   },
 };
 

@@ -198,9 +198,9 @@ export default function Certifications() {
       />
       <div className="container-site relative z-10">
         <SectionHeading
-          kicker="VERIFIED CREDENTIALS"
+          kicker="VERIFIED"
           title="AWS Certifications"
-          subtitle="Click any badge or 'Verify' to open the official AWS verification page. Use 'Copy ID' to grab the validation hash."
+          subtitle="Six active credentials. Tap any badge to verify it on AWS, or copy the validation ID."
           align="center"
         />
 

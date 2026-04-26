@@ -132,9 +132,9 @@ export default function Experience() {
       />
       <div className="container-site">
         <SectionHeading
-          kicker="ACT III"
-          title="The Architecture"
-          subtitle="Roles where I built intelligence systems from first principles. Not dashboards, not demos. Real systems with real impact."
+          kicker="EXPERIENCE"
+          title="Where I've Built"
+          subtitle="Three roles, one through-line: shipping intelligent systems from first principles."
         />
 
         <div className="section-divider my-12" />

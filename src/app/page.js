@@ -12,6 +12,7 @@ import MobileMotion from "@/components/layout/MobileMotion";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Experience from "@/components/sections/Experience";
+import DapsePipelineStory from "@/components/sections/DapsePipelineStory";
 import Projects from "@/components/sections/Projects";
 import Skills from "@/components/sections/Skills";
 import Certifications from "@/components/sections/Certifications";
@@ -36,6 +37,7 @@ export default function Home() {
         <About />
         <TechMarquee />
         <Experience />
+        <DapsePipelineStory />
         <Projects />
         <Skills />
         <Certifications />

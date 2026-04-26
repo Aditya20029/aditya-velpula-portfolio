@@ -25,9 +25,9 @@ export default function Projects() {
       />
       <div className="container-site relative z-10">
         <SectionHeading
-          kicker="ACT III · PROOF"
-          title="Selected Projects"
-          subtitle="Each of these was shipped end-to-end. Click any card to see the architecture, metrics, and stack."
+          kicker="SELECTED WORK"
+          title="Things I've Shipped"
+          subtitle="Seven projects, end-to-end. Tap any card for the architecture, metrics, and stack."
         />
         <div className="section-divider my-12" />
         <div className="grid md:grid-cols-2 gap-6">

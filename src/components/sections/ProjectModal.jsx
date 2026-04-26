@@ -1,10 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Github, ExternalLink } from "lucide-react";
+import Link from "next/link";
+import { Github, ExternalLink, BookOpen, ArrowRight } from "lucide-react";
 import Modal from "@/components/ui/Modal";
 import Badge from "@/components/ui/Badge";
 import ProjectPreview from "./ProjectPreview";
 import { useAccentRgb } from "@/hooks/useAccentRgb";
+import { caseStudySlugs } from "@/data/caseStudies";
 
 export default function ProjectModal({ project, onClose }) {
   const accents = useAccentRgb();
@@ -34,7 +36,17 @@ export default function ProjectModal({ project, onClose }) {
             border: `1px solid rgba(${rgb}, 0.2)`,
           }}
         >
-          <ProjectPreview type={project.previewType} accentColor={`rgb(${rgb})`} />
+          {project.image ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={project.image}
+              alt={project.imageAlt || project.title}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <ProjectPreview type={project.previewType} accentColor={`rgb(${rgb})`} />
+          )}
         </div>
 
         <div>
@@ -80,8 +92,22 @@ export default function ProjectModal({ project, onClose }) {
           </div>
         </div>
 
-        {(project.github || project.demo) && (
+        {(project.github || project.demo || caseStudySlugs.includes(project.id)) && (
           <div className="flex flex-wrap gap-3 pt-2">
+            {caseStudySlugs.includes(project.id) && (
+              <Link
+                href={`/projects/${project.id}`}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full t-mono-sm font-semibold transition-all hover:brightness-110"
+                style={{
+                  background: `rgb(${rgb})`,
+                  color: "#fff",
+                  boxShadow: `0 12px 28px -16px rgb(${rgb})`,
+                }}
+              >
+                <BookOpen size={14} /> Read case study
+                <ArrowRight size={14} />
+              </Link>
+            )}
             {project.github && (
               <a
                 href={project.github}

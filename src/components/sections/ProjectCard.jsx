@@ -62,7 +62,7 @@ export default function ProjectCard({ project, onOpen, index }) {
 
         {/* Content surface — theme-aware via .project-card-surface */}
         <div className="project-card-surface relative p-6 md:p-8 h-full flex flex-col gap-5">
-          {/* Preview */}
+          {/* Preview — real screenshot if project.image is set, else animated SVG */}
           <div
             className="relative h-40 rounded-xl overflow-hidden"
             style={{
@@ -70,7 +70,17 @@ export default function ProjectCard({ project, onOpen, index }) {
               border: `1px solid rgba(${rgb}, 0.2)`,
             }}
           >
-            <ProjectPreview type={project.previewType} accentColor={`rgb(${rgb})`} />
+            {project.image ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={project.image}
+                alt={project.imageAlt || project.title}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            ) : (
+              <ProjectPreview type={project.previewType} accentColor={`rgb(${rgb})`} />
+            )}
             {/* Soft inner sheen */}
             <div
               aria-hidden
