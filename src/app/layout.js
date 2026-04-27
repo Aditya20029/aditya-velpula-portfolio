@@ -48,15 +48,19 @@ export const metadata = {
 };
 
 export const viewport = {
-  themeColor: "#0a0a12",
+  /* Light theme is the default for first-time visitors, so the mobile
+     chrome / Safari status bar should match. */
+  themeColor: "#f3f5fb",
 };
 
 const criticalShellCss = `
   html,
   body {
     margin: 0;
-    background: #07070d;
-    color: #cbd5e1;
+    /* Pre-hydration shell colors. Match the light-theme --bg-primary
+       and --text-body so first paint doesn't flash dark. */
+    background: #f3f5fb;
+    color: #111827;
   }
 
   .skip-link {
@@ -84,7 +88,7 @@ const criticalShellCss = `
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" data-theme="light">
       <head>
         <style
           id="critical-shell"
