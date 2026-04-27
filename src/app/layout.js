@@ -57,10 +57,22 @@ const criticalShellCss = `
   html,
   body {
     margin: 0;
-    /* Pre-hydration shell colors. Match the light-theme --bg-primary
-       and --text-body so first paint doesn't flash dark. */
+  }
+
+  /* Pre-hydration shell colors. This <style> tag lives in <head>
+     after globals.css, so it would otherwise win the cascade and
+     trap html/body on the light shell color even when the user
+     toggles to dark. Scoping by [data-theme] so each theme's shell
+     bg matches its CSS-variable bg, and the toggle actually paints. */
+  html[data-theme="light"],
+  html[data-theme="light"] body {
     background: #f3f5fb;
     color: #111827;
+  }
+  html[data-theme="dark"],
+  html[data-theme="dark"] body {
+    background: #07070d;
+    color: #e2e8f0;
   }
 
   .skip-link {
@@ -93,6 +105,14 @@ export default function RootLayout({ children }) {
         <style
           id="critical-shell"
           dangerouslySetInnerHTML={{ __html: criticalShellCss }}
+        />
+        {/* Apply the user's stored theme synchronously *before* first
+            paint so returning dark-mode visitors don't flash light.
+            New visitors fall through to the SSR default ("light"). */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("av-theme");if(t==="dark"||t==="light"){document.documentElement.setAttribute("data-theme",t);}}catch(e){}})();`,
+          }}
         />
       </head>
       <body className={`${inter.variable} ${jetbrains.variable} ${fraunces.variable}`}>
