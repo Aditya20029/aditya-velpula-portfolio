@@ -23,13 +23,14 @@ export default function Preloader() {
 
     const t1 = setTimeout(() => setMsg(1), 600);
     const t2 = setTimeout(() => setShowName(true), 1100);
-    /* Bumped exit from 2200 -> 2700ms so the "Welcome — let's make it
-       worth your time" tagline under the name has a beat to land
-       before the preloader slides off. */
+    /* Tagline fades in at ~1550ms (showName + 450ms delay). Holding
+       until 3500ms gives ~2 seconds of read time for the seven-word
+       tagline, which lands at average reading speed without dragging
+       the page. */
     const t3 = setTimeout(() => {
       setVisible(false);
       sessionStorage.setItem("av-visited", "1");
-    }, 2700);
+    }, 3500);
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
