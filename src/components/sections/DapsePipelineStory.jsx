@@ -10,15 +10,16 @@ import {
   Send,
 } from "lucide-react";
 import SectionHeading from "@/components/ui/SectionHeading";
+import { useAccentRgb } from "@/hooks/useAccentRgb";
 
 /**
  * Narrated DAPSE pipeline. As you scroll through this section, six
  * stages sweep through one at a time on the right. The left column
  * holds a sticky overview + animated stage-progress bar.
  *
- * This is content + storytelling, not a load-bearing section. Plain
- * sticky positioning + scrollYProgress on the section element. No
- * IntersectionObserver per stage to keep the cost low.
+ * Each stage gets its own jewel-tone accent so the pipeline reads as
+ * an iridescent flow instead of six identical cards. Colors come from
+ * useAccentRgb so they swap correctly between dark and light mode.
  */
 
 const STAGES = [
@@ -26,6 +27,7 @@ const STAGES = [
     icon: FileText,
     label: "Ingest",
     metric: "1,192 sources",
+    accent: "--accent-primary", // electric blue
     body:
       "519 government documents + 673 supporting analyses, across 9 Arctic nations. Pulled into a normalized format with provenance tagging on every artifact.",
   },
@@ -33,6 +35,7 @@ const STAGES = [
     icon: Layers,
     label: "Chunk",
     metric: "25,565 chunks",
+    accent: "--accent-tertiary", // royal purple
     body:
       "Section-aware segmentation with parent-child chunking. Policy docs are full of structural meaning (treaty articles, footnotes, schedules), so naive paragraph splits would wreck retrieval.",
   },
@@ -40,6 +43,7 @@ const STAGES = [
     icon: Database,
     label: "Embed + Index",
     metric: "1,536-dim vectors",
+    accent: "--accent-success", // emerald
     body:
       "OpenAI embeddings stored in FAISS, with a BM25 lexical sidecar over the same chunks. Two indexes, one query plane.",
   },
@@ -47,6 +51,7 @@ const STAGES = [
     icon: Search,
     label: "Hybrid Retrieve",
     metric: "Reciprocal Rank Fusion",
+    accent: "--accent-warm", // burnt amber
     body:
       "Multi-query rewriting hits BM25 + FAISS + Exa.ai neural web search in parallel. Results blend through Reciprocal Rank Fusion so we get lexical precision and semantic recall.",
   },
@@ -54,13 +59,15 @@ const STAGES = [
     icon: ShieldCheck,
     label: "Verify",
     metric: "75 to 80% cost cut",
+    accent: "--accent-coral", // deep cyan-teal
     body:
       "Three-tier LLM verification: draft → critique → finalize. Automatic escalation only when the critique tier flags grounding issues. Cost drops dramatically vs. naive top-tier-only routing.",
   },
   {
     icon: Send,
     label: "Respond",
-    metric: "Citations · always",
+    metric: "Citations always",
+    accent: "--accent-secondary", // magenta
     body:
       "Every claim in the response is grounded in a retrieved chunk with a clickable citation. Hallucinations are blocked at the verification gate, not patched in the UI.",
   },
@@ -80,6 +87,8 @@ export default function DapsePipelineStory() {
     [0, 1],
     [0, STAGES.length]
   );
+
+  const accents = useAccentRgb();
 
   return (
     <section
@@ -124,6 +133,7 @@ export default function DapsePipelineStory() {
                     key={s.label}
                     index={i}
                     label={s.label}
+                    rgb={accents[s.accent] || accents["--accent-primary"]}
                     progress={stageProgress}
                   />
                 ))}
@@ -134,7 +144,12 @@ export default function DapsePipelineStory() {
           {/* Right column: stage cards */}
           <div className="flex flex-col gap-8">
             {STAGES.map((s, i) => (
-              <StageCard key={s.label} stage={s} index={i} />
+              <StageCard
+                key={s.label}
+                stage={s}
+                index={i}
+                rgb={accents[s.accent] || accents["--accent-primary"]}
+              />
             ))}
           </div>
         </div>
@@ -143,7 +158,7 @@ export default function DapsePipelineStory() {
   );
 }
 
-function StageRow({ index, label, progress }) {
+function StageRow({ index, label, rgb, progress }) {
   // Each row reads stageProgress and lights its dot once the user has
   // scrolled past index + 0.4 (so it activates as the stage card hits
   // mid-viewport, not just when it first appears).
@@ -158,21 +173,21 @@ function StageRow({ index, label, progress }) {
     <li className="flex items-center gap-3">
       <motion.span
         style={{ opacity, scale }}
-        className="block w-1.5 h-1.5 rounded-full"
+        className="block w-2 h-2 rounded-full"
       >
         <span
           className="block w-full h-full rounded-full"
           style={{
-            background: "var(--accent-primary)",
-            boxShadow: "0 0 8px var(--accent-primary)",
+            background: `rgb(${rgb})`,
+            boxShadow: `0 0 12px rgba(${rgb}, 0.85)`,
           }}
         />
       </motion.span>
       <motion.span
-        className="t-mono-sm"
+        className="t-mono-sm font-semibold"
         style={{
           opacity,
-          color: "var(--text-secondary)",
+          color: `rgb(${rgb})`,
           letterSpacing: "0.16em",
         }}
       >
@@ -182,7 +197,7 @@ function StageRow({ index, label, progress }) {
   );
 }
 
-function StageCard({ stage, index }) {
+function StageCard({ stage, index, rgb }) {
   const Icon = stage.icon;
   return (
     <motion.div
@@ -190,24 +205,40 @@ function StageCard({ stage, index }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="glass-card p-6 md:p-8"
+      className="glass-card p-6 md:p-8 relative overflow-hidden"
+      style={{
+        // Subtle accent glow on the card so the color reads as a tint
+        // without overwhelming the prose.
+        boxShadow: `0 18px 48px -28px rgba(${rgb}, 0.55), 0 0 0 1px rgba(${rgb}, 0.18) inset`,
+      }}
     >
-      <div className="flex items-start gap-4 mb-4">
+      {/* Soft accent wash in the top-right corner */}
+      <div
+        aria-hidden
+        className="absolute top-0 right-0 w-48 h-48 rounded-full pointer-events-none"
+        style={{
+          background: `radial-gradient(circle, rgba(${rgb}, 0.18), transparent 70%)`,
+          transform: "translate(30%, -30%)",
+        }}
+      />
+
+      <div className="relative flex items-start gap-4 mb-4">
         <div
           className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
           style={{
-            background: "rgba(124, 212, 255, 0.12)",
-            color: "var(--accent-primary)",
-            border: "1px solid rgba(124, 212, 255, 0.3)",
+            background: `linear-gradient(135deg, rgba(${rgb}, 0.28), rgba(${rgb}, 0.12))`,
+            color: `rgb(${rgb})`,
+            border: `1px solid rgba(${rgb}, 0.45)`,
+            boxShadow: `0 8px 20px -10px rgba(${rgb}, 0.55)`,
           }}
         >
-          <Icon size={20} />
+          <Icon size={20} strokeWidth={2.25} />
         </div>
         <div className="flex-1 min-w-0">
           <div
-            className="t-mono-sm"
+            className="t-mono-sm font-semibold"
             style={{
-              color: "var(--accent-primary)",
+              color: `rgb(${rgb})`,
               letterSpacing: "0.18em",
             }}
           >
@@ -218,18 +249,19 @@ function StageCard({ stage, index }) {
           </h3>
         </div>
         <div
-          className="t-mono-sm shrink-0 px-3 py-1 rounded-full border"
+          className="t-mono-sm shrink-0 px-3 py-1 rounded-full font-semibold"
           style={{
-            color: "var(--accent-primary)",
-            borderColor: "rgba(124, 212, 255, 0.3)",
-            background: "rgba(124, 212, 255, 0.06)",
+            color: "#fff",
+            background: `linear-gradient(135deg, rgba(${rgb}, 0.95), rgba(${rgb}, 0.75))`,
+            border: `1px solid rgba(${rgb}, 1)`,
             letterSpacing: "0.12em",
+            boxShadow: `0 6px 16px -8px rgba(${rgb}, 0.6)`,
           }}
         >
           {stage.metric}
         </div>
       </div>
-      <p className="t-body text-[var(--text-body)] leading-relaxed">
+      <p className="relative t-body text-[var(--text-body)] leading-relaxed">
         {stage.body}
       </p>
     </motion.div>
