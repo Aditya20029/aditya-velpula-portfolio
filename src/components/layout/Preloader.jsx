@@ -3,13 +3,9 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { EASE } from "@/utils/constants";
 
-/* Two short beats before the name reveal. The first should land warm,
-   the second should bait the recruiter into reading the rest of the
-   page. Avoid the "INITIALIZING SYSTEM" cliché every dev portfolio
-   ships with — it's the cheap shot. */
 const MESSAGES = [
-  "WELCOME.",
-  "LET'S MAKE IT WORTH YOUR TIME.",
+  "INITIALIZING SYSTEM...",
+  "LOADING NEURAL INTERFACE...",
 ];
 
 export default function Preloader() {
@@ -25,16 +21,15 @@ export default function Preloader() {
       return;
     }
 
-    /* Beat 1 (WELCOME.) shows for 750ms — short copy reads instantly.
-       Beat 2 (LET'S MAKE IT WORTH YOUR TIME.) is longer copy so it
-       holds for 1100ms, then the name reveal lands and the whole
-       preloader exits. Returning visitors skip the whole thing. */
-    const t1 = setTimeout(() => setMsg(1), 750);
-    const t2 = setTimeout(() => setShowName(true), 1850);
+    const t1 = setTimeout(() => setMsg(1), 600);
+    const t2 = setTimeout(() => setShowName(true), 1100);
+    /* Bumped exit from 2200 -> 2700ms so the "Welcome — let's make it
+       worth your time" tagline under the name has a beat to land
+       before the preloader slides off. */
     const t3 = setTimeout(() => {
       setVisible(false);
       sessionStorage.setItem("av-visited", "1");
-    }, 2950);
+    }, 2700);
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
@@ -85,6 +80,20 @@ export default function Preloader() {
                   style={{ letterSpacing: "0.18em" }}
                 >
                   ADITYA VELPULA
+                </motion.div>
+                {/* Recruiter-facing tagline. Lands a beat after the name
+                    so the eye reads brand first, hook second. */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.45, ease: EASE.outExpo }}
+                  className="t-mono-sm"
+                  style={{
+                    color: "var(--accent-primary)",
+                    letterSpacing: "0.24em",
+                  }}
+                >
+                  WELCOME · LET&apos;S MAKE IT WORTH YOUR TIME
                 </motion.div>
               </>
             )}
