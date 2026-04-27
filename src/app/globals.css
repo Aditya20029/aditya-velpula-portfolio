@@ -826,9 +826,9 @@ a {
      glow is colored *after* the gradient is sampled — keeps the bloom
      iridescent instead of a flat purple wash. */
   filter:
-    saturate(1.95) contrast(1.28) brightness(1.12)
-    drop-shadow(0 0 18px rgba(123, 43, 255, 0.55))
-    drop-shadow(0 0 36px rgba(255, 0, 153, 0.32));
+    saturate(1.7) contrast(1.18) brightness(1.06)
+    drop-shadow(0 0 14px rgba(123, 43, 255, 0.38))
+    drop-shadow(0 0 28px rgba(255, 0, 153, 0.18));
 }
 :root[data-theme="light"] .holo-text {
   /* On light surfaces the halo would muddy the text, and contrast is
