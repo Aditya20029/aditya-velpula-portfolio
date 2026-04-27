@@ -110,12 +110,28 @@ export default function DapsePipelineStory() {
         <div className="grid lg:grid-cols-[280px_1fr] gap-10 lg:gap-16">
           {/* Sticky left column: overview + progress */}
           <aside className="lg:sticky lg:top-28 lg:self-start">
-            <div className="glass-card p-6">
+            <div
+              className="glass-card p-6 relative overflow-hidden"
+              style={{
+                border: `2px solid rgba(${accents["--accent-primary"]}, 0.45)`,
+                boxShadow: `0 18px 40px -22px rgba(${accents["--accent-primary"]}, 0.55)`,
+              }}
+            >
               <div
-                className="t-mono-sm mb-3"
+                aria-hidden
+                className="absolute left-0 top-0 bottom-0 w-1.5 pointer-events-none"
                 style={{
-                  color: "var(--accent-primary)",
-                  letterSpacing: "0.2em",
+                  background: `linear-gradient(180deg, rgb(${accents["--accent-primary"]}), rgb(${accents["--accent-secondary"]}))`,
+                  boxShadow: `0 0 14px rgba(${accents["--accent-primary"]}, 0.55)`,
+                }}
+              />
+              <div
+                className="t-mono-sm mb-3 font-bold inline-block px-2.5 py-1 rounded-md"
+                style={{
+                  color: "#fff",
+                  background: `linear-gradient(135deg, rgb(${accents["--accent-primary"]}), rgba(${accents["--accent-primary"]}, 0.78))`,
+                  letterSpacing: "0.22em",
+                  boxShadow: `0 6px 14px -6px rgba(${accents["--accent-primary"]}, 0.7)`,
                 }}
               >
                 PIPELINE
@@ -207,39 +223,50 @@ function StageCard({ stage, index, rgb }) {
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       className="glass-card p-6 md:p-8 relative overflow-hidden"
       style={{
-        // Subtle accent glow on the card so the color reads as a tint
-        // without overwhelming the prose.
-        boxShadow: `0 18px 48px -28px rgba(${rgb}, 0.55), 0 0 0 1px rgba(${rgb}, 0.18) inset`,
+        // Saturated 2px border in the stage's color, plus a coloured
+        // shadow so the card actually carries weight in light mode.
+        border: `2px solid rgba(${rgb}, 0.55)`,
+        boxShadow: `0 18px 40px -22px rgba(${rgb}, 0.7), 0 0 0 1px rgba(${rgb}, 0.25) inset`,
       }}
     >
-      {/* Soft accent wash in the top-right corner */}
+      {/* Thick coloured rail on the left edge so the card reads as
+          part of a coloured pipeline at a glance. */}
       <div
         aria-hidden
-        className="absolute top-0 right-0 w-48 h-48 rounded-full pointer-events-none"
+        className="absolute left-0 top-0 bottom-0 w-1.5 pointer-events-none"
         style={{
-          background: `radial-gradient(circle, rgba(${rgb}, 0.18), transparent 70%)`,
+          background: `linear-gradient(180deg, rgb(${rgb}), rgba(${rgb}, 0.6))`,
+          boxShadow: `0 0 16px rgba(${rgb}, 0.6)`,
+        }}
+      />
+
+      {/* Strong accent wash in the top-right corner. */}
+      <div
+        aria-hidden
+        className="absolute top-0 right-0 w-64 h-64 rounded-full pointer-events-none"
+        style={{
+          background: `radial-gradient(circle, rgba(${rgb}, 0.32), transparent 70%)`,
           transform: "translate(30%, -30%)",
         }}
       />
 
       <div className="relative flex items-start gap-4 mb-4">
         <div
-          className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+          className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
           style={{
-            background: `linear-gradient(135deg, rgba(${rgb}, 0.28), rgba(${rgb}, 0.12))`,
-            color: `rgb(${rgb})`,
-            border: `1px solid rgba(${rgb}, 0.45)`,
-            boxShadow: `0 8px 20px -10px rgba(${rgb}, 0.55)`,
+            background: `linear-gradient(135deg, rgb(${rgb}), rgba(${rgb}, 0.7))`,
+            color: "#fff",
+            boxShadow: `0 10px 24px -8px rgba(${rgb}, 0.75), 0 0 0 1px rgba(${rgb}, 1) inset`,
           }}
         >
-          <Icon size={20} strokeWidth={2.25} />
+          <Icon size={24} strokeWidth={2.4} />
         </div>
         <div className="flex-1 min-w-0">
           <div
-            className="t-mono-sm font-semibold"
+            className="t-mono-sm font-bold"
             style={{
               color: `rgb(${rgb})`,
-              letterSpacing: "0.18em",
+              letterSpacing: "0.2em",
             }}
           >
             STAGE {String(index + 1).padStart(2, "0")}
@@ -249,13 +276,12 @@ function StageCard({ stage, index, rgb }) {
           </h3>
         </div>
         <div
-          className="t-mono-sm shrink-0 px-3 py-1 rounded-full font-semibold"
+          className="t-mono-sm shrink-0 px-4 py-1.5 rounded-full font-bold"
           style={{
             color: "#fff",
-            background: `linear-gradient(135deg, rgba(${rgb}, 0.95), rgba(${rgb}, 0.75))`,
-            border: `1px solid rgba(${rgb}, 1)`,
-            letterSpacing: "0.12em",
-            boxShadow: `0 6px 16px -8px rgba(${rgb}, 0.6)`,
+            background: `linear-gradient(135deg, rgb(${rgb}), rgba(${rgb}, 0.78))`,
+            letterSpacing: "0.14em",
+            boxShadow: `0 8px 18px -6px rgba(${rgb}, 0.7), 0 0 0 1px rgba(${rgb}, 1) inset`,
           }}
         >
           {stage.metric}
