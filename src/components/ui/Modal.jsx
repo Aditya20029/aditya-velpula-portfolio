@@ -1,11 +1,20 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { EASE } from "@/utils/constants";
 
 export default function Modal({ open, onClose, layoutId, children, accentColor = "var(--accent-primary)" }) {
   const ref = useRef(null);
+  /* Render the modal as a portal under <body> so it escapes any parent
+     stacking contexts (Framer-Motion transforms, overflow:hidden sections,
+     etc.). Without this, sections later in the page can render on top
+     of the modal even at z-index 100. */
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -21,11 +30,13 @@ export default function Modal({ open, onClose, layoutId, children, accentColor =
     };
   }, [open, onClose]);
 
-  return (
+  if (!mounted) return null;
+
+  const tree = (
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8"
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -69,4 +80,6 @@ export default function Modal({ open, onClose, layoutId, children, accentColor =
       )}
     </AnimatePresence>
   );
+
+  return createPortal(tree, document.body);
 }
