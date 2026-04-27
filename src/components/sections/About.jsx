@@ -30,8 +30,12 @@ const IDENTITY_CARDS = [
 
 const TERMINAL_LINES = [
   { label: "ENGINEER", value: "Aditya Velpula" },
-  { label: "FOCUS", value: "Intelligent Systems" },
-  { label: "DOMAINS", value: "RAG • LLM • Cloud Infra" },
+  { label: "FOCUS", value: "AI Engineering · GenAI · Production ML" },
+  {
+    label: "DOMAINS",
+    value:
+      "LLM Systems · RAG · Vector Search · MLOps · Computer Vision · NLP · Cloud Data",
+  },
   { label: "EDUCATION", value: "M.S. Data Analytics (GMU)" },
   { label: "STATUS", value: "● ACTIVE", highlight: true },
 ];
@@ -147,7 +151,9 @@ export default function About() {
                       ACTIVE
                     </span>
                   ) : (
-                    <span className="text-[var(--text-primary)]">{line.value}</span>
+                    <span className="text-[var(--text-primary)] leading-relaxed">
+                      {line.value}
+                    </span>
                   )}
                 </motion.div>
               ))}
