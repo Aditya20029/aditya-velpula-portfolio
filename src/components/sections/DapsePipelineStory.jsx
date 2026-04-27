@@ -53,7 +53,7 @@ const STAGES = [
   {
     icon: ShieldCheck,
     label: "Verify",
-    metric: "75–80% cost cut",
+    metric: "75 to 80% cost cut",
     body:
       "Three-tier LLM verification: draft → critique → finalize. Automatic escalation only when the critique tier flags grounding issues. Cost drops dramatically vs. naive top-tier-only routing.",
   },

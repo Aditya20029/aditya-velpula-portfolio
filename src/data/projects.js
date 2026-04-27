@@ -20,7 +20,7 @@ export const projects = [
     previewType: "pipeline",
     accentColor: "--accent-primary",
     image: "/projects/dapse/scenario-tab.png",
-    imageAlt: "DAPSE scenario analysis interface — Arctic Policy Intelligence Engine",
+    imageAlt: "DAPSE scenario analysis interface, Arctic Policy Intelligence Engine",
     metrics: [
       { value: 224000, suffix: "+", label: "Embeddings indexed" },
       { value: 80, suffix: "+", label: "Backend modules" },
