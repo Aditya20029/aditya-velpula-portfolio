@@ -54,14 +54,15 @@
     var(--accent-secondary) 100%
   );
 
-  /* Holographic (saturated jewel) — 5-stop conic, pops on dark bg */
+  /* Holographic (high-contrast electric jewel) — 5-stop conic, pops
+     hard on dark bg. Each stop is a near-pure spectral color. */
   --gradient-holo: conic-gradient(
     from 180deg at 50% 50%,
-    #4ddcff 0%,
-    #a26bff 25%,
-    #ff5fc4 50%,
-    #ffb845 75%,
-    #4ddcff 100%
+    #00d8ff 0%,
+    #7b2bff 25%,
+    #ff0099 50%,
+    #ff9100 75%,
+    #00d8ff 100%
   );
 
   --context-tint: transparent;
@@ -813,22 +814,26 @@ a {
 /* Soft holographic text fill */
 .holo-text {
   background: var(--gradient-holo);
-  background-size: 250% 250%;
+  /* Tighter background size so more of the gradient's color range
+     actually appears within the text rather than landing on a single
+     stop. */
+  background-size: 180% 180%;
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
   animation: holo-drift 12s ease-in-out infinite;
-  filter: saturate(1.65) contrast(1.18) brightness(1.08);
-  /* Soft luminous halo so the gradient text reads as glowing on dark bg */
-  text-shadow:
-    0 0 24px rgba(167, 107, 255, 0.35),
-    0 0 48px rgba(255, 95, 196, 0.18);
+  /* Stack drop-shadows on top of the saturate/contrast pass so the
+     glow is colored *after* the gradient is sampled — keeps the bloom
+     iridescent instead of a flat purple wash. */
+  filter:
+    saturate(1.95) contrast(1.28) brightness(1.12)
+    drop-shadow(0 0 18px rgba(123, 43, 255, 0.55))
+    drop-shadow(0 0 36px rgba(255, 0, 153, 0.32));
 }
 :root[data-theme="light"] .holo-text {
   /* On light surfaces the halo would muddy the text, and contrast is
      fine without the brightness boost. */
   filter: saturate(1.4) contrast(1.1);
-  text-shadow: none;
 }
 
 /* Iridescent panel edge — use on a relative parent, creates a soft
