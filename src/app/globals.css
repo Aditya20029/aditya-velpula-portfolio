@@ -54,14 +54,14 @@
     var(--accent-secondary) 100%
   );
 
-  /* Soft holographic (pastel) — 5-stop conic */
+  /* Holographic (saturated jewel) — 5-stop conic, pops on dark bg */
   --gradient-holo: conic-gradient(
     from 180deg at 50% 50%,
-    #7cd4ff 0%,
-    #c4a7ff 25%,
-    #ff9ae6 50%,
-    #ffd88a 75%,
-    #7cd4ff 100%
+    #4ddcff 0%,
+    #a26bff 25%,
+    #ff5fc4 50%,
+    #ffb845 75%,
+    #4ddcff 100%
   );
 
   --context-tint: transparent;
@@ -818,7 +818,17 @@ a {
   -webkit-background-clip: text;
   color: transparent;
   animation: holo-drift 12s ease-in-out infinite;
-  filter: saturate(1.35) contrast(1.08);
+  filter: saturate(1.65) contrast(1.18) brightness(1.08);
+  /* Soft luminous halo so the gradient text reads as glowing on dark bg */
+  text-shadow:
+    0 0 24px rgba(167, 107, 255, 0.35),
+    0 0 48px rgba(255, 95, 196, 0.18);
+}
+:root[data-theme="light"] .holo-text {
+  /* On light surfaces the halo would muddy the text, and contrast is
+     fine without the brightness boost. */
+  filter: saturate(1.4) contrast(1.1);
+  text-shadow: none;
 }
 
 /* Iridescent panel edge — use on a relative parent, creates a soft
