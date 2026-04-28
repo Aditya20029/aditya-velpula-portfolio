@@ -15,8 +15,8 @@ const W_NODE = 280;
 const H_NODE = 58;
 
 const SPINE = [
-  { id: "sources", y: 20, label: "1,192 Policy Documents", sub: "raw input" },
-  { id: "chunking", y: 110, label: "Chunking Engine", sub: "25,565 chunks" },
+  { id: "sources", y: 20, label: "1,630 Policy Documents", sub: "raw input · 21 countries" },
+  { id: "chunking", y: 110, label: "Chunking Engine", sub: "257K chunks · 25,634 objectives" },
   { id: "vector", y: 200, label: "Vector Store", sub: "FAISS + BM25" },
   { id: "retrieval", y: 310, label: "Hybrid Retrieval", sub: "dense + lexical" },
   { id: "verify", y: 420, label: "Multi-tier LLM Verification", sub: "fact check" },

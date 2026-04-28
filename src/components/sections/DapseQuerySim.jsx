@@ -11,7 +11,7 @@ const STAGES = [
 ];
 
 const ANSWER =
-  "Arctic policy frameworks across 9 nations show divergent approaches to indigenous land rights. Canada and Norway emphasize co-management, while Russia prioritizes strategic resource access. Key risk factors include climate-driven displacement and treaty interpretation gaps.";
+  "Arctic policy frameworks across 21 countries show divergent approaches to indigenous land rights. Canada and Norway emphasize co-management, while Russia prioritizes strategic resource access. Key risk factors include climate-driven displacement and treaty interpretation gaps.";
 
 export default function DapseQuerySim() {
   const [stageIdx, setStageIdx] = useState(-1);

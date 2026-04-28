@@ -2,9 +2,9 @@ export const projects = [
   {
     id: "dapse",
     title: "DAPSE · Arctic Policy Intelligence Engine",
-    subtitle: "AI Engineer · NSI · Feb 2026 to Present",
+    subtitle: "AI Engineer · NSI Partner Org · Feb 2026 to Present",
     description:
-      "Production RAG platform supporting JAG officers analyzing Arctic geopolitical scenarios across nine nations. Five-layer FastAPI backend, ~15,000 lines of Python, 80+ modules. Hybrid retrieval (BM25 + FAISS + Exa.ai) fused via Reciprocal Rank Fusion, three-tier GPT-5 routing, and 12+ post-composition enforcement gates so unsupported claims never reach the response. Seven-stage scenario pipeline produces full intelligence reports under a 300s budget.",
+      "Production RAG backend for an AI-augmented JAG decision-support system, ingesting 1,630 policy sources across 21 countries into 257K embedded chunks and 25,634 extracted policy objectives. Hierarchical ingestion plus hybrid retrieval (BM25 + FAISS, 3-query rewrites, RRF K=60, AI reranker) hits nDCG@5 = 0.832 and Precision@5 = 0.954 on a 35-query golden set. Evidence-First reasoning (cluster to assert to authority to quote to render) eliminates citation drift; 1,481 tests certified the system for hand-off under DAPSE 3.0.",
     tags: [
       "Python",
       "FastAPI",
@@ -22,8 +22,9 @@ export const projects = [
     image: "/projects/dapse/scenario-tab.png",
     imageAlt: "DAPSE scenario analysis interface, Arctic Policy Intelligence Engine",
     metrics: [
-      { value: 224000, suffix: "+", label: "Embeddings indexed" },
-      { value: 80, suffix: "+", label: "Backend modules" },
+      { value: 257000, label: "Chunks indexed" },
+      { value: 1630, label: "Policy sources" },
+      { value: 21, label: "Countries covered" },
     ],
     github: null,
   },

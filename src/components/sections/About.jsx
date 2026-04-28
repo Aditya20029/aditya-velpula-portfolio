@@ -22,7 +22,7 @@ const IDENTITY_CARDS = [
   },
   {
     icon: BarChart3,
-    text: "1,192 Policy Sources → Actionable Intelligence",
+    text: "1,630 Policy Sources → Actionable Intelligence",
     from: { x: -80, y: 80 },
     delay: 0.24,
   },

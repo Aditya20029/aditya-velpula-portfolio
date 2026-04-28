@@ -2,9 +2,9 @@
 import { motion } from "framer-motion";
 
 const ITEMS = [
-  "RAG", "LLMs", "AWS", "Python", "LangChain", "FAISS", "FastAPI",
-  "Docker", "TensorFlow", "PyTorch", "Spark", "Pandas", "GPT-4", "Claude",
-  "SQL", "Airflow", "MLflow", "Kubernetes", "Terraform", "Pinecone",
+  "RAG", "LLMs", "Python", "FastAPI", "FAISS", "BM25", "GPT-5", "Claude",
+  "Langfuse", "Prometheus", "AWS", "Snowflake", "Azure", "Docker", "Spark",
+  "Airflow", "Pandas", "PySpark", "Scikit-learn", "SQL", "Next.js", "React",
 ];
 
 export default function TechMarquee() {

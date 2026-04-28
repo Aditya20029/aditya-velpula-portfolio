@@ -21,9 +21,9 @@ const NAME_START = 2.5;
 const TAGLINE_START_MS = 3550;
 
 const HERO_PROOF = [
-  { value: "25,565", label: "Chunks Processed" },
-  { value: "1,192", label: "Policy Sources" },
-  { value: "75-80%", label: "LLM Cost Reduction" },
+  { value: "257K", label: "Chunks Indexed" },
+  { value: "1,630", label: "Policy Sources" },
+  { value: "0.954", label: "Precision@5" },
 ];
 
 export default function Hero() {

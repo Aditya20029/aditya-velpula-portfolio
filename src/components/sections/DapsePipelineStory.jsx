@@ -26,18 +26,18 @@ const STAGES = [
   {
     icon: FileText,
     label: "Ingest",
-    metric: "1,192 sources",
+    metric: "1,630 sources",
     accent: "--accent-primary", // electric blue
     body:
-      "519 government documents + 673 supporting analyses, across 9 Arctic nations. Pulled into a normalized format with provenance tagging on every artifact.",
+      "PDF, HTML, and DOCX policy documents pulled from 21 countries, then cleaned and normalized into a single schema with provenance tagging on every artifact. The catalog grew through the DAPSE 3.0 hand-off cycle.",
   },
   {
     icon: Layers,
     label: "Chunk",
-    metric: "25,565 chunks",
+    metric: "257K chunks",
     accent: "--accent-tertiary", // royal purple
     body:
-      "Section-aware segmentation with parent-child chunking. Policy docs are full of structural meaning (treaty articles, footnotes, schedules), so naive paragraph splits would wreck retrieval.",
+      "Section-aware segmentation with parent-child chunking, plus contextual headers prepended before embedding. Policy docs are full of structural meaning (treaty articles, footnotes, schedules), so naive paragraph splits would wreck retrieval. 25,634 policy objectives are extracted from the same pass.",
   },
   {
     icon: Database,
@@ -50,26 +50,26 @@ const STAGES = [
   {
     icon: Search,
     label: "Hybrid Retrieve",
-    metric: "Reciprocal Rank Fusion",
+    metric: "nDCG@5 = 0.832",
     accent: "--accent-warm", // burnt amber
     body:
-      "Multi-query rewriting hits BM25 + FAISS + Exa.ai neural web search in parallel. Results blend through Reciprocal Rank Fusion so we get lexical precision and semantic recall.",
+      "Three rewritten queries per request hit BM25 and FAISS in parallel, blend through Reciprocal Rank Fusion (K=60), and finish with an AI reranker. On a 35-query golden eval set the pipeline lands nDCG@5 = 0.832 and Precision@5 = 0.954.",
   },
   {
     icon: ShieldCheck,
     label: "Verify",
-    metric: "75 to 80% cost cut",
+    metric: "4-tier authority + 5 gates",
     accent: "--accent-coral", // deep cyan-teal
     body:
-      "Three-tier LLM verification: draft → critique → finalize. Automatic escalation only when the critique tier flags grounding issues. Cost drops dramatically vs. naive top-tier-only routing.",
+      "Every source carries a tier (binding legal, official non-binding, trusted secondary, other). The tier rides through retrieval, reranking, and composition, then 5 quality gates downgrade or kill any finding that doesn't hold up. Evidence-First reasoning enforces a 3-sentence BLUF cap on every brief.",
   },
   {
     icon: Send,
     label: "Respond",
-    metric: "Citations always",
+    metric: "DOCX brief + 7-tab dashboard",
     accent: "--accent-secondary", // magenta
     body:
-      "Every claim in the response is grounded in a retrieved chunk with a clickable citation. Hallucinations are blocked at the verification gate, not patched in the UI.",
+      "Every claim in the response traces back to a retrieved chunk with a clickable citation. Briefs export as DOCX legal memos and feed a 7-tab Next.js situation-awareness dashboard. 1,481 passing tests certified the system for hand-off under DAPSE 3.0.",
   },
 ];
 

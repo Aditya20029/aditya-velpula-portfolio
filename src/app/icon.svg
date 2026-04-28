@@ -1,0 +1,76 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 64 64"
+  width="64"
+  height="64"
+  shape-rendering="geometricPrecision"
+>
+  <!--
+    AV monogram favicon for adityavelpula.com.
+    - 64×64 viewBox so the strokes stay crisp when downscaled to 16×16
+      and 32×32 in browser tabs.
+    - Rounded-square plate in a deep navy so the mark reads on both
+      light and dark browser chrome.
+    - The mark itself is a stylized "A" whose right leg tips outward
+      to form a "V" tail, creating the AV monogram as a single
+      continuous letterform. Filled with the site's iridescent
+      cyan→purple→magenta→amber gradient so it ties to the hero.
+  -->
+
+  <defs>
+    <!-- Deep navy plate, slightly inset highlight for depth -->
+    <linearGradient id="plate" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0e1530" />
+      <stop offset="100%" stop-color="#070a1c" />
+    </linearGradient>
+
+    <!-- Site holo gradient: cyan → purple → magenta → amber -->
+    <linearGradient id="ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00d8ff" />
+      <stop offset="42%" stop-color="#7b2bff" />
+      <stop offset="72%" stop-color="#ff0099" />
+      <stop offset="100%" stop-color="#ff9100" />
+    </linearGradient>
+
+    <!-- Soft inner glow so the mark blooms slightly on dark chrome -->
+    <filter id="bloom" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="0.6" />
+    </filter>
+  </defs>
+
+  <!-- Plate -->
+  <rect x="0" y="0" width="64" height="64" rx="14" ry="14" fill="url(#plate)" />
+
+  <!-- Subtle accent ring on the inside edge -->
+  <rect
+    x="1.25"
+    y="1.25"
+    width="61.5"
+    height="61.5"
+    rx="12.75"
+    ry="12.75"
+    fill="none"
+    stroke="rgba(123, 43, 255, 0.28)"
+    stroke-width="0.75"
+  />
+
+  <!-- AV monogram. Built as a single path:
+       A peaked at top-center with two legs going outward, a horizontal
+       crossbar, and a small inverted V tucked under the crossbar so
+       the silhouette reads as A and V interlocked. -->
+  <g filter="url(#bloom)">
+    <path
+      d="M32 12 L48 50 L42 50 L37.5 40 L26.5 40 L22 50 L16 50 Z M28.6 35 L35.4 35 L32 27 Z"
+      fill="url(#ink)"
+    />
+    <!-- Inset V mark inside the A's counter, tying A and V together -->
+    <path
+      d="M27 44 L32 52 L37 44"
+      fill="none"
+      stroke="url(#ink)"
+      stroke-width="2.4"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </g>
+</svg>
