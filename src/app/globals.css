@@ -156,6 +156,18 @@ body {
     color 600ms var(--ease-smooth);
 }
 
+/* Global 20% zoom-out so everything (typography, padding, images,
+   containers) scales down proportionally on first paint. zoom is
+   widely supported in Chromium / Safari / Firefox 126+ and is the
+   simplest knob for "make the whole site read smaller" without
+   re-tuning every clamp() in the type scale. Mobile is exempted
+   because px sizes there are already at the clamp minimums. */
+@media (min-width: 768px) {
+  body {
+    zoom: 0.8;
+  }
+}
+
 @media (pointer: fine) {
   html.has-custom-cursor,
   html.has-custom-cursor * {
