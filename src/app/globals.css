@@ -164,7 +164,7 @@ body {
    because px sizes there are already at the clamp minimums. */
 @media (min-width: 768px) {
   body {
-    zoom: 0.8;
+    zoom: 0.84;
   }
 }
 
