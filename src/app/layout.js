@@ -48,9 +48,9 @@ export const metadata = {
 };
 
 export const viewport = {
-  /* Light theme is the default for first-time visitors, so the mobile
+  /* Dark theme is the default for first-time visitors, so the mobile
      chrome / Safari status bar should match. */
-  themeColor: "#f3f5fb",
+  themeColor: "#07070d",
 };
 
 const criticalShellCss = `
@@ -100,15 +100,15 @@ const criticalShellCss = `
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-theme="light">
+    <html lang="en" data-theme="dark">
       <head>
         <style
           id="critical-shell"
           dangerouslySetInnerHTML={{ __html: criticalShellCss }}
         />
         {/* Apply the user's stored theme synchronously *before* first
-            paint so returning dark-mode visitors don't flash light.
-            New visitors fall through to the SSR default ("light"). */}
+            paint so returning light-mode visitors don't flash dark.
+            New visitors fall through to the SSR default ("dark"). */}
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem("av-theme");if(t==="dark"||t==="light"){document.documentElement.setAttribute("data-theme",t);}}catch(e){}})();`,
