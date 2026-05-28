@@ -6,20 +6,20 @@
 export const caseStudies = {
   "dapse": {
     title: "DAPSE · Arctic Policy Intelligence Engine",
-    subtitle: "AI Engineer · NSI Partner Org · Feb 2026 to Present",
+    subtitle: "AI Engineer · NSI Apprenticeship via GMU · Jan to May 2026",
     accent: "--accent-primary",
     problem:
       "JAG officers reasoning about Arctic policy across 21 countries don't have weeks to read treaty law before they answer a question. Off-the-shelf RAG was the obvious starting point, but it kept hallucinating citations the moment the legal text got dense, and stitching together unclassified policy documents in a dozen inconsistent formats was eating most of the analyst's time. We needed grounded legal intelligence in minutes, and we needed it to never invent a citation that wasn't already sitting in the corpus, defensible enough to ship under the DAPSE 3.0 program.",
     decision:
-      "I architected the backend RAG pipeline as a hierarchical ingestion + hybrid retrieval + Evidence-First reasoning stack on FastAPI. 1,630 policy sources across 21 countries get chunked into 257K embedded units and 25,634 extracted policy objectives. Retrieval is BM25 + FAISS with 3-query rewrites, RRF fusion (K=60), and an AI reranker. A 4-tier authority-weighting framework propagates source credibility through retrieval, reranking, composition, and 5 downstream quality gates so an unsupported finding never makes it into a JAG-grade brief.",
+      "I architected the backend RAG pipeline as a hybrid search engine plus an async LLM orchestration layer, both sitting under a FastAPI service shipped to a GMU OpenStack VM. 1,630 policy sources across 21 countries get chunked into 257K embedded units and 25,634 extracted policy objectives. Retrieval is SQLite FTS5 (lexical) + FAISS (dense) blended via Reciprocal Rank Fusion, with authority-weighted reranking and self-correcting retrieval loops (the pipeline detects low-confidence results, rewrites the query, and retries before anything reaches the LLM). End users save an estimated 90% on policy-lookup time.",
     architecture: [
-      "Hierarchical ingestion: PDF, HTML, and DOCX sources flow through cleaning, then section segmentation, then parent-child chunking, then FAISS + BM25 indexing. Contextual chunk headers are prepended before embedding so the dense-vector signal doesn't lose its parent context, which lifted retrieval precision noticeably.",
-      "Hybrid retrieval blends BM25 (lexical) and FAISS (dense semantic) with three rewritten queries per request, fused via Reciprocal Rank Fusion (K=60) and finished with an AI reranker. On a 35-query golden evaluation set the pipeline lands nDCG@5 = 0.832 and Precision@5 = 0.954.",
+      "Hybrid search engine: SQLite FTS5 (lexical) + FAISS (dense semantic) blended via Reciprocal Rank Fusion. Authority-weighted reranking sits on top, plus self-correcting retrieval loops that detect low-confidence results, rewrite the query, and retry before anything reaches the LLM.",
+      "Hand-built evaluation suite drove every retrieval decision. Curated query-answer pairs with human-verified relevant passages mapped to specific source documents. Took longer to assemble than any model training, but it was the highest-leverage artifact on the project. The pipeline lands nDCG@5 = 0.832 and Precision@5 = 0.954 on that suite.",
       "4-tier authority-weighting framework: binding legal, official non-binding, trusted secondary, other. The tier rides every source through retrieval, reranking, and composition, and gates 5 downstream quality checks that enforce JAG-grade defensibility (any [LAW]-tagged finding that cites only non-binding sources gets downgraded automatically).",
       "Evidence-First reasoning: cluster, assert, authority, quote, render. The composer doesn't see raw chunks; it sees atomic assertions tied back to specific spans, so hallucinated citations have nowhere to enter the report. A 3-sentence BLUF cap is enforced on every generated brief.",
-      "GPT-5 model lineup wired into the pipeline: gpt-5-nano for structured-JSON work (parsing, evaluation, verification, reranker rubric), gpt-5-mini for prose generation, gpt-5.1-chat for escalation when the verifier flags a HIGH-severity issue. Each model has a fallback chain so a single rate limit can't take the system down.",
-      "Data layer is SQLite in WAL mode plus a FAISS IVF index. Langfuse traces every LLM call (token, latency, reasoning, cost) and Prometheus exposes /metrics for HTTP histograms and in-flight gauges. DOCX-exportable briefs feed a 7-tab Next.js situation-awareness dashboard so analysts get the same evidence chain in legal memo form and in interactive UI form.",
-      "1,481 passing tests across retrieval, scoring, and composition modules certified the system for hand-off to NSI under DAPSE 3.0. Coverage included tier-propagation invariants, RRF-stability checks, BLUF-cap enforcement, and authority-downgrade integration tests so regressions in the JAG-grade defensibility properties surface in CI before they reach an analyst.",
+      "7-stage async LLM orchestration pipeline on the OpenAI SDK with checkpoint recovery and per-model circuit breakers. GPT-5 model lineup: nano for structured-JSON work (parsing, evaluation, verification), mini for prose, 5.1-chat as the escalation tier. Routing simple queries to gpt-5-nano cut average API cost about 80%.",
+      "Production deployment: GMU OpenStack VM, FastAPI service with Server-Sent Events for streaming responses, Docker behind nginx, token auth, and rate limiting. Langfuse traces every LLM call (tokens, latency, reasoning, cost); Prometheus exposes /metrics for HTTP histograms and in-flight gauges.",
+      "1,481 passing tests across retrieval, scoring, composition, and orchestration certified the system for hand-off to NSI under DAPSE 3.0. Coverage included tier-propagation invariants, RRF-stability checks, BLUF-cap enforcement, and self-correcting retry integration tests so regressions in the JAG-grade defensibility properties surface in CI before they reach an analyst.",
     ],
     tried: [
       "First retrieval iteration was pure dense FAISS over chunked text. It missed citation-precise legal language constantly because a treaty article and a paraphrased academic summary embed too close together. Adding BM25 with IDF-weighted query construction and blending via RRF (K=60) was the single biggest precision lift; pure dense or pure lexical alone never matched the hybrid on the golden eval.",
@@ -28,7 +28,7 @@ export const caseStudies = {
       "Single-tier verification (one big LLM call after retrieval) was slow and expensive without raising accuracy. Splitting the work across the GPT-5 lineup (nano for verification, mini for prose, 5.1-chat as escalation only on HIGH-severity flags) cut spend dramatically while keeping the quality safety net.",
       "Trusting LLM-generated quotes was a non-starter. The Snippet Provenance check now fuzzy-matches every quoted span against the evidence pack and rewrites or downgrades any finding whose quote got paraphrased into something the source never said.",
     ],
-    metric: { value: "0.954", label: "Precision@5 on the 35-query golden evaluation set" },
+    metric: { value: "90%", label: "Policy-lookup time saved for end users" },
     screenshots: [
       {
         src: "/projects/dapse/scenario-tab.png",
@@ -64,15 +64,17 @@ export const caseStudies = {
     stack: [
       "Python",
       "FastAPI",
-      "SQLite (WAL)",
-      "FAISS IVF",
-      "BM25",
-      "OpenAI GPT-5 (nano / mini / 5.1-chat)",
+      "SSE",
+      "FAISS",
+      "SQLite FTS5",
+      "OpenAI SDK",
+      "GPT-5 (nano / mini / 5.1-chat)",
       "Reciprocal Rank Fusion",
-      "AI Reranker",
       "Langfuse",
       "Prometheus",
-      "Next.js",
+      "Docker",
+      "nginx",
+      "OpenStack",
     ],
   },
 
@@ -155,7 +157,7 @@ export const caseStudies = {
     problem:
       "Off-the-shelf OCR is solved on clean documents and very much not solved on a real license plate at dusk, photographed at an angle, with a glare strip across half the characters. Most reference pipelines either have the detection model bolted to a rigid OCR with no preprocessing, or they preprocess so aggressively that they destroy the very characters they're trying to read. I wanted a pipeline that handles the full real-world variability without leaning on a single component to do it all.",
     decision:
-      "Split the work cleanly: YOLO for plate localization (it's good at finding rectangles), OpenCV for the messy preprocessing in between, and an OCR engine for the final character read. Tune each stage on the part of the data it actually struggles with rather than treating the pipeline as a black box.",
+      "Split the work cleanly: YOLO for plate localization (it's good at finding rectangles), OpenCV for the messy preprocessing in between, and Tesseract OCR for the final character read. Tune each stage on the part of the data it actually struggles with rather than treating the pipeline as a black box. (B.Tech capstone project.)",
     architecture: [
       "YOLO object detector trained to localize the plate inside the full frame with a tight bounding box. Iterated through dataset augmentation (rotation, brightness, motion blur) and bounding-box refinement until detection held up on hard frames.",
       "OpenCV preprocessing: perspective correction, adaptive thresholding, and morphological cleanup so the plate looks more like the OCR engine's training distribution.",
@@ -198,26 +200,26 @@ export const caseStudies = {
 
   "obesity-analytics": {
     title: "Obesity Risk Analytics",
-    subtitle: "End-to-End AWS Data Pipeline",
+    subtitle: "End-to-End AWS Data Pipeline · Aug to Dec 2024",
     accent: "--accent-primary",
     problem:
-      "Health risk data lives in one format on the clinical side, another on the public-health side, and a third inside whatever spreadsheet a researcher built last quarter. Building a useful obesity-risk dashboard means stitching all of that together repeatedly, and a local Python notebook isn't a real answer once anyone else needs to refresh the numbers.",
+      "CDC BRFSS (Behavioral Risk Factor Surveillance System) data lives across years of survey responses with shifting schemas and inconsistent encoding. Building a useful county-level obesity-risk view means stitching all of that together repeatedly, and a local Python notebook isn't a real answer once anyone else (a colleague, an advisor, a reviewer) needs to refresh the numbers.",
     decision:
-      "Move the entire pipeline into AWS so ingestion, transformation, query, and visualization all live in one cloud-native stack and survive someone else clicking refresh. S3 for raw and curated zones, Glue for the ETL, Athena for the query layer, and QuickSight for the dashboards.",
+      "Build a cloud-native AWS pipeline so ingestion, transformation, and analytical storage all live in one place and survive someone else clicking refresh. S3 for landing zones, AWS Glue DataBrew for the ETL, and RDS as the analytical store for downstream modeling in Python and R. Supervised by Prof. Harry Foxwell at George Mason University.",
     architecture: [
-      "S3 bucket layout split into raw / staging / curated zones so a bad upload never silently corrupts the dashboards. Lifecycle rules expire the raw zone after a retention window.",
-      "AWS Glue jobs handle the ETL: type coercion, unit normalization, deduplication, and a derived risk-score column based on standard BMI plus comorbidity flags.",
-      "Athena sits on the curated parquet so analysts can run SQL directly without spinning up a database. Partitioned by ingestion date for predictable query cost.",
-      "QuickSight dashboards bind to Athena views: population risk distribution, geographic heatmap, and a real-time drill-down on flagged high-risk cohorts.",
-      "Python glue script (run from a small EC2 / Lambda combo) for the steps that don't fit Glue's templates well, e.g. cross-source deduplication.",
+      "S3 ingestion of CDC BRFSS survey data across multiple years, with the bucket layout split into raw / staging / curated zones so a bad upload never silently corrupts the analytical layer.",
+      "AWS Glue DataBrew handles schema standardization and null-handling across years of survey responses. Type coercion, unit normalization, and deduplication land the data in a model-ready shape.",
+      "RDS holds the curated tables so the analytical layer is queryable from both Python (Pandas, Seaborn, Scikit-learn) and R (tidyverse, ggplot2) without spinning up extra infrastructure.",
+      "Modeling layer compares three families: regression (linear + regularized) as an interpretable baseline, Random Forest for non-linear interactions and feature importance ranking, and ARIMA for time-series forecasting of obesity trend trajectories.",
+      "Output: county-level risk factors plus multi-year obesity-trend forecasts that could inform public-health resource allocation. End-to-end ownership from raw CDC data to predictive outputs.",
     ],
     tried: [
-      "First version was a local Python notebook that everything ran out of. Worked for me, didn't survive the second person trying to use it. Migrating to S3 + Glue made the pipeline reproducible by anyone with IAM access.",
-      "Tried storing curated data as CSV in S3 to keep things simple. Athena cost and scan time both spiked. Switched to Parquet with partitioning and per-query cost dropped sharply.",
-      "Initial QuickSight dashboards queried raw tables directly. Refresh times were painful for end users. Materialized views in the curated zone fixed that without changing the dashboard configs.",
+      "First iteration was a local Python notebook that everything ran out of. Worked for me, didn't survive the second person trying to use it. Migrating to S3 + Glue DataBrew made the pipeline reproducible by anyone with IAM access.",
+      "Tried doing all the EDA in Python and skipping R. R's tidyverse + ggplot2 were genuinely faster for the exploratory pass, so the analysis ended up dual-stack instead of single-stack.",
+      "First ARIMA pass naively used yearly aggregates without accounting for missing-year survey gaps. The forecast wobbled. Interpolating missing years with a simple state-level prior gave cleaner trajectories without overfitting the limited series length.",
     ],
-    metric: { value: "S3 → Glue → Athena → QuickSight", label: "Cloud-native pipeline, fully reproducible" },
-    stack: ["AWS", "S3", "Glue", "Athena", "QuickSight", "Python", "Parquet", "SQL"],
+    metric: { value: "S3 → Glue DataBrew → RDS", label: "Cloud-native pipeline, fully reproducible" },
+    stack: ["AWS", "S3", "Glue DataBrew", "RDS", "Python", "R", "Pandas", "Scikit-learn", "tidyverse", "ggplot2", "ARIMA"],
   },
 
   "support-circle": {

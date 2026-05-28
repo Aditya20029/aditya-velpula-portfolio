@@ -100,6 +100,16 @@ export const certifications = [
     hours: "40 hours",
     verifyUrl: "https://www.credly.com/go/1IPtFfxc",
   },
+  {
+    id: "aws-academy-cloud",
+    name: "Cloud Foundations",
+    subtitle: "Academy Graduate",
+    fullName: "AWS Academy Graduate · Cloud Foundations",
+    issuer: "AWS Academy",
+    tier: "academy",
+    issued: "May 2025",
+    verifyUrl: "https://www.credly.com/",
+  },
 ];
 
 export const CERT_COUNT = certifications.length;

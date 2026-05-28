@@ -2,29 +2,30 @@ export const projects = [
   {
     id: "dapse",
     title: "DAPSE · Arctic Policy Intelligence Engine",
-    subtitle: "AI Engineer · NSI Partner Org · Feb 2026 to Present",
+    subtitle: "AI Engineer · NSI Apprenticeship · Jan to May 2026",
     description:
-      "Production RAG backend for an AI-augmented JAG decision-support system, ingesting 1,630 policy sources across 21 countries into 257K embedded chunks and 25,634 extracted policy objectives. Hierarchical ingestion plus hybrid retrieval (BM25 + FAISS, 3-query rewrites, RRF K=60, AI reranker) hits nDCG@5 = 0.832 and Precision@5 = 0.954 on a 35-query golden set. Evidence-First reasoning (cluster to assert to authority to quote to render) eliminates citation drift; 1,481 tests certified the system for hand-off under DAPSE 3.0.",
+      "Production RAG backend for a national-security JAG decision-support system, ingesting 1,630 policy sources across 21 countries into 257K embedded chunks. Saves an estimated 90% on policy-lookup time for end users. Hybrid search (SQLite FTS5 + FAISS + RRF) with authority-weighted reranking and self-correcting retrieval loops hits nDCG@5 = 0.832 and Precision@5 = 0.954 on a hand-built eval suite. 7-stage async LLM pipeline on the OpenAI SDK with checkpoint recovery and per-model circuit breakers; routing simple queries to GPT-5-nano cut average API cost ~80%. Shipped to a GMU OpenStack VM (FastAPI + SSE, Docker behind nginx) and certified for NSI hand-off via 1,481 automated tests.",
     tags: [
       "Python",
       "FastAPI",
+      "SSE",
       "FAISS",
-      "BM25",
-      "OpenAI GPT-5",
-      "Exa.ai",
+      "SQLite FTS5",
+      "OpenAI SDK",
+      "GPT-5",
       "RAG",
       "Langfuse",
-      "SQLite",
-      "Pydantic v2",
+      "Docker",
+      "nginx",
     ],
     previewType: "pipeline",
     accentColor: "--accent-primary",
     image: "/projects/dapse/scenario-tab.png",
     imageAlt: "DAPSE scenario analysis interface, Arctic Policy Intelligence Engine",
     metrics: [
+      { value: "90%", label: "Policy-lookup time saved" },
+      { value: 1630, label: "Policy sources · 21 countries" },
       { value: 257000, label: "Chunks indexed" },
-      { value: 1630, label: "Policy sources" },
-      { value: 21, label: "Countries covered" },
     ],
     github: null,
   },
@@ -69,10 +70,10 @@ export const projects = [
   {
     id: "license-plate-detection",
     title: "License Plate Detection",
-    subtitle: "Real-Time YOLO + OCR Pipeline",
+    subtitle: "Real-Time YOLO + Tesseract OCR Pipeline",
     description:
-      "Real-time license plate recognition combining YOLO object detection, OCR, and OpenCV image preprocessing. Peak detection accuracy achieved through dataset augmentation, bounding-box refinement, and localisation tuning. Senior-year capstone.",
-    tags: ["Python", "YOLO", "OCR", "OpenCV", "Computer Vision", "Deep Learning"],
+      "Real-time license plate recognition combining YOLO object localization with Tesseract OCR for character extraction, plus OpenCV preprocessing (binarization, denoising, perspective correction) for plates under motion blur or low contrast. Boosted detection accuracy through dataset augmentation and bounding-box refinement. B.Tech capstone project.",
+    tags: ["Python", "YOLO", "Tesseract OCR", "OpenCV", "Computer Vision", "Deep Learning"],
     previewType: "plate",
     accentColor: "--accent-coral",     // deep cyan-teal
     metrics: [],
@@ -93,10 +94,10 @@ export const projects = [
   {
     id: "obesity-analytics",
     title: "Obesity Risk Analytics",
-    subtitle: "End-to-End AWS Data Pipeline",
+    subtitle: "End-to-End AWS Data Pipeline · Prof. Foxwell",
     description:
-      "Cloud-native data pipeline for health-risk prediction using AWS services. Raw records flow through S3 → Glue ETL → Athena queries → QuickSight dashboards, enabling real-time risk scoring and visualisation.",
-    tags: ["AWS", "S3", "Glue", "Athena", "QuickSight", "Python"],
+      "Cloud-native data pipeline predicting county-level obesity trends from CDC BRFSS data, supervised by Prof. Harry Foxwell at GMU. Raw records flow through S3 → AWS Glue DataBrew → RDS, then EDA and modeling in Python (Pandas, Seaborn, Scikit-learn) and R (tidyverse, ggplot2). Three model families compared: regression (interpretable baseline), Random Forest (non-linear + importance ranking), and ARIMA (trend forecasting). End-to-end ownership from raw CDC data to predictive outputs.",
+    tags: ["AWS", "S3", "Glue DataBrew", "RDS", "Python", "R", "ARIMA"],
     previewType: "pipeline",
     accentColor: "--accent-primary",   // electric blue
     metrics: [],

@@ -42,10 +42,10 @@ const STAGES = [
   {
     icon: Database,
     label: "Embed + Index",
-    metric: "1,536-dim vectors",
+    metric: "FAISS + SQLite FTS5",
     accent: "--accent-success", // emerald
     body:
-      "OpenAI embeddings stored in FAISS, with a BM25 lexical sidecar over the same chunks. Two indexes, one query plane.",
+      "OpenAI embeddings stored in FAISS for dense semantic search. SQLite FTS5 provides the lexical sidecar over the same chunks. Two indexes, one query plane, both on the same VM.",
   },
   {
     icon: Search,
@@ -53,7 +53,7 @@ const STAGES = [
     metric: "nDCG@5 = 0.832",
     accent: "--accent-warm", // burnt amber
     body:
-      "Three rewritten queries per request hit BM25 and FAISS in parallel, blend through Reciprocal Rank Fusion (K=60), and finish with an AI reranker. On a 35-query golden eval set the pipeline lands nDCG@5 = 0.832 and Precision@5 = 0.954.",
+      "FTS5 + FAISS results blend through Reciprocal Rank Fusion, with authority-weighted reranking on top. Self-correcting retrieval loops detect low-confidence results, rewrite the query, and retry before anything reaches the LLM. Lands nDCG@5 = 0.832 and Precision@5 = 0.954 on the hand-built eval suite.",
   },
   {
     icon: ShieldCheck,
@@ -66,10 +66,10 @@ const STAGES = [
   {
     icon: Send,
     label: "Respond",
-    metric: "DOCX brief + 7-tab dashboard",
+    metric: "90% lookup time saved",
     accent: "--accent-secondary", // magenta
     body:
-      "Every claim in the response traces back to a retrieved chunk with a clickable citation. Briefs export as DOCX legal memos and feed a 7-tab Next.js situation-awareness dashboard. 1,481 passing tests certified the system for hand-off under DAPSE 3.0.",
+      "FastAPI + SSE streams the response token-by-token from a GMU OpenStack VM behind Docker + nginx. Every claim traces back to a retrieved chunk with a clickable citation. Saves an estimated 90% on policy-lookup time vs. the manual workflow; 1,481 passing tests certified the system for hand-off under DAPSE 3.0.",
   },
 ];
 

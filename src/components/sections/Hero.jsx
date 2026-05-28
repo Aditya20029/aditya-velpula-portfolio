@@ -21,8 +21,8 @@ const NAME_START = 2.5;
 const TAGLINE_START_MS = 3550;
 
 const HERO_PROOF = [
-  { value: "257K", label: "Chunks Indexed" },
-  { value: "1,630", label: "Policy Sources" },
+  { value: "90%", label: "Policy-Lookup Time Saved" },
+  { value: "1,630", label: "Policy Sources · 21 Countries" },
   { value: "0.954", label: "Precision@5" },
 ];
 

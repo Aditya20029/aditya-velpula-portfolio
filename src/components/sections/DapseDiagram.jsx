@@ -17,7 +17,7 @@ const H_NODE = 58;
 const SPINE = [
   { id: "sources", y: 20, label: "1,630 Policy Documents", sub: "raw input · 21 countries" },
   { id: "chunking", y: 110, label: "Chunking Engine", sub: "257K chunks · 25,634 objectives" },
-  { id: "vector", y: 200, label: "Vector Store", sub: "FAISS + BM25" },
+  { id: "vector", y: 200, label: "Vector Store", sub: "FAISS + SQLite FTS5" },
   { id: "retrieval", y: 310, label: "Hybrid Retrieval", sub: "dense + lexical" },
   { id: "verify", y: 420, label: "Multi-tier LLM Verification", sub: "fact check" },
   { id: "output", y: 530, label: "Structured Response + Citations", sub: "output" },
