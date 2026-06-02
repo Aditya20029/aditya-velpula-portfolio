@@ -1,5 +1,37 @@
 export const projects = [
   {
+    id: "pulse",
+    title: "Pulse · Real-Time Global News Intelligence Globe",
+    subtitle: "Solo Build · Live at global-pulse-ai.site · Apr 2026 to Present",
+    description:
+      "Public 3D-Earth platform that aggregates 1,000+ live events from 45+ sources (GDELT 2.0, 45 subreddits, 45+ RSS feeds including Reuters, BBC, AP, Al Jazeera, NHK, Hacker News), geolocates and clusters them onto the globe, and streams Claude Opus 4.7 analyst briefings (what happened, why it matters, key actors, severity, 12-hour forecast) on cluster click. Next.js 16 + React 19 + Three.js with 8K NASA textures and custom GLSL shaders for day/night terminator, atmosphere, and sentiment-reactive auroras. Fingerprint cache + per-IP rate limit + lazy AI keep the Claude bill sane.",
+    tags: [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "Three.js",
+      "react-three-fiber",
+      "GLSL Shaders",
+      "Claude Opus 4.7",
+      "Zustand",
+      "SWR",
+      "GDELT 2.0",
+      "Tailwind",
+      "Vercel",
+    ],
+    previewType: "grid",
+    accentColor: "--accent-tertiary",
+    image: "/projects/pulse/globe.png",
+    imageAlt: "Pulse 3D news-intelligence globe with live event clusters",
+    demo: "https://global-pulse-ai.site/",
+    metrics: [
+      { value: 1000, suffix: "+", label: "Live events surfaced" },
+      { value: 45, suffix: "+", label: "News sources fused" },
+      { value: "~1s", label: "First briefing token" },
+    ],
+    github: null,
+  },
+  {
     id: "dapse",
     title: "DAPSE · Arctic Policy Intelligence Engine",
     subtitle: "AI Engineer · NSI Apprenticeship · Jan to May 2026",

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Github } from "lucide-react";
+import { ArrowLeft, Github, ExternalLink } from "lucide-react";
 import fs from "node:fs";
 import path from "node:path";
 import {
@@ -162,17 +162,34 @@ export default function ProjectCaseStudy({ params }) {
             </div>
           </div>
 
-          {/* Source CTA */}
-          {project?.github && (
-            <div className="mt-14">
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-[var(--border-hover)] bg-[var(--surface-glass)] t-mono-sm hover:border-[var(--border-active)] transition-colors"
-              >
-                <Github size={14} /> Source on GitHub
-              </a>
+          {/* CTAs: live demo (if deployed) + source (if open) */}
+          {(project?.demo || project?.github) && (
+            <div className="mt-14 flex flex-wrap gap-3">
+              {project?.demo && (
+                <a
+                  href={project.demo}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-full t-mono-sm font-semibold transition-transform hover:scale-[1.02]"
+                  style={{
+                    color: "#fff",
+                    background: `linear-gradient(135deg, var(${study.accent}), var(--accent-secondary))`,
+                    boxShadow: `0 10px 24px -10px var(${study.accent})`,
+                  }}
+                >
+                  <ExternalLink size={14} /> View Live
+                </a>
+              )}
+              {project?.github && (
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-[var(--border-hover)] bg-[var(--surface-glass)] t-mono-sm hover:border-[var(--border-active)] transition-colors"
+                >
+                  <Github size={14} /> Source on GitHub
+                </a>
+              )}
             </div>
           )}
         </article>

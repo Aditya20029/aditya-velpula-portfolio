@@ -4,6 +4,51 @@
  * still appear on the Projects grid + modal.
  */
 export const caseStudies = {
+  "pulse": {
+    title: "Pulse · Real-Time Global News Intelligence Globe",
+    subtitle: "Solo Build · Live at global-pulse-ai.site · Apr 2026 to Present",
+    accent: "--accent-tertiary",
+    problem:
+      "Live global news lives in two failure modes: too much (the firehose, where nothing is contextualized) and too little (the curated feed, where you only see what one editor decided to surface). I wanted a public artifact that did neither. Show every signal worth showing on a single canvas, geolocate it so the map carries the story, and have an LLM that can answer the question you actually have (what happened, why it matters, what's next) instead of summarizing what you already see.",
+    decision:
+      "Build a public 3D Earth that aggregates 1,000+ live events from 45+ sources every poll, clusters them spatially, and lets Claude Opus 4.7 stream an analyst briefing on any cluster you click. Architect as a solo Next.js 16 + Three.js app on Vercel so the entire stack stays deployable from a laptop. Treat reliability as a product feature, not an afterthought: every source has a graceful-degradation path, every Claude call is fingerprint-cached, every panel only talks to the LLM when it actually enters the viewport.",
+    architecture: [
+      "Frontend: Next.js 16, React 19, TypeScript end to end. Three.js + react-three-fiber render the globe with 8K NASA day, night, and bump textures, plus custom GLSL shaders for the day/night terminator, atmospheric scattering, and sentiment-reactive auroras that brighten under high-severity clusters.",
+      "Ingestion: 45+ sources fanned out in parallel. GDELT 2.0 for events, 45 subreddits via reddit.com/.json, 45+ RSS feeds (Reuters, BBC, AP, Al Jazeera, NHK, Hacker News, etc.). Promise.allSettled with per-source timeouts so one slow feed cannot stall the request; the slowest source becomes a P99 outlier, not a page hang.",
+      "Two-tier geocoding pipeline. First pass: headline matching against a curated 200+ place lexicon (cities, countries, regions, well-known landmarks). Fallback: newsroom-HQ resolver for 75+ outlets, so a Reuters story with no place named still anchors to London. Stories that still can't be located get dropped, not faked.",
+      "Spatial clustering on a grid index with intensity scaling: cluster brightness, size, and color all read off event count plus weighted recency. Zustand holds the global state; SWR drives client polling on a calm cadence so the globe stays alive without thrashing the CPU.",
+      "AI layer: Claude Opus 4.7 streams briefings through a ReadableStream so the first token lands in roughly 1 second instead of waiting 5 seconds for the full response. Each briefing covers what happened, why it matters, key actors, severity, and a 12-hour forecast. Multi-language toggle (Spanish, French, Hindi, Chinese, Arabic, German). Devil's-advocate and counterfactual reframing modes for analyst stress-testing.",
+      "Cost + abuse controls: fingerprint-based 10-minute cache reuses Claude answers across identical globe states (same cluster, same source mix). Per-IP rate limiting. Lazy AI panels (only call Claude when scrolled into view). Server cache plus SWR client polling minimize upstream load.",
+      "Reliability surface: every source has a graceful-degradation path; if Reddit 429s, Reddit results just don't appear (the globe doesn't break). A WebGL error boundary catches GPU failures and renders a flat-map fallback instead of a white screen.",
+    ],
+    tried: [
+      "First version made one fan-out Promise.all() across all 45 sources. A single slow RSS feed could stall the entire response. Switched to Promise.allSettled with per-source timeouts so the slowest source becomes a P99 outlier instead of taking down the request.",
+      "Early geocoding was pure named-entity recognition on headlines. Recall was fine; precision was awful (any mention of a place anchored there, even when the story was about something else). Two-tier matching (curated lexicon first, newsroom-HQ fallback second) lifted precision and kept stories from teleporting around the globe.",
+      "Initial Claude calls fired on every panel mount. Cost ballooned and the UI hesitated. Lazy AI (call only when the panel intersects the viewport) plus a fingerprint cache (10-minute reuse for identical globe states) cut Claude spend dramatically without hurting perceived latency.",
+      "Non-streamed responses felt unusable: 4 to 5 seconds of empty panel before the briefing landed. Streaming through a ReadableStream put the first token on screen in roughly a second, and the perceived latency dropped to nothing.",
+      "First WebGL build assumed every visitor had a healthy GPU. Mobile + low-end laptops produced context-lost crashes. Added a WebGL error boundary that falls back to a flat 2D map so the product never white-screens.",
+    ],
+    metric: { value: "~1s", label: "First-token latency for streamed Claude briefings" },
+    stack: [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "Three.js",
+      "react-three-fiber",
+      "GLSL Shaders",
+      "WebGL",
+      "Claude Opus 4.7",
+      "Anthropic SDK",
+      "ReadableStream",
+      "Zustand",
+      "SWR",
+      "GDELT 2.0",
+      "RSS",
+      "Tailwind CSS",
+      "Vercel",
+    ],
+  },
+
   "dapse": {
     title: "DAPSE · Arctic Policy Intelligence Engine",
     subtitle: "AI Engineer · NSI Apprenticeship via GMU · Jan to May 2026",
