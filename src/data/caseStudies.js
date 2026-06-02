@@ -32,9 +32,15 @@ export const caseStudies = {
     screenshots: [
       {
         src: "/projects/pulse/globe.png",
+        alt: "Pulse 3D Earth with live event clusters lit across North and South America",
+        caption:
+          "The globe itself. 8K NASA day, night, and bump textures, an atmospheric scattering shader for the soft blue limb, a day/night terminator that sweeps across the surface in real time, and the moon orbiting in actual phase. Each colored marker is a clustered event group; cluster size and brightness scale with event count plus weighted recency, so a major story brightens the region instead of just adding a dot.",
+      },
+      {
+        src: "/projects/pulse/dashboard.png",
         alt: "Pulse mission-control UI with the 3D globe, live channels panel, and tactical sidebar",
         caption:
-          "Pulse mission control. Center: the 3D Earth with 134 active clusters across 1,094 live events in the last 24h. Left rail: live counts, timespan controls, layer toggles by category (Conflict, Politics, Economy, Climate, Wildlife, Tech, Science, Health, Culture, Other), velocity histogram, and financial-centers clock strip. Right rail: live channel grid pulling from Reuters, BBC, AP, Al Jazeera, NHK, Fox, Bloomberg, CNBC, DW, TRT World, WION, Africa News, Globo, France 24, and more. Far right: tactical readouts (earthquakes 24h, M5+ events, conflict counts, climate / wildlife tracking, critical clusters by intensity threshold).",
+          "Full mission control. Center: the globe with 134 active clusters across 1,094 live events in the last 24h. Left rail: live counts, timespan controls, layer toggles by category (Conflict, Politics, Economy, Climate, Wildlife, Tech, Science, Health, Culture, Other), velocity histogram, and financial-centers clock strip. Right rail: live channel grid pulling from Reuters, BBC, AP, Al Jazeera, NHK, Fox, Bloomberg, CNBC, DW, TRT World, WION, Africa News, Globo, France 24, and more. Far right: tactical readouts (earthquakes 24h, M5+ events, conflict counts, climate / wildlife tracking, critical clusters by intensity threshold).",
       },
     ],
     stack: [
