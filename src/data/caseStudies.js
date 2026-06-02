@@ -29,6 +29,14 @@ export const caseStudies = {
       "First WebGL build assumed every visitor had a healthy GPU. Mobile + low-end laptops produced context-lost crashes. Added a WebGL error boundary that falls back to a flat 2D map so the product never white-screens.",
     ],
     metric: { value: "~1s", label: "First-token latency for streamed Claude briefings" },
+    screenshots: [
+      {
+        src: "/projects/pulse/globe.png",
+        alt: "Pulse mission-control UI with the 3D globe, live channels panel, and tactical sidebar",
+        caption:
+          "Pulse mission control. Center: the 3D Earth with 134 active clusters across 1,094 live events in the last 24h. Left rail: live counts, timespan controls, layer toggles by category (Conflict, Politics, Economy, Climate, Wildlife, Tech, Science, Health, Culture, Other), velocity histogram, and financial-centers clock strip. Right rail: live channel grid pulling from Reuters, BBC, AP, Al Jazeera, NHK, Fox, Bloomberg, CNBC, DW, TRT World, WION, Africa News, Globo, France 24, and more. Far right: tactical readouts (earthquakes 24h, M5+ events, conflict counts, climate / wildlife tracking, critical clusters by intensity threshold).",
+      },
+    ],
     stack: [
       "Next.js 16",
       "React 19",
