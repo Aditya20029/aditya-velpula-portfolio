@@ -26,10 +26,10 @@
 
     <!-- Site gold gradient: champagne → gold → deep gold -->
     <linearGradient id="ink" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#faecbf" />
-      <stop offset="42%" stop-color="#e8c66a" />
-      <stop offset="72%" stop-color="#d4af37" />
-      <stop offset="100%" stop-color="#9a7b1f" />
+      <stop offset="0%" stop-color="#eccd84" />
+      <stop offset="42%" stop-color="#e0c074" />
+      <stop offset="72%" stop-color="#c9a24f" />
+      <stop offset="100%" stop-color="#b88a2e" />
     </linearGradient>
 
     <!-- Soft inner glow so the mark blooms slightly on dark chrome -->
@@ -50,7 +50,7 @@
     rx="12.75"
     ry="12.75"
     fill="none"
-    stroke="rgba(212, 175, 55, 0.32)"
+    stroke="rgba(224, 192, 116, 0.32)"
     stroke-width="0.75"
   />
 

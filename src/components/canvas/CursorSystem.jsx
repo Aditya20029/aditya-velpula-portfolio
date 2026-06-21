@@ -99,7 +99,7 @@ export default function CursorSystem() {
           height: `${glowSize}px`,
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(232,198,106,0.22), rgba(184,134,11,0.1) 34%, transparent 62%)",
+            "radial-gradient(circle, rgba(224,192,116,0.16), rgba(224,192,116,0.06) 34%, transparent 62%)",
           opacity: isInteractive ? 0.9 : 0.58,
           willChange: "transform",
         }}

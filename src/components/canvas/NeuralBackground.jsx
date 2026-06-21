@@ -40,8 +40,8 @@ export default function NeuralBackground() {
     const getColors = () => {
       const light = document.documentElement.dataset.theme === "light";
       return light
-        ? { node: "154, 123, 31", edge: "154, 123, 31" }
-        : { node: "232, 198, 106", edge: "184, 134, 11" };
+        ? { node: "148, 101, 12", edge: "5, 5, 5" }
+        : { node: "224, 192, 116", edge: "250, 250, 250" };
     };
     const onMove = (e) => {
       mouse.x = e.clientX;

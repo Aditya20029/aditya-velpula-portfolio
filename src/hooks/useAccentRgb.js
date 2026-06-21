@@ -13,23 +13,23 @@ import { useTheme } from "@/hooks/useTheme";
  */
 
 const DARK = {
-  "--accent-primary": "232, 198, 106",   // champagne gold
-  "--accent-secondary": "201, 150, 47",  // deep gold
-  "--accent-tertiary": "242, 217, 143",  // pale gold
-  "--accent-success": "194, 162, 83",    // antique gold
-  "--accent-warm": "245, 207, 106",      // amber gold
-  "--accent-coral": "200, 128, 58",      // copper
-  "--accent-rose": "181, 106, 46",       // bronze
+  "--accent-primary": "224, 192, 116",   // gold
+  "--accent-secondary": "201, 162, 79",  // gold soft
+  "--accent-tertiary": "236, 205, 132",  // gold strong
+  "--accent-success": "201, 162, 79",
+  "--accent-warm": "224, 192, 116",
+  "--accent-coral": "201, 162, 79",
+  "--accent-rose": "184, 138, 46",
 };
 
 const LIGHT = {
-  "--accent-primary": "154, 123, 31",    // deep gold
-  "--accent-secondary": "138, 90, 20",   // bronze
-  "--accent-tertiary": "184, 134, 11",   // gold
-  "--accent-success": "122, 99, 20",     // dark antique gold
-  "--accent-warm": "181, 116, 12",       // amber bronze
-  "--accent-coral": "168, 95, 42",       // copper
-  "--accent-rose": "156, 79, 36",        // terracotta bronze
+  "--accent-primary": "148, 101, 12",    // deep gold (AA on white)
+  "--accent-secondary": "111, 77, 9",    // gold strong
+  "--accent-tertiary": "184, 138, 46",   // gold soft
+  "--accent-success": "111, 77, 9",
+  "--accent-warm": "148, 101, 12",
+  "--accent-coral": "111, 77, 9",
+  "--accent-rose": "122, 84, 20",
 };
 
 export function useAccentRgb() {
@@ -40,5 +40,5 @@ export function useAccentRgb() {
 /** Stand-alone helper if a component already has the theme. */
 export function getAccentRgb(token, theme) {
   const map = theme === "light" ? LIGHT : DARK;
-  return map[token] || (theme === "light" ? "154, 123, 31" : "232, 198, 106");
+  return map[token] || (theme === "light" ? "148, 101, 12" : "224, 192, 116");
 }

@@ -6,49 +6,50 @@
    DESIGN TOKENS — "Iridescent Dream" (reel-inspired)
    ───────────────────────────────────────────────────────── */
 :root {
-  /* Black + gold luxe palette — warm near-black backgrounds, a spread
-     of metallic golds (champagne -> bronze) so multi-accent components
-     still read as distinct while staying cohesively gold. */
-  --void: #050402;
-  --bg-primary: #0a0806;
-  --bg-elevated: #14110a;
-  --bg-hover: #201a10;
-  --bg-active: #2b2316;
+  /* Monochrome grayscale base + a single restrained gold accent
+     (KeyPeople-style editorial luxe). Backgrounds and text are pure
+     neutral; gold appears only where an accent is called for. */
+  --void: #000000;
+  --bg-primary: #050505;
+  --bg-elevated: #0f0f0f;
+  --bg-hover: #1a1a1a;
+  --bg-active: #292929;
 
-  --surface-glass: rgba(255, 248, 230, 0.05);
-  --surface-glass-hover: rgba(255, 248, 230, 0.10);
+  --surface-glass: rgba(250, 250, 250, 0.04);
+  --surface-glass-hover: rgba(250, 250, 250, 0.08);
 
-  --border-subtle: rgba(212, 175, 55, 0.16);
-  --border-hover: rgba(212, 175, 55, 0.34);
-  --border-active: rgba(232, 198, 106, 0.66);
+  --border-subtle: rgba(250, 250, 250, 0.12);
+  --border-hover: rgba(250, 250, 250, 0.22);
+  --border-active: rgba(224, 192, 116, 0.55);
 
-  /* Metallic gold family */
-  --accent-primary: #e8c66a;      /* champagne gold (brand) */
-  --accent-secondary: #c9962f;    /* deep gold */
-  --accent-tertiary: #f2d98f;     /* pale gold */
-  --accent-success: #c2a253;      /* antique gold */
-  --accent-warm: #f5cf6a;         /* amber gold */
-  --accent-coral: #c8803a;        /* copper */
-  --accent-rose: #b56a2e;         /* bronze */
+  /* One sophisticated gold, with soft/strong variants so the few
+     multi-accent components vary subtly without going rainbow. */
+  --accent-primary: #e0c074;      /* gold (brand accent) */
+  --accent-secondary: #c9a24f;    /* gold soft */
+  --accent-tertiary: #eccd84;     /* gold strong */
+  --accent-success: #c9a24f;
+  --accent-warm: #e0c074;
+  --accent-coral: #c9a24f;
+  --accent-rose: #b88a2e;
 
-  --text-primary: #fdf8ec;
-  --text-body: #ece3d0;
-  --text-secondary: #c9bda3;
-  --text-muted: #8a7e63;
-  --text-ghost: #6b6149;
+  --text-primary: #fafafa;
+  --text-body: #d9d9d9;
+  --text-secondary: #a3a3a3;
+  --text-muted: #828282;
+  --text-ghost: #666666;
 
-  --glow-teal: rgba(232, 198, 106, 0.42);
-  --glow-pink: rgba(212, 175, 55, 0.42);
-  --glow-lilac: rgba(242, 217, 143, 0.36);
+  --glow-teal: rgba(224, 192, 116, 0.22);
+  --glow-pink: rgba(224, 192, 116, 0.18);
+  --glow-lilac: rgba(236, 205, 132, 0.16);
   --glow-cyan: var(--glow-teal);
   --glow-purple: var(--glow-lilac);
 
+  /* Barely-there hero wash — restraint over glow. */
   --gradient-hero: radial-gradient(
     ellipse 80% 50% at 50% -10%,
-    rgba(232, 198, 106, 0.12),
-    rgba(212, 175, 55, 0.08) 35%,
-    rgba(184, 134, 11, 0.05) 65%,
-    transparent 80%
+    rgba(224, 192, 116, 0.05),
+    rgba(250, 250, 250, 0.02) 45%,
+    transparent 75%
   );
   --gradient-accent: linear-gradient(
     135deg,
@@ -57,15 +58,15 @@
     var(--accent-secondary) 100%
   );
 
-  /* Polished-gold conic — alternating light/deep stops read as a
-     metallic shimmer on the dark hero name. */
+  /* Brushed-metal gold for the one signature gold moment (hero name).
+     Elegant gold-on-gold banding, not a rainbow sweep. */
   --gradient-holo: conic-gradient(
     from 180deg at 50% 50%,
-    #faecbf 0%,
-    #d4af37 25%,
-    #9a7b1f 50%,
-    #f0d488 75%,
-    #faecbf 100%
+    #eccd84 0%,
+    #e0c074 25%,
+    #c9a24f 50%,
+    #eccd84 75%,
+    #eccd84 100%
   );
 
   --context-tint: transparent;
@@ -78,46 +79,45 @@
 }
 
 :root[data-theme="light"] {
-  /* Warm ivory, never pure white */
-  --void: #ece3cf;
-  --bg-primary: #f7f1e3;
-  --bg-elevated: #fffdf6;
-  --bg-hover: #f0e8d4;
-  --bg-active: #e6dcc2;
+  /* Pure neutral near-white, never warm-tinted */
+  --void: #ededed;
+  --bg-primary: #fafafa;
+  --bg-elevated: #ffffff;
+  --bg-hover: #f5f5f5;
+  --bg-active: #ededed;
 
-  --surface-glass: rgba(255, 253, 246, 0.82);
-  --surface-glass-hover: rgba(255, 253, 246, 0.98);
+  --surface-glass: rgba(255, 255, 255, 0.82);
+  --surface-glass-hover: rgba(255, 255, 255, 0.96);
 
-  --border-subtle: rgba(60, 48, 20, 0.16);
-  --border-hover: rgba(60, 48, 20, 0.28);
-  --border-active: rgba(154, 123, 31, 0.6);
+  --border-subtle: rgba(5, 5, 5, 0.10);
+  --border-hover: rgba(5, 5, 5, 0.20);
+  --border-active: rgba(148, 101, 12, 0.55);
 
-  /* Deep golds + bronzes that stay legible on cream */
-  --accent-primary: #9a7b1f;     /* deep gold (brand) */
-  --accent-secondary: #8a5a14;   /* bronze */
-  --accent-tertiary: #b8860b;    /* gold */
-  --accent-success: #7a6314;     /* dark antique gold */
-  --accent-warm: #b5740c;        /* amber bronze */
-  --accent-coral: #a85f2a;       /* copper */
-  --accent-rose: #9c4f24;        /* terracotta bronze */
+  /* AA-tuned deep gold on white (KeyPeople values). */
+  --accent-primary: #94650c;     /* deep gold (brand accent) */
+  --accent-secondary: #6f4d09;   /* gold strong */
+  --accent-tertiary: #b88a2e;    /* gold soft */
+  --accent-success: #6f4d09;
+  --accent-warm: #94650c;
+  --accent-coral: #6f4d09;
+  --accent-rose: #7a5414;
 
-  /* Warm near-black text */
-  --text-primary: #1a1408;
-  --text-body: #2a2110;
-  --text-secondary: #3a2f18;
-  --text-muted: #5c4f30;
-  --text-ghost: #8a7c5a;
+  /* Pure neutral near-black text */
+  --text-primary: #050505;
+  --text-body: #1a1a1a;
+  --text-secondary: #363636;
+  --text-muted: #4d4d4d;
+  --text-ghost: #666666;
 
-  --glow-blue: rgba(154, 123, 31, 0.18);
-  --glow-cyan: rgba(184, 134, 11, 0.18);
-  --glow-purple: rgba(138, 90, 20, 0.16);
+  --glow-blue: rgba(148, 101, 12, 0.12);
+  --glow-cyan: rgba(184, 138, 46, 0.12);
+  --glow-purple: rgba(111, 77, 9, 0.10);
 
   --gradient-hero: radial-gradient(
     ellipse 80% 60% at 50% -10%,
-    rgba(154, 123, 31, 0.16),
-    rgba(184, 134, 11, 0.10) 35%,
-    rgba(138, 90, 20, 0.07) 65%,
-    transparent 85%
+    rgba(148, 101, 12, 0.06),
+    rgba(5, 5, 5, 0.02) 45%,
+    transparent 80%
   );
   --gradient-accent: linear-gradient(
     135deg,
@@ -126,14 +126,14 @@
     var(--accent-secondary)
   );
 
-  /* Deep-gold metallic conic for headings \u2014 legible on cream. */
+  /* Deep-gold brushed metal for the hero name \u2014 legible on white. */
   --gradient-holo: conic-gradient(
     from 180deg at 50% 50%,
-    #8a6d14 0%,
-    #b8860b 25%,
-    #6b5410 50%,
-    #9a7b1f 75%,
-    #8a6d14 100%
+    #6f4d09 0%,
+    #94650c 25%,
+    #b88a2e 50%,
+    #6f4d09 75%,
+    #6f4d09 100%
   );
 }
 
@@ -247,20 +247,17 @@ a {
   background: rgba(15, 23, 42, 0.2);
 }
 
-/* Atmospheric body background in light mode \u2014 warm champagne haze, never flat */
+/* Near-flat neutral light background with a whisper of gold \u2014 editorial,
+   not a colored haze. The dotted grid carries the texture. */
 :root[data-theme="light"] body {
-  background-color: #f4ecda;
+  background-color: #fafafa;
   background-image:
-    radial-gradient(ellipse 70% 45% at 12% 0%, rgba(184, 134, 11, 0.24), transparent 55%),
-    radial-gradient(ellipse 65% 40% at 92% 12%, rgba(154, 123, 31, 0.22), transparent 55%),
-    radial-gradient(ellipse 80% 50% at 50% 50%, rgba(212, 175, 55, 0.18), transparent 60%),
-    radial-gradient(ellipse 70% 45% at 8% 88%, rgba(168, 95, 42, 0.18), transparent 55%),
-    radial-gradient(ellipse 70% 45% at 95% 92%, rgba(138, 90, 20, 0.18), transparent 55%),
-    radial-gradient(ellipse 60% 35% at 30% 65%, rgba(245, 207, 106, 0.16), transparent 55%);
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(148, 101, 12, 0.05), transparent 60%),
+    radial-gradient(ellipse 70% 45% at 12% 90%, rgba(5, 5, 5, 0.025), transparent 55%);
   background-attachment: fixed;
 }
 
-/* Slow drifting champagne-mesh layer for actual atmosphere */
+/* Faint drifting neutral wash for the barest atmosphere */
 :root[data-theme="light"] body::before {
   content: "";
   position: fixed;
@@ -268,10 +265,9 @@ a {
   pointer-events: none;
   z-index: -1;
   background:
-    radial-gradient(circle 580px at 20% 30%, rgba(184, 134, 11, 0.16), transparent 60%),
-    radial-gradient(circle 520px at 78% 70%, rgba(212, 175, 55, 0.15), transparent 60%),
-    radial-gradient(circle 460px at 60% 20%, rgba(154, 123, 31, 0.13), transparent 60%);
-  filter: blur(32px);
+    radial-gradient(circle 580px at 22% 28%, rgba(148, 101, 12, 0.05), transparent 60%),
+    radial-gradient(circle 520px at 80% 72%, rgba(5, 5, 5, 0.02), transparent 60%);
+  filter: blur(36px);
   animation: light-mesh-drift 28s ease-in-out infinite alternate;
 }
 
@@ -309,55 +305,55 @@ a {
 .available-badge {
   position: relative;
   border: 1.5px solid #9a7b1f;
-  background: rgba(154, 123, 31, 0.07);
+  background: rgba(148, 101, 12, 0.07);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   color: #6b5410;        /* deep gold \u2014 readable on cream */
   box-shadow:
-    0 0 0 3px rgba(154, 123, 31, 0.12),
-    0 0 16px rgba(154, 123, 31, 0.26),
-    0 8px 20px -8px rgba(154, 123, 31, 0.32);
+    0 0 0 3px rgba(148, 101, 12, 0.12),
+    0 0 16px rgba(148, 101, 12, 0.26),
+    0 8px 20px -8px rgba(148, 101, 12, 0.32);
   animation: available-pulse-light 2.4s ease-in-out infinite;
 }
 
 /* Dark theme override */
 :root[data-theme="dark"] .available-badge {
   border-color: #e8c66a;
-  background: rgba(232, 198, 106, 0.10);
+  background: rgba(224, 192, 116, 0.10);
   color: #f2d98f;
   box-shadow:
-    0 0 0 4px rgba(232, 198, 106, 0.12),
-    0 0 28px rgba(232, 198, 106, 0.42),
-    0 8px 32px -6px rgba(184, 134, 11, 0.45);
+    0 0 0 4px rgba(224, 192, 116, 0.12),
+    0 0 28px rgba(224, 192, 116, 0.42),
+    0 8px 32px -6px rgba(201, 162, 79, 0.45);
   animation: available-pulse-dark 2.4s ease-in-out infinite;
 }
 
 @keyframes available-pulse-light {
   0%, 100% {
     box-shadow:
-      0 0 0 3px rgba(154, 123, 31, 0.12),
-      0 0 16px rgba(154, 123, 31, 0.26),
-      0 8px 20px -8px rgba(154, 123, 31, 0.32);
+      0 0 0 3px rgba(148, 101, 12, 0.12),
+      0 0 16px rgba(148, 101, 12, 0.26),
+      0 8px 20px -8px rgba(148, 101, 12, 0.32);
   }
   50% {
     box-shadow:
-      0 0 0 5px rgba(154, 123, 31, 0.18),
-      0 0 24px rgba(184, 134, 11, 0.40),
-      0 8px 24px -6px rgba(154, 123, 31, 0.5);
+      0 0 0 5px rgba(148, 101, 12, 0.18),
+      0 0 24px rgba(201, 162, 79, 0.40),
+      0 8px 24px -6px rgba(148, 101, 12, 0.5);
   }
 }
 @keyframes available-pulse-dark {
   0%, 100% {
     box-shadow:
-      0 0 0 4px rgba(232, 198, 106, 0.12),
-      0 0 28px rgba(232, 198, 106, 0.42),
-      0 8px 32px -6px rgba(184, 134, 11, 0.45);
+      0 0 0 4px rgba(224, 192, 116, 0.12),
+      0 0 28px rgba(224, 192, 116, 0.42),
+      0 8px 32px -6px rgba(201, 162, 79, 0.45);
   }
   50% {
     box-shadow:
-      0 0 0 6px rgba(232, 198, 106, 0.18),
-      0 0 36px rgba(232, 198, 106, 0.58),
-      0 8px 32px -4px rgba(184, 134, 11, 0.55);
+      0 0 0 6px rgba(224, 192, 116, 0.18),
+      0 0 36px rgba(224, 192, 116, 0.58),
+      0 8px 32px -4px rgba(201, 162, 79, 0.55);
   }
 }
 
@@ -397,8 +393,8 @@ a {
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(135deg, rgba(255, 248, 230, 0.075), transparent 36%),
-    radial-gradient(circle at 16% 0%, rgba(232, 198, 106, 0.14), transparent 32%);
+    linear-gradient(135deg, rgba(250, 250, 250, 0.06), transparent 36%),
+    radial-gradient(circle at 16% 0%, rgba(224, 192, 116, 0.07), transparent 32%);
   opacity: 0.72;
 }
 :root[data-theme="light"] .project-card-surface {
@@ -411,8 +407,8 @@ a {
 }
 :root[data-theme="light"] .project-card-surface::before {
   background:
-    linear-gradient(135deg, rgba(255, 253, 246, 0.9), transparent 42%),
-    radial-gradient(circle at 16% 0%, rgba(154, 123, 31, 0.10), transparent 34%);
+    linear-gradient(135deg, rgba(255, 255, 255, 0.9), transparent 42%),
+    radial-gradient(circle at 16% 0%, rgba(148, 101, 12, 0.06), transparent 34%);
   opacity: 0.9;
 }
 
@@ -462,13 +458,13 @@ a {
   pointer-events: none;
   border-radius: inherit;
   background:
-    linear-gradient(135deg, rgba(255, 248, 230, 0.08), transparent 34%),
-    radial-gradient(circle at 18% 0%, rgba(232, 198, 106, 0.13), transparent 36%),
-    radial-gradient(circle at 100% 100%, rgba(201, 150, 47, 0.10), transparent 38%);
+    linear-gradient(135deg, rgba(250, 250, 250, 0.06), transparent 34%),
+    radial-gradient(circle at 18% 0%, rgba(224, 192, 116, 0.06), transparent 36%),
+    radial-gradient(circle at 100% 100%, rgba(250, 250, 250, 0.03), transparent 38%);
   opacity: 0.72;
 }
 .glass-card:hover {
-  border-color: rgba(255, 255, 255, 0.14);
+  border-color: rgba(250, 250, 250, 0.16);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     0 24px 70px rgba(0, 0, 0, 0.5),
@@ -649,22 +645,21 @@ a {
   inset: -16%;
   opacity: 0.95;
   background:
-    radial-gradient(circle 700px at 12% 18%, rgba(232, 198, 106, 0.14), transparent 62%),
-    radial-gradient(circle 760px at 88% 14%, rgba(184, 134, 11, 0.13), transparent 60%),
-    radial-gradient(circle 620px at 52% 88%, rgba(245, 207, 106, 0.09), transparent 58%),
-    radial-gradient(circle 900px at 50% 45%, rgba(201, 150, 47, 0.09), transparent 66%);
-  filter: blur(18px) saturate(1.28);
+    radial-gradient(circle 700px at 12% 18%, rgba(224, 192, 116, 0.06), transparent 62%),
+    radial-gradient(circle 760px at 88% 14%, rgba(250, 250, 250, 0.035), transparent 60%),
+    radial-gradient(circle 900px at 50% 45%, rgba(224, 192, 116, 0.04), transparent 66%);
+  filter: blur(22px) saturate(1.05);
   animation: premium-mesh-drift 30s var(--ease-smooth) infinite alternate;
   will-change: transform;
   transform: translateZ(0);
 }
 
 .premium-backdrop__grid {
-  opacity: 0.34;
+  opacity: 0.5;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
-  background-size: 72px 72px;
+    linear-gradient(rgba(250, 250, 250, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(250, 250, 250, 0.05) 1px, transparent 1px);
+  background-size: 64px 64px;
   mask-image:
     radial-gradient(ellipse at 50% 16%, black 0%, transparent 68%),
     linear-gradient(to bottom, transparent, black 18%, black 72%, transparent);
@@ -685,10 +680,10 @@ a {
 }
 
 .premium-backdrop__scan {
-  opacity: 0.58;
+  opacity: 0.4;
   background:
-    linear-gradient(90deg, transparent, rgba(232, 198, 106, 0.14), transparent) 50% 12% / 62vw 1px no-repeat,
-    linear-gradient(90deg, transparent, rgba(184, 134, 11, 0.12), transparent) 50% 88% / 54vw 1px no-repeat;
+    linear-gradient(90deg, transparent, rgba(224, 192, 116, 0.10), transparent) 50% 12% / 62vw 1px no-repeat,
+    linear-gradient(90deg, transparent, rgba(250, 250, 250, 0.06), transparent) 50% 88% / 54vw 1px no-repeat;
 }
 
 :root[data-theme="light"] .premium-backdrop__grid {
@@ -819,13 +814,13 @@ a {
   0%,
   100% {
     text-shadow:
-      1px 0 0 rgba(245, 207, 106, 0.35),
-      -1px 0 0 rgba(184, 134, 11, 0.35);
+      1px 0 0 rgba(236, 205, 132, 0.28),
+      -1px 0 0 rgba(201, 162, 79, 0.28);
   }
   50% {
     text-shadow:
-      2px 0 0 rgba(245, 207, 106, 0.35),
-      -2px 0 0 rgba(184, 134, 11, 0.35);
+      2px 0 0 rgba(236, 205, 132, 0.28),
+      -2px 0 0 rgba(201, 162, 79, 0.28);
   }
 }
 @keyframes slow-rotate {
@@ -849,9 +844,8 @@ a {
      glow is colored *after* the gradient is sampled — keeps the bloom
      iridescent instead of a flat purple wash. */
   filter:
-    saturate(1.4) contrast(1.16) brightness(1.05)
-    drop-shadow(0 0 14px rgba(212, 175, 55, 0.42))
-    drop-shadow(0 0 30px rgba(184, 134, 11, 0.22));
+    saturate(1.05) contrast(1.05)
+    drop-shadow(0 0 18px rgba(224, 192, 116, 0.22));
 }
 :root[data-theme="light"] .holo-text {
   /* On light surfaces the halo would muddy the text, and contrast is

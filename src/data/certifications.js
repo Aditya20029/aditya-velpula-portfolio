@@ -2,27 +2,27 @@
 export const CERT_TIERS = {
   professional: {
     label: "PROFESSIONAL",
-    accent: "#e8c66a", // champagne gold
-    accentRgb: "232, 198, 106",
-    gradient: "linear-gradient(135deg, #f0d488 0%, #b8860b 100%)",
+    accent: "#e0c074", // gold
+    accentRgb: "224, 192, 116",
+    gradient: "linear-gradient(135deg, #eccd84 0%, #c9a24f 100%)",
   },
   associate: {
     label: "ASSOCIATE",
-    accent: "#d4af37", // classic gold
-    accentRgb: "212, 175, 55",
-    gradient: "linear-gradient(135deg, #d4af37 0%, #9a7b1f 100%)",
+    accent: "#c9a24f", // gold soft
+    accentRgb: "201, 162, 79",
+    gradient: "linear-gradient(135deg, #e0c074 0%, #b88a2e 100%)",
   },
   foundational: {
     label: "FOUNDATIONAL",
-    accent: "#c9962f", // deep gold
-    accentRgb: "201, 150, 47",
-    gradient: "linear-gradient(135deg, #c9962f 0%, #7a5c12 100%)",
+    accent: "#b88a2e", // gold deep
+    accentRgb: "184, 138, 46",
+    gradient: "linear-gradient(135deg, #c9a24f 0%, #8a6320 100%)",
   },
   academy: {
     label: "ACADEMY",
-    accent: "#b87333", // copper
-    accentRgb: "184, 115, 51",
-    gradient: "linear-gradient(135deg, #c8803a 0%, #8a4f22 100%)",
+    accent: "#a3a3a3", // neutral (academy = supporting tier)
+    accentRgb: "163, 163, 163",
+    gradient: "linear-gradient(135deg, #a3a3a3 0%, #4d4d4d 100%)",
   },
 };
 

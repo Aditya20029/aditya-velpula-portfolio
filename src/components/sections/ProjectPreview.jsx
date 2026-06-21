@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 /* Each preview is a tiny recognizable illustration of the project's domain.
    Every project has its OWN preview \u2014 no shared shapes between cards. */
 
-export default function ProjectPreview({ type, accentColor = "#e8c66a" }) {
+export default function ProjectPreview({ type, accentColor = "#e0c074" }) {
   /* ───────────── PIPELINE (Obesity Analytics \u2014 AWS data pipeline) ───────────── */
   if (type === "pipeline") {
     const labels = ["S3", "Glue", "Athena", "BI"];
