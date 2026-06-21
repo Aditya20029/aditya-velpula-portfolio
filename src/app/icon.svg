@@ -18,18 +18,18 @@
   -->
 
   <defs>
-    <!-- Warm near-black plate, slightly inset highlight for depth -->
+    <!-- Deep navy plate, slightly inset highlight for depth -->
     <linearGradient id="plate" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1a150c" />
-      <stop offset="100%" stop-color="#0a0806" />
+      <stop offset="0%" stop-color="#0e1530" />
+      <stop offset="100%" stop-color="#070a1c" />
     </linearGradient>
 
-    <!-- Site gold gradient: champagne → gold → deep gold -->
+    <!-- Site holo gradient: cyan → purple → magenta → amber -->
     <linearGradient id="ink" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#eccd84" />
-      <stop offset="42%" stop-color="#e0c074" />
-      <stop offset="72%" stop-color="#c9a24f" />
-      <stop offset="100%" stop-color="#b88a2e" />
+      <stop offset="0%" stop-color="#00d8ff" />
+      <stop offset="42%" stop-color="#7b2bff" />
+      <stop offset="72%" stop-color="#ff0099" />
+      <stop offset="100%" stop-color="#ff9100" />
     </linearGradient>
 
     <!-- Soft inner glow so the mark blooms slightly on dark chrome -->
@@ -50,7 +50,7 @@
     rx="12.75"
     ry="12.75"
     fill="none"
-    stroke="rgba(224, 192, 116, 0.32)"
+    stroke="rgba(123, 43, 255, 0.28)"
     stroke-width="0.75"
   />
 

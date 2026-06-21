@@ -4,8 +4,8 @@ import { useTheme } from "@/hooks/useTheme";
 /**
  * Returns a map of accent CSS-var name → "r, g, b" string, swapped per theme.
  *
- * Dark theme: champagne -> bronze metallic golds on near-black
- * Light theme: deep golds + bronzes that stay legible on cream
+ * Dark theme: pastel iridescent (matches the reel aesthetic)
+ * Light theme: saturated jewel tones (pop on white)
  *
  * Components that draw via canvas / inline SVG / inline styles can't use
  * CSS vars directly for rgba(...) interpolation; this hook gives them
@@ -13,23 +13,23 @@ import { useTheme } from "@/hooks/useTheme";
  */
 
 const DARK = {
-  "--accent-primary": "224, 192, 116",   // gold
-  "--accent-secondary": "201, 162, 79",  // gold soft
-  "--accent-tertiary": "236, 205, 132",  // gold strong
-  "--accent-success": "201, 162, 79",
-  "--accent-warm": "224, 192, 116",
-  "--accent-coral": "201, 162, 79",
-  "--accent-rose": "184, 138, 46",
+  "--accent-primary": "124, 212, 255",
+  "--accent-secondary": "255, 154, 230",
+  "--accent-tertiary": "196, 167, 255",
+  "--accent-success": "139, 245, 208",
+  "--accent-warm": "255, 216, 138",
+  "--accent-coral": "255, 180, 138",
+  "--accent-rose": "248, 113, 113",
 };
 
 const LIGHT = {
-  "--accent-primary": "148, 101, 12",    // deep gold (AA on white)
-  "--accent-secondary": "111, 77, 9",    // gold strong
-  "--accent-tertiary": "184, 138, 46",   // gold soft
-  "--accent-success": "111, 77, 9",
-  "--accent-warm": "148, 101, 12",
-  "--accent-coral": "111, 77, 9",
-  "--accent-rose": "122, 84, 20",
+  "--accent-primary": "29, 78, 216",      // electric blue
+  "--accent-secondary": "190, 24, 93",    // magenta
+  "--accent-tertiary": "109, 40, 217",    // royal purple
+  "--accent-success": "4, 120, 87",       // emerald
+  "--accent-warm": "180, 83, 9",          // burnt amber
+  "--accent-coral": "14, 116, 144",       // deep cyan-teal
+  "--accent-rose": "190, 18, 60",         // deep rose
 };
 
 export function useAccentRgb() {
@@ -40,5 +40,5 @@ export function useAccentRgb() {
 /** Stand-alone helper if a component already has the theme. */
 export function getAccentRgb(token, theme) {
   const map = theme === "light" ? LIGHT : DARK;
-  return map[token] || (theme === "light" ? "148, 101, 12" : "224, 192, 116");
+  return map[token] || (theme === "light" ? "29, 78, 216" : "124, 212, 255");
 }

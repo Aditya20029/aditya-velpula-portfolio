@@ -49,40 +49,40 @@ function useDiagramPalette() {
   if (theme === "light") {
     return {
       nodeFill: "#ffffff",
-      nodeStroke: "rgba(5, 5, 5, 0.12)",
-      nodeStrokeHover: "#94650c",      // gold
-      labelColor: "#050505",            // near-black
-      subColor: "#4d4d4d",              // neutral grey
-      hoverShadow: "drop-shadow(0 0 12px rgba(148, 101, 12, 0.4))",
-      // Spine: gold accent (deep -> mid -> soft)
+      nodeStroke: "rgba(15, 23, 42, 0.16)",
+      nodeStrokeHover: "#1d4ed8",      // electric blue
+      labelColor: "#0b1220",            // deep navy
+      subColor: "#475569",              // slate
+      hoverShadow: "drop-shadow(0 0 14px rgba(29, 78, 216, 0.45))",
+      // Spine: blue → purple → magenta jewel
       spine: [
-        { offset: "0%", color: "#6f4d09", op: "0.85" },
-        { offset: "50%", color: "#94650c", op: "0.95" },
-        { offset: "100%", color: "#b88a2e", op: "0.85" },
+        { offset: "0%", color: "#0e7490", op: "0.85" },
+        { offset: "50%", color: "#1d4ed8", op: "0.95" },
+        { offset: "100%", color: "#6d28d9", op: "0.85" },
       ],
-      dotColor: "#94650c",
-      arrowColor: "#6f4d09",
-      arrowOp: "0.9",
-      queryDotColor: "#6f4d09",
+      dotColor: "#1d4ed8",
+      arrowColor: "#0e7490",
+      arrowOp: "0.95",
+      queryDotColor: "#0e7490",
     };
   }
   // dark
   return {
-    nodeFill: "rgba(250, 250, 250, 0.04)",
-    nodeStroke: "rgba(250, 250, 250, 0.14)",
-    nodeStrokeHover: "#e0c074",
-    labelColor: "#fafafa",
-    subColor: "#a3a3a3",
-    hoverShadow: "drop-shadow(0 0 12px rgba(224, 192, 116, 0.5))",
+    nodeFill: "rgba(255, 255, 255, 0.05)",
+    nodeStroke: "rgba(255, 255, 255, 0.14)",
+    nodeStrokeHover: "#7cd4ff",
+    labelColor: "#f1f5f9",
+    subColor: "#94a3b8",
+    hoverShadow: "drop-shadow(0 0 14px rgba(124, 212, 255, 0.55))",
     spine: [
-      { offset: "0%", color: "#c9a24f", op: "0.8" },
-      { offset: "50%", color: "#e0c074", op: "0.9" },
-      { offset: "100%", color: "#eccd84", op: "0.8" },
+      { offset: "0%", color: "#06b6d4", op: "0.8" },
+      { offset: "50%", color: "#3b82f6", op: "0.9" },
+      { offset: "100%", color: "#8b5cf6", op: "0.8" },
     ],
-    dotColor: "#e0c074",
-    arrowColor: "#c9a24f",
+    dotColor: "#7cd4ff",
+    arrowColor: "#06b6d4",
     arrowOp: "0.75",
-    queryDotColor: "#c9a24f",
+    queryDotColor: "#06b6d4",
   };
 }
 

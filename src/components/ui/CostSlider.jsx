@@ -36,8 +36,8 @@ export default function CostSlider() {
             width: state === "before" ? "100%" : "22%",
             background:
               state === "before"
-                ? "linear-gradient(90deg, #4d4d4d, #666666)"
-                : "linear-gradient(90deg, #e0c074, #c9a24f)",
+                ? "linear-gradient(90deg, #ef4444, #f97316)"
+                : "linear-gradient(90deg, #10b981, #06b6d4)",
           }}
           transition={{ duration: 0.8, ease: EASE.outExpo }}
           className="absolute inset-y-0 left-0 flex items-center justify-end pr-4"

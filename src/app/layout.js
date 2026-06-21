@@ -50,7 +50,7 @@ export const metadata = {
 export const viewport = {
   /* Dark theme is the default for first-time visitors, so the mobile
      chrome / Safari status bar should match. */
-  themeColor: "#050505",
+  themeColor: "#07070d",
 };
 
 const criticalShellCss = `
@@ -66,13 +66,13 @@ const criticalShellCss = `
      bg matches its CSS-variable bg, and the toggle actually paints. */
   html[data-theme="light"],
   html[data-theme="light"] body {
-    background: #fafafa;
-    color: #1a1a1a;
+    background: #f3f5fb;
+    color: #111827;
   }
   html[data-theme="dark"],
   html[data-theme="dark"] body {
-    background: #050505;
-    color: #d9d9d9;
+    background: #07070d;
+    color: #e2e8f0;
   }
 
   .skip-link {
@@ -91,9 +91,9 @@ const criticalShellCss = `
     width: auto;
     height: auto;
     padding: 12px 20px;
-    background: #0f0f0f;
-    color: #fafafa;
-    border: 1px solid rgba(224, 192, 116, 0.5);
+    background: #0e0e18;
+    color: #f1f5f9;
+    border: 1px solid rgba(255, 154, 230, 0.45);
     border-radius: 8px;
   }
 `;

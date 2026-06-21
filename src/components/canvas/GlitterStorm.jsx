@@ -18,24 +18,24 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 // Mostly-white with very occasional pastel tints — keeps the page from
 // looking like a confetti party
 const PALETTE = [
-  "250, 250, 250", // neutral white
-  "250, 250, 250",
-  "250, 250, 250",
-  "245, 245, 245",
-  "240, 240, 240",
-  "235, 235, 235",
-  "230, 230, 230",
-  "224, 192, 116", // faint gold (rare)
-  "224, 192, 116",
-  "236, 205, 132", // faint gold strong
-  "201, 162, 79",  // faint gold soft
+  "255, 255, 255",
+  "255, 255, 255",
+  "255, 255, 255",
+  "255, 255, 255",
+  "255, 255, 255",
+  "230, 240, 255",
+  "230, 240, 255",
+  "215, 225, 245", // cool white
+  "255, 215, 240", // very faint pink
+  "215, 235, 255", // very faint teal
+  "230, 225, 250", // very faint lilac
 ];
 
 const COMET_COLORS = [
-  "224, 192, 116", // gold
-  "236, 205, 132", // gold strong
-  "201, 162, 79",  // gold soft
-  "250, 250, 250", // neutral white
+  "255, 154, 230",
+  "124, 212, 255",
+  "196, 167, 255",
+  "255, 216, 138",
 ];
 
 /** Build an off-screen sprite of a glowing dot in a given color.

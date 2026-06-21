@@ -44,7 +44,7 @@ export default function SectionAccent({
             className="absolute inset-0 rounded-full"
             style={{
               background:
-                "radial-gradient(circle, rgba(224,192,116,0.25) 0%, rgba(201,162,79,0.15) 30%, rgba(201,162,79,0.08) 55%, transparent 80%)",
+                "radial-gradient(circle, rgba(255,154,230,0.25) 0%, rgba(196,167,255,0.15) 30%, rgba(124,212,255,0.08) 55%, transparent 80%)",
               filter: "blur(24px)",
               transform: "scale(1.6)",
             }}
@@ -95,7 +95,7 @@ export default function SectionAccent({
           className="absolute inset-0 rounded-full"
           style={{
             background:
-              "radial-gradient(circle at 40% 35%, rgba(224,192,116,0.45), rgba(201,162,79,0.25) 35%, rgba(201,162,79,0.12) 65%, transparent 85%)",
+              "radial-gradient(circle at 40% 35%, rgba(255,154,230,0.45), rgba(196,167,255,0.25) 35%, rgba(124,212,255,0.12) 65%, transparent 85%)",
             filter: "blur(18px)",
           }}
           animate={
@@ -116,7 +116,7 @@ export default function SectionAccent({
             className="absolute inset-0 rounded-full"
             style={{
               background:
-                "radial-gradient(circle, rgba(201,162,79,0.18), transparent 70%)",
+                "radial-gradient(circle, rgba(124,212,255,0.18), transparent 70%)",
               filter: "blur(20px)",
             }}
           />
@@ -128,9 +128,9 @@ export default function SectionAccent({
           >
             <defs>
               <linearGradient id={`arc-grad-${size}`} x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor="#e0c074" stopOpacity="0" />
-                <stop offset="50%" stopColor="#e0c074" stopOpacity="0.7" />
-                <stop offset="100%" stopColor="#c9a24f" stopOpacity="0" />
+                <stop offset="0%" stopColor="#ff9ae6" stopOpacity="0" />
+                <stop offset="50%" stopColor="#c4a7ff" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="#7cd4ff" stopOpacity="0" />
               </linearGradient>
             </defs>
             <circle
@@ -146,8 +146,8 @@ export default function SectionAccent({
               cx="95"
               cy="50"
               r="1.4"
-              fill="#e0c074"
-              style={{ filter: "drop-shadow(0 0 4px #e0c074)" }}
+              fill="#ff9ae6"
+              style={{ filter: "drop-shadow(0 0 4px #ff9ae6)" }}
             />
           </motion.svg>
         </>

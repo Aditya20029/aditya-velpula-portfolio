@@ -45,14 +45,14 @@ export default function ProjectCard({ project, onOpen, index }) {
         glowColor={rgb}
         className="relative rounded-[20px] overflow-hidden"
       >
-        {/* Gold edge glow — pseudo gradient border */}
+        {/* Iridescent edge glow — pseudo gradient border */}
         <div
           aria-hidden
           className="absolute inset-0 rounded-[20px] pointer-events-none opacity-60 group-hover:opacity-100 transition-opacity duration-700"
           style={{
             padding: "1px",
             background:
-              "conic-gradient(from 180deg at 50% 50%, rgba(224,192,116,0.4), rgba(236,205,132,0.4) 25%, rgba(201,162,79,0.35) 50%, rgba(224,192,116,0.4) 75%, rgba(224,192,116,0.4))",
+              "conic-gradient(from 180deg at 50% 50%, rgba(124,212,255,0.5), rgba(196,167,255,0.5) 25%, rgba(255,154,230,0.5) 50%, rgba(255,216,138,0.5) 75%, rgba(124,212,255,0.5))",
             WebkitMask:
               "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
             WebkitMaskComposite: "xor",
