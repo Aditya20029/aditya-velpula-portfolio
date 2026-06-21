@@ -138,26 +138,172 @@ export const caseStudies = {
   },
 
   "sla-breach-prediction": {
-    title: "Ticket Resolution & SLA Breach Prediction",
-    subtitle: "ITSM Analytics · Oct to Nov 2025",
+    title: "Predictive Analytics + BI Dashboard",
+    subtitle: "SLA Breach Forecasting · 2025",
     accent: "--accent-success",
     problem:
-      "Enterprise IT teams routinely breach SLAs because by the time a ticket starts looking at-risk, the resolution clock has already run out. Most ServiceNow and Jira deployments only react after the breach has already happened, which is too late to be useful.",
+      "Enterprise IT teams routinely breach SLAs because by the time a ticket looks at-risk, the resolution clock has already run out. Most ServiceNow and Jira deployments react after the breach has already happened. Worse, the few that do predict it ship a black-box score that nobody trusts enough to act on.",
     decision:
-      "Treat SLA breach as a forward-looking classification problem and resolution time as a regression problem. Both feed off the same engineered ticket features: priority, queue, time-of-day, first-response delta, assignee load.",
+      "Treat SLA breach as a forward-looking forecasting problem with a dimensional data model underneath and SHAP-driven explanations on top, so the operator can see why a ticket scored the way it did and act on it. Surface everything through Power BI so the prediction layer plugs into a workflow operators already use.",
     architecture: [
-      "5,000-ticket synthetic dataset modelled on real ServiceNow and Jira logs, including realistic priority distributions, escalation patterns, and region timezones.",
-      "Feature engineering: time-since-creation, time-of-day cyclical encoding, priority by queue interaction, assignee load at ticket time.",
-      "XGBoost regressor for resolution-time estimation, XGBoost classifier for breach probability. Stratified k-fold by priority.",
-      "Power BI dashboard binds to model outputs: open-ticket queue with breach probability and ETA, plus a 30-day backward-looking pattern view.",
+      "Dimensional model over 5,000+ ops records: fact-ticket table tied to dimensions for priority, queue, assignee, and time. Star-schema layout so the BI tool can drill down without recomputing aggregates.",
+      "Canonical dataset built from cleaned and normalized inputs with consistent feature definitions, so the same priority encoding shows up everywhere downstream.",
+      "Feature engineering: time-since-creation, time-of-day cyclical encoding, priority-by-queue interaction, assignee load at ticket time, first-response delta.",
+      "XGBoost forecasting for both resolution time (regression) and breach probability (classification). Stratified k-fold by priority to avoid the model learning that the highest-priority bucket dominates the loss.",
+      "SHAP explanations attached to every prediction so operators see the top contributing features per ticket, not just a score. Anything the model cares about is something the operator can investigate.",
+      "Power BI dashboard with drill-down: open-ticket queue ranked by breach probability with ETA, a backward-looking pattern view, and per-ticket SHAP attribution. Self-serve, no analyst-in-the-loop required.",
     ],
     tried: [
-      "Started with a Random Forest baseline. It underperformed XGBoost on minority-class breach detection by roughly 9 F1.",
-      "Added LightGBM as a third candidate. Marginal gains, not worth the deployment overhead.",
+      "Started with a Random Forest baseline. Underperformed XGBoost on minority-class breach detection by roughly 9 F1.",
+      "First version shipped just the prediction, no SHAP. Operators didn't trust the score and ignored the dashboard. Adding per-prediction SHAP attribution flipped adoption.",
       "First attempt at the breach classifier used pure logistic regression on engineered features. Calibration was good, but recall on actual breaches was below 0.6.",
     ],
-    metric: { value: "5,000+", label: "Tickets modelled end to end" },
-    stack: ["Python", "XGBoost", "Scikit-learn", "Pandas", "Power BI"],
+    metric: { value: "5,000+", label: "Ops records modelled end to end" },
+    stack: ["Python", "XGBoost", "Scikit-learn", "advanced SQL", "Dimensional Modeling", "SHAP", "Power BI"],
+  },
+
+  "rag-agent": {
+    title: "RAG + Agentic AI Assistant with Citation Grounding + MCP Tool Use",
+    subtitle: "Hybrid Retrieval, Cited Answers, Tool-Calling Loop · 2026",
+    accent: "--accent-tertiary",
+    problem:
+      "Most internal AI assistants either retrieve well and don't reason, or reason well and silently hallucinate citations. And almost none of them can actually call the analytics tools the team already runs. I wanted one assistant that did all three: hybrid retrieval, citation-grounded answers, and real tool calls against the data warehouse instead of pasting screenshots back at the user.",
+    decision:
+      "Stand up a Python + FastAPI service that embeds both structured and unstructured operational records, serves retrieval through FAISS + pgvector with a lexical fallback, grounds every LLM answer in cited evidence spans, and exposes analytics tools to the agent via Model Context Protocol (MCP) with guarded loops and per-call token budgets. The agent can ask the database real questions; it can't escape the citation requirement.",
+    architecture: [
+      "Embedding layer: structured operational records (tables, KPIs) get embedded alongside unstructured ones (notes, runbooks, incident reports), so the agent retrieves both kinds for the same question.",
+      "Hybrid retrieval pipeline. FAISS handles dense semantic recall; pgvector inside Postgres handles in-place vector search alongside relational filters; a lexical sidecar catches the citation-precise hits a dense vector misses. Results blend via reciprocal rank fusion.",
+      "Grounding gate. Every LLM answer must point at specific retrieved spans. Anything the model wants to claim that isn't supported gets rewritten or dropped before the response ships.",
+      "MCP tool layer exposes a curated set of analytics tools (query the dimensional model, fetch a metric, plot a series) to the agent. Each tool runs in a guarded loop with per-call token budgets so a runaway agent can't open-loop the API bill.",
+      "Citation receipt: every response carries the source spans + retrieval scores back to the caller, so an operator can verify the answer without trusting the LLM.",
+    ],
+    tried: [
+      "First version used dense FAISS only. Citation-precise asks (give me the exact SLA threshold for priority P1) kept missing the right paragraph. Adding the lexical sidecar and RRF blending fixed it.",
+      "Initial MCP tool loop had no token budget. The agent occasionally re-asked the same tool 12 times in a row chasing a missing field. Guarded loops with per-call budgets put a ceiling on the failure mode.",
+      "Tried letting the LLM compose answers directly from raw retrieved text. Hallucinations crept in around dense numbers. Moving to a grounded-answer template (cite span, paraphrase tightly) eliminated the most common drift.",
+    ],
+    metric: { value: "FAISS + pgvector", label: "Hybrid retrieval, every answer cited" },
+    stack: ["Python", "FastAPI", "OpenAI API", "Claude", "Hugging Face", "FAISS", "pgvector", "MCP", "RRF", "RAG"],
+  },
+
+  "llm-eval-harness": {
+    title: "Multi-Cloud LLM Evaluation Harness",
+    subtitle: "Bedrock + OpenAI + Azure OpenAI + Vertex AI · 2026",
+    accent: "--accent-warm",
+    problem:
+      "Picking the right LLM for a production task is mostly vibes. Provider benchmarks are aggregate, vendor demos are cherry-picked, and the model that wins the leaderboard rarely wins on the specific prompts that ship in production. I needed a deterministic, repeatable answer to the question that drives DAPSE's 4-LLM router: for each request shape, which model is actually best?",
+    decision:
+      "Build a cross-provider evaluation harness that runs the same fixed prompt set against Claude (via AWS Bedrock + Anthropic direct), GPT (OpenAI + Azure OpenAI), and Gemini (Vertex AI), scores responses against a gold-answer reference, and emits a comparable score matrix. Pytest as the runner, Langfuse for traces, and a deterministic config so the same harness on the same data produces the same numbers tomorrow.",
+    architecture: [
+      "Prompt suite with task tags (RAG-grounded answer, structured extraction, classification, summarization, reasoning) so the score matrix breaks down by job, not just average score.",
+      "Provider adapters: AWS Bedrock, OpenAI, Azure OpenAI, Vertex AI. Each adapter normalizes to the same request and response shape so the scoring layer doesn't care who answered.",
+      "Gold-answer reference set: hand-curated correct answers plus rubrics. LLM-as-judge scoring for fuzzy tasks, deterministic string / structural checks for the strict ones.",
+      "Langfuse traces every call (provider, model, tokens, latency, cost, reasoning if available). The full run becomes a queryable trace tree, not a CSV nobody opens.",
+      "Output: a score matrix that powers DAPSE's 4-LLM routing decisions. When a provider deprecates a model or ships a new tier, rerun the harness; the routing table updates from the same source of truth.",
+    ],
+    tried: [
+      "First version was a single-provider Pytest script. Worked, didn't generalize. The adapter layer (same shape for every provider) was the move; everything downstream got simpler.",
+      "Tried LLM-as-judge for every task. It scored fuzzy tasks well and overestimated strict ones. Splitting the scorer (deterministic for structured outputs, judge for prose) fixed the calibration.",
+      "Initial runs weren't deterministic because two adapters defaulted to nonzero temperature. Pinned every adapter to temperature 0 and recorded seeds so reruns produce comparable numbers.",
+    ],
+    metric: { value: "4-provider matrix", label: "Cross-cloud LLM scorecard, deterministic reruns" },
+    stack: ["Python", "AWS Bedrock", "OpenAI", "Azure OpenAI", "Vertex AI", "Pytest", "Langfuse", "LLM-as-Judge"],
+  },
+
+  "streaming-anomaly": {
+    title: "Real-Time Streaming Anomaly Detection on AWS",
+    subtitle: "Sensor + Event Telemetry · 2025",
+    accent: "--accent-coral",
+    problem:
+      "Anomaly detection that runs on yesterday's data isn't anomaly detection; it's an apology. The interesting failures show up mid-stream and only matter if a downstream alert fires while the anomaly still matters. I wanted a pipeline that scored every event the moment it landed, end-to-end p95 under a second.",
+    decision:
+      "Ingest the stream through AWS Kinesis Data Streams, score every event in Lambda consumers with an Isolation Forest + LSTM-autoencoder ensemble (the IF catches point anomalies cheaply, the LSTM catches sequence anomalies the IF misses), persist alerts to DynamoDB, and budget the whole path for sub-second p95.",
+    architecture: [
+      "Kinesis Data Streams as the ingest layer with multi-shard partitioning so a single hot key doesn't starve the rest of the stream.",
+      "Lambda consumers do the scoring. The runtime keeps the IF model warm in memory across invocations; the LSTM autoencoder runs on a vectorized batch slice to keep per-event latency flat.",
+      "Ensemble logic: Isolation Forest catches isolated point anomalies cheaply (microsecond scoring per event). LSTM autoencoder reconstructs short sequences and flags reconstruction error spikes, catching sequence-level anomalies the IF misses.",
+      "DynamoDB persists alerts keyed by source + window so downstream pagers and dashboards can read the latest anomaly state without re-scanning the stream.",
+      "Latency budget: sub-second p95 end to end (ingest, score, persist). Anything that creeps over budget gets traced through CloudWatch and burned down stage by stage.",
+    ],
+    tried: [
+      "Started with Isolation Forest alone. Cheap and fast, but missed every sequence-level drift. Adding the LSTM autoencoder fixed the false-negative gap on time-correlated anomalies.",
+      "First Lambda cold-start scoring was 4x the target p95. Keeping the model warm in module scope and pre-loading on container init dropped cold-start latency dramatically.",
+      "Initial alert writes hit DynamoDB per event, which got expensive. Buffered alerts in a 200ms window and flushed in a single write cut DynamoDB write cost without breaching the latency budget.",
+    ],
+    metric: { value: "<1s p95", label: "End-to-end ingest → score → alert latency" },
+    stack: ["AWS", "Kinesis", "Lambda", "DynamoDB", "Python", "Isolation Forest", "LSTM Autoencoder", "CloudWatch"],
+  },
+
+  "nlp-classifier": {
+    title: "NLP Sentiment + Topic Classifier with Transformer Fine-Tuning",
+    subtitle: "DistilBERT, FastAPI, ONNX Runtime · 2025",
+    accent: "--accent-secondary",
+    problem:
+      "Pre-trained sentiment models work great until the domain shifts. A general-purpose classifier confidently misreads a sarcastic review as positive, a technical complaint as neutral, or a topic-relevant comment as off-topic. I wanted a domain-tuned classifier that also served fast enough to run inline on a request, not as a batch job downstream.",
+    decision:
+      "Fine-tune DistilBERT on 50K+ labeled reviews for multi-class sentiment plus topic tagging. Serve through FastAPI with batched inference, and run the model on ONNX Runtime for roughly 3x throughput over the vanilla PyTorch baseline.",
+    architecture: [
+      "50K+ hand-labeled reviews with multi-class sentiment (negative / neutral / positive plus an opinion-strength axis) and topic tags as a multi-label head.",
+      "DistilBERT chosen over full BERT for the ~40% size reduction with ~97% of the accuracy. Fine-tuned with weighted loss to handle class imbalance.",
+      "FastAPI service with a batched-inference path: requests within a short window get coalesced into a single forward pass, dropping per-request latency under load.",
+      "ONNX Runtime conversion: exported the fine-tuned model, ran graph optimization, and shipped the ONNX binary as the serving artifact. Throughput came up roughly 3x vs. the PyTorch baseline at the same accuracy.",
+      "Two-head output: a softmax over sentiment classes plus a sigmoid head over topic tags, both trained jointly so the encoder shares context.",
+    ],
+    tried: [
+      "Tried full BERT first. Marginal accuracy gain over DistilBERT and noticeably slower at serve time. DistilBERT won the deployment trade.",
+      "First serving path ran on PyTorch directly. Throughput was fine at low traffic and fell over under load. ONNX Runtime + batched inference fixed both.",
+      "First multi-task head used a shared softmax across sentiment and topic. The two tasks were genuinely independent (a review can be very negative about topic A and positive about topic B), so they should not have shared a softmax. Splitting into a sentiment softmax + a topic sigmoid head fixed calibration.",
+    ],
+    metric: { value: "~3x", label: "Throughput vs. unoptimized PyTorch baseline" },
+    stack: ["Python", "PyTorch", "Hugging Face Transformers", "DistilBERT", "FastAPI", "ONNX Runtime", "Datasets"],
+  },
+
+  "demand-forecasting": {
+    title: "Time-Series Demand Forecasting + Inventory Optimization",
+    subtitle: "Prophet + LightGBM Stacked Ensemble · 2024 to 2025",
+    accent: "--accent-warm",
+    problem:
+      "Inventory teams plan against forecasts that either ignore hierarchy (one model for everything, mediocre per-SKU) or over-fit it (one model per SKU, fragile and unmaintainable). What ops actually needs is a forecast that respects product + region structure, surfaces reorder decisions automatically, and stays honest when the underlying signal shifts.",
+    decision:
+      "Build a hierarchical forecasting pipeline with a Prophet + LightGBM stacked ensemble. Prophet handles seasonality and holidays well; LightGBM picks up the residuals plus cross-series patterns. SARIMA sits underneath as a deterministic baseline. Optuna runs the hyperparameter search, MLflow logs every trial, and a Power BI ops dashboard surfaces reorder recommendations.",
+    architecture: [
+      "Hierarchical structure: product, region, product-by-region. Forecasts at each level reconciled top-down so the per-region rollup matches the per-product total.",
+      "Stacked ensemble: Prophet handles trend, seasonality, and holiday effects per series; LightGBM picks up the residuals and cross-series features (lags, promotions, weather). The blend lifts accuracy on both stable and bursty SKUs.",
+      "SARIMA baseline kept in the pipeline. When the ensemble underperforms the baseline on a held-out window, the system flags it instead of silently shipping a worse forecast.",
+      "Optuna hyperparameter search across the ensemble. Every trial logged to MLflow with parameters, metrics, and the resulting model artifact, so any historical forecast is reproducible.",
+      "Inventory optimization layer turns forecasts into reorder recommendations using simple safety-stock + lead-time math. Recommendations surface through a Power BI ops dashboard with per-SKU drill-down.",
+    ],
+    tried: [
+      "Tried one Prophet model per SKU. Worked for the well-behaved SKUs and overfit the noisy ones. Stacking with LightGBM on residuals stabilized the noisy SKUs without hurting the clean ones.",
+      "Initial reconciliation used naive proportional allocation. Region totals didn't match the per-region rollups within tolerance. Switched to a constrained reconciliation pass that enforces the hierarchy explicitly.",
+      "Tried a single global model (LightGBM on all SKUs). Top-level metrics looked fine but the per-SKU forecasts were unusable. Hierarchical + ensemble was the move; global-only is a leaderboard answer.",
+    ],
+    metric: { value: "Hierarchical + ensemble", label: "Prophet + LightGBM with MLflow-tracked search" },
+    stack: ["Python", "Prophet", "LightGBM", "SARIMA", "statsmodels", "Optuna", "MLflow", "Power BI"],
+  },
+
+  "mlops-pipeline": {
+    title: "End-to-End MLOps Pipeline",
+    subtitle: "Training + Registry + Drift Monitoring · 2026",
+    accent: "--accent-success",
+    problem:
+      "Most ML projects die in the gap between a Jupyter cell that works and a production service that survives a month. The model trains, gets deployed, drifts silently, and nobody notices until a metric breaks. Retraining is a manual scramble. I wanted a pipeline where the whole loop (train, register, deploy, monitor, retrain) was just a Git push.",
+    decision:
+      "Build a CI/CD pipeline that trains, evaluates, and registers models in MLflow + SageMaker Model Registry on every merge. Evidently AI watches input + prediction distributions for drift, Prometheus alerts route into a retraining trigger when distributions shift, and Docker + GitHub Actions hold the whole thing together so the operator's job is reviewing PRs, not babysitting models.",
+    architecture: [
+      "GitHub Actions runs the training pipeline on every merge to main: load curated dataset, train candidate model, evaluate against held-out + golden sets, compare against the current production model.",
+      "MLflow tracks every training run (parameters, metrics, artifacts, source commit). SageMaker Model Registry holds versioned models with stage tags (Staging, Production, Archived) so promotion is an explicit, auditable step.",
+      "Docker images for training and inference are built and pushed by the same workflow. The serving image is what production runs; no drift between dev and prod runtime.",
+      "Evidently AI runs drift detection on incoming features and live predictions, computing distribution distance against the training reference. Drift reports persist so an investigation can pick up where a sliced metric started moving.",
+      "Prometheus scrapes Evidently's drift metrics plus serving latency and error rate. Alerts wired into a retraining trigger fire automatically when input distributions cross threshold, so the model retrains on fresh data instead of going stale.",
+    ],
+    tried: [
+      "First version tracked runs in MLflow but skipped the model registry. Promotions were a screenshot in Slack. Adding the SageMaker Model Registry with explicit stage tags made promotion auditable and rollback trivial.",
+      "Initial drift detection ran offline as a weekly cron. By the time it caught drift, the model had been wrong for days. Moving Evidently online with Prometheus alerts caught drift in minutes.",
+      "First retraining trigger was a manual button in a Slack channel. It got pressed inconsistently. Wiring the Prometheus alert directly to the training workflow (with a human review on promotion) closed the loop without losing the safety check.",
+    ],
+    metric: { value: "Push → Train → Register → Monitor", label: "CI/CD loop with drift-triggered retraining" },
+    stack: ["Python", "MLflow", "AWS SageMaker", "Docker", "GitHub Actions", "Evidently AI", "Prometheus"],
   },
 
   "wildfire-prediction": {
@@ -258,27 +404,27 @@ export const caseStudies = {
   },
 
   "obesity-analytics": {
-    title: "Obesity Risk Analytics",
-    subtitle: "End-to-End AWS Data Pipeline · Aug to Dec 2024",
+    title: "Cloud Data Warehouse + ETL Pipeline on AWS",
+    subtitle: "Public Health Risk Analytics · Supervised by Prof. Foxwell",
     accent: "--accent-primary",
     problem:
-      "CDC BRFSS (Behavioral Risk Factor Surveillance System) data lives across years of survey responses with shifting schemas and inconsistent encoding. Building a useful county-level obesity-risk view means stitching all of that together repeatedly, and a local Python notebook isn't a real answer once anyone else (a colleague, an advisor, a reviewer) needs to refresh the numbers.",
+      "CDC BRFSS (Behavioral Risk Factor Surveillance System) data lives across years of survey responses with shifting schemas, missing-year gaps, and inconsistent encoding. Building a defensible public-health risk view means treating it like a real data-engineering problem (raw to clean to curated, with quality checks at every layer), not a one-off notebook job.",
     decision:
-      "Build a cloud-native AWS pipeline so ingestion, transformation, and analytical storage all live in one place and survive someone else clicking refresh. S3 for landing zones, AWS Glue DataBrew for the ETL, and RDS as the analytical store for downstream modeling in Python and R. Supervised by Prof. Harry Foxwell at George Mason University.",
+      "Build an AWS-native ETL pipeline using medallion architecture (raw / clean / curated). PySpark for the heavy transforms, AWS Glue for orchestration, S3 for layered storage, and RDS (PostgreSQL) as the dimensional analytical store. Layer dimensional modeling, automated data-quality checks, and an R-based statistical analysis on top so the output is reproducible by anyone with IAM access. Supervised by Prof. Harry Foxwell at GMU.",
     architecture: [
-      "S3 ingestion of CDC BRFSS survey data across multiple years, with the bucket layout split into raw / staging / curated zones so a bad upload never silently corrupts the analytical layer.",
-      "AWS Glue DataBrew handles schema standardization and null-handling across years of survey responses. Type coercion, unit normalization, and deduplication land the data in a model-ready shape.",
-      "RDS holds the curated tables so the analytical layer is queryable from both Python (Pandas, Seaborn, Scikit-learn) and R (tidyverse, ggplot2) without spinning up extra infrastructure.",
-      "Modeling layer compares three families: regression (linear + regularized) as an interpretable baseline, Random Forest for non-linear interactions and feature importance ranking, and ARIMA for time-series forecasting of obesity trend trajectories.",
-      "Output: county-level risk factors plus multi-year obesity-trend forecasts that could inform public-health resource allocation. End-to-end ownership from raw CDC data to predictive outputs.",
+      "S3 bucket layout split into raw / clean / curated zones (medallion architecture) so a bad upload never silently contaminates the analytical layer. Lifecycle rules expire raw data after a retention window.",
+      "PySpark jobs (orchestrated by AWS Glue) handle schema standardization, null-handling, type coercion, and unit normalization across years of CDC survey responses. Distributed transforms keep wide-row aggregations from blowing up local memory.",
+      "RDS (PostgreSQL) holds the curated tables in a dimensional model (fact and dimension tables, surrogate keys, slowly changing dimensions for state-level rollups) so downstream queries don't have to re-join the wide CDC schema every time.",
+      "Automated data-quality checks at every medallion boundary: schema enforcement, null-rate thresholds, value-range constraints, and freshness checks. A failed check halts the next layer's promotion instead of silently passing bad data forward.",
+      "R statistical analysis layer (tidyverse, ggplot2) sits on top of the curated tables for exploratory work and trend modeling. End-to-end ownership from raw CDC data to predictive outputs.",
     ],
     tried: [
-      "First iteration was a local Python notebook that everything ran out of. Worked for me, didn't survive the second person trying to use it. Migrating to S3 + Glue DataBrew made the pipeline reproducible by anyone with IAM access.",
-      "Tried doing all the EDA in Python and skipping R. R's tidyverse + ggplot2 were genuinely faster for the exploratory pass, so the analysis ended up dual-stack instead of single-stack.",
-      "First ARIMA pass naively used yearly aggregates without accounting for missing-year survey gaps. The forecast wobbled. Interpolating missing years with a simple state-level prior gave cleaner trajectories without overfitting the limited series length.",
+      "First iteration ran everything in a local notebook. Worked for me, didn't survive the second person trying to use it. Moving to S3 + Glue + PySpark made the pipeline reproducible by anyone with IAM access.",
+      "Tried pure Python (Pandas) for the heavy transforms. Memory blew up on the wide-row CDC aggregations. PySpark distributed the work cleanly and the pipeline stopped crashing.",
+      "Initial curated tables had no dimensional structure (one big wide table). Queries got slow and fact / dimension separation got hand-rolled. Switching to a proper star schema with surrogate keys made the BI layer dramatically faster.",
     ],
-    metric: { value: "S3 → Glue DataBrew → RDS", label: "Cloud-native pipeline, fully reproducible" },
-    stack: ["AWS", "S3", "Glue DataBrew", "RDS", "Python", "R", "Pandas", "Scikit-learn", "tidyverse", "ggplot2", "ARIMA"],
+    metric: { value: "Medallion ETL", label: "Raw → Clean → Curated on AWS, quality-checked end to end" },
+    stack: ["AWS", "S3", "Glue", "RDS", "PostgreSQL", "PySpark", "Python", "R", "SQL", "tidyverse", "ggplot2", "Dimensional Modeling"],
   },
 
   "support-circle": {

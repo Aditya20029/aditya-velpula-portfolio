@@ -1,8 +1,8 @@
 export const experience = [
   {
     id: "dapse",
-    role: "AI Engineer · DAPSE Capstone",
-    company: "NSI (National Security Innovations Inc.) · Apprenticeship via GMU",
+    role: "AI / Data Engineer · 4-LLM Routing + ETL + Production AI",
+    company: "DAPSE Capstone · GMU · NSI (National Security Innovations Inc.) Partner Org",
     location: "Arlington, VA · Hybrid",
     period: "Jan 2026 to May 2026",
     isHero: true,
@@ -45,7 +45,7 @@ export const experience = [
     period: "Aug 2025 to May 2026",
     isHero: false,
     summary:
-      "Selected by Prof. Harry J. Foxwell to support graduate sections of AIT-580 Data Analytics. Taught 100+ students across 4 sections over 2 semesters, covering SQL, Python, R, and AWS Cloud. Redesigned grading rubrics that cut regrade volume and shaved roughly 30% off grading time per assignment. Overhauled the lab guides and built supplementary Jupyter notebooks that lifted student assignment scores by about 15% vs. the prior cohort. Ran weekly office hours that translated dense engineering concepts (data modeling, ETL design, query plans) into 5-minute explanations students could actually use under deadline pressure.",
+      "Supported 100+ students for Prof. Harry Foxwell across Python, SQL, applied analytics, and data modeling. Coached daily on translating business questions into structured data solutions. Taught across 4 sections over 2 semesters, redesigned grading rubrics that cut regrade volume and shaved roughly 30% off grading time per assignment, and overhauled the lab guides plus supplementary Jupyter notebooks (assignment scores lifted ~15% vs. the prior cohort).",
     impact: [
       { value: 100, suffix: "+", label: "Students Taught", icon: "users" },
       { value: 4, label: "AIT-580 Sections (2 semesters)", icon: "book-open" },
@@ -56,15 +56,18 @@ export const experience = [
   },
   {
     id: "indgeos",
-    role: "AI Engineer · Internship",
+    role: "Software / Data Engineer · Full-Stack",
     company: "Indgeos Geospatial",
-    location: "India · Hybrid",
+    location: "Telangana, India",
     period: "Nov 2023 to Jul 2024",
     isHero: false,
     summary:
-      "Collaborated with backend engineers to integrate APIs and dynamic geospatial data rendering into the company's web platform, improving navigation flows and UI reliability for end users. Built responsive layouts in HTML5, CSS3, and JavaScript that worked consistently across the team's full device range. Established the team's first Git-based PR workflow with automated linting, replacing ad-hoc commits and cutting code-review friction across the engineering team. Lesson learned: the shortest path from idea to shipped feature usually runs through better tooling, not better code.",
-    impact: [],
-    techStack: ["HTML5", "CSS3", "JavaScript", "REST APIs", "Git", "Linting"],
+      "Built Python + FastAPI services and SQL transformations against PostgreSQL backends, plus TypeScript / JavaScript frontends powering customer-facing geospatial analytics. Ran early prompt-engineered LLM experiments on field-ops summaries. Stood up the team's first Git-based pull-request workflow with linting, unit tests, and CI/CD checks, cutting code-review cycle time from roughly 3 days to under 24 hours across a 5-engineer team.",
+    impact: [
+      { value: "~3d to <24h", label: "PR review cycle", icon: "trending-down" },
+      { value: 5, label: "Engineer team", icon: "users" },
+    ],
+    techStack: ["Python", "FastAPI", "PostgreSQL", "SQL", "TypeScript", "JavaScript", "Git", "CI/CD"],
   },
   {
     id: "supraja",

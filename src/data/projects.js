@@ -62,16 +62,93 @@ export const projects = [
     github: null,
   },
   {
-    id: "sla-breach-prediction",
-    title: "Ticket Resolution & SLA Breach Prediction",
-    subtitle: "ITSM Analytics · Oct to Nov 2025",
+    id: "rag-agent",
+    title: "RAG + Agentic AI Assistant",
+    subtitle: "Citation Grounding + MCP Tool Use · 2026",
     description:
-      "End-to-end ITSM analytics pipeline predicting ticket resolution time and flagging SLA breach risk before closure. Built on a realistic 5,000-ticket synthetic dataset simulating ServiceNow/Jira logs. Gradient-boosting models beat baselines for both regression and classification; results surface through a Power BI dashboard for proactive service management.",
-    tags: ["Python", "XGBoost", "Scikit-learn", "Pandas", "Power BI", "Predictive Analytics"],
+      "Hybrid RAG assistant that embeds structured and unstructured operational records, serves retrieval through FAISS + pgvector, and grounds every LLM answer in cited evidence spans. Exposes analytics tools to the agent via Model Context Protocol (MCP) with guarded loops and per-call token budgets, so the agent can ask the database real questions instead of hallucinating the answer.",
+    tags: ["Python", "OpenAI API", "Claude", "Hugging Face", "FAISS", "pgvector", "MCP", "FastAPI", "RAG"],
+    previewType: "chat",
+    accentColor: "--accent-tertiary",
+    metrics: [],
+    github: null,
+  },
+  {
+    id: "llm-eval-harness",
+    title: "Multi-Cloud LLM Evaluation Harness",
+    subtitle: "Bedrock + OpenAI + Azure OpenAI + Vertex AI · 2026",
+    description:
+      "Cross-provider evaluation harness that scores Claude, GPT, and Gemini on a fixed prompt set plus gold-answer references. Powers the model-selection decisions behind DAPSE's production 4-LLM router. Pytest-driven, Langfuse-traced, and deterministic across runs so a regression in one provider doesn't quietly leak into production.",
+    tags: ["Python", "AWS Bedrock", "OpenAI", "Azure OpenAI", "Vertex AI", "Pytest", "Langfuse", "LLM-as-Judge"],
+    previewType: "gauge",
+    accentColor: "--accent-warm",
+    metrics: [],
+    github: null,
+  },
+  {
+    id: "streaming-anomaly",
+    title: "Real-Time Streaming Anomaly Detection on AWS",
+    subtitle: "Sensor + Event Telemetry · 2025",
+    description:
+      "Ingests high-frequency event streams through AWS Kinesis Data Streams into Lambda consumers. Each event is scored by an Isolation Forest + LSTM-autoencoder ensemble, and alerts persist to DynamoDB. Sub-second p95 latency end to end so a downstream pager actually fires while the anomaly still matters.",
+    tags: ["AWS", "Kinesis", "Lambda", "DynamoDB", "Python", "Isolation Forest", "LSTM"],
+    previewType: "chart",
+    accentColor: "--accent-coral",
+    metrics: [
+      { value: "<1s", label: "p95 latency end to end" },
+    ],
+    github: null,
+  },
+  {
+    id: "nlp-classifier",
+    title: "NLP Sentiment + Topic Classifier",
+    subtitle: "Transformer Fine-Tuning · 2025",
+    description:
+      "Fine-tuned DistilBERT on 50K+ labeled reviews for multi-class sentiment plus topic tagging. Served via FastAPI with batched inference and ONNX runtime acceleration, lifting throughput roughly 3x over the unoptimized PyTorch baseline.",
+    tags: ["Python", "PyTorch", "Hugging Face", "DistilBERT", "FastAPI", "ONNX"],
+    previewType: "grid",
+    accentColor: "--accent-secondary",
+    metrics: [
+      { value: "50K+", label: "Labeled reviews" },
+      { value: "~3x", label: "Throughput vs baseline" },
+    ],
+    github: null,
+  },
+  {
+    id: "demand-forecasting",
+    title: "Time-Series Demand Forecasting + Inventory Optimization",
+    subtitle: "Prophet + LightGBM Stacked Ensemble · 2024 to 2025",
+    description:
+      "Hierarchical forecasting across product and region using a Prophet + LightGBM stacked ensemble with SARIMA as a deterministic baseline. Optuna runs the hyperparameter search, MLflow tracks every trial, and reorder recommendations surface through a Power BI ops dashboard.",
+    tags: ["Python", "Prophet", "LightGBM", "SARIMA", "Optuna", "MLflow", "Power BI"],
+    previewType: "chart",
+    accentColor: "--accent-warm",
+    metrics: [],
+    github: null,
+  },
+  {
+    id: "mlops-pipeline",
+    title: "End-to-End MLOps Pipeline",
+    subtitle: "Training + Registry + Drift Monitoring · 2026",
+    description:
+      "CI/CD pipeline that trains, evaluates, and registers models in MLflow + SageMaker Model Registry. Evidently AI runs drift detection on inputs and predictions; Prometheus alerts wired into a retraining trigger fire automatically when input distributions shift. Docker + GitHub Actions hold the whole thing together.",
+    tags: ["Python", "MLflow", "AWS SageMaker", "Docker", "GitHub Actions", "Evidently AI", "Prometheus"],
+    previewType: "pipeline",
+    accentColor: "--accent-success",
+    metrics: [],
+    github: null,
+  },
+  {
+    id: "sla-breach-prediction",
+    title: "Predictive Analytics + BI Dashboard",
+    subtitle: "SLA Breach Forecasting · 2025",
+    description:
+      "Dimensional model and canonical dataset over 5,000+ ops records, XGBoost forecasting with SHAP explainability for feature-level reasoning, and a Power BI dashboard with drill-down so operators can self-serve. Built end-to-end so the model output isn't a black box: every prediction comes with the top drivers an operator can act on.",
+    tags: ["Python", "XGBoost", "Scikit-learn", "advanced SQL", "Power BI", "SHAP"],
     previewType: "gauge",
     accentColor: "--accent-success",   // emerald
     metrics: [
-      { value: 5000, suffix: "+", label: "Tickets Modelled" },
+      { value: 5000, suffix: "+", label: "Ops records modelled" },
     ],
     github: null,
   },
@@ -125,11 +202,11 @@ export const projects = [
   },
   {
     id: "obesity-analytics",
-    title: "Obesity Risk Analytics",
-    subtitle: "End-to-End AWS Data Pipeline · Prof. Foxwell",
+    title: "Cloud Data Warehouse + ETL Pipeline on AWS",
+    subtitle: "Public Health Risk Analytics · Prof. Foxwell",
     description:
-      "Cloud-native data pipeline predicting county-level obesity trends from CDC BRFSS data, supervised by Prof. Harry Foxwell at GMU. Raw records flow through S3 → AWS Glue DataBrew → RDS, then EDA and modeling in Python (Pandas, Seaborn, Scikit-learn) and R (tidyverse, ggplot2). Three model families compared: regression (interpretable baseline), Random Forest (non-linear + importance ranking), and ARIMA (trend forecasting). End-to-end ownership from raw CDC data to predictive outputs.",
-    tags: ["AWS", "S3", "Glue DataBrew", "RDS", "Python", "R", "ARIMA"],
+      "End-to-end ETL on CDC BRFSS data using PySpark over raw, clean, and curated layers (medallion architecture) into AWS S3 + Glue + RDS (PostgreSQL). Dimensional modeling, automated data-quality checks, and an R statistical analysis layer on top. Supervised by Prof. Harry Foxwell at GMU.",
+    tags: ["AWS", "S3", "Glue", "RDS", "PostgreSQL", "PySpark", "Python", "R", "SQL"],
     previewType: "pipeline",
     accentColor: "--accent-primary",   // electric blue
     metrics: [],
