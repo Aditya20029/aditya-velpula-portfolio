@@ -62,6 +62,9 @@ export default function ProjectCaseStudy({ params }) {
       <GrainOverlay />
       <PremiumBackdrop />
       <Navbar />
+      {/* Match the home page: zoom the flowing content only, leave the
+          fixed overlays + cursor at true viewport scale. */}
+      <div className="zoom-shell">
       <main className="relative z-10">
         <article className="container-site relative z-10 px-4 md:px-8 pt-32 pb-24 max-w-prose mx-auto">
           {/* Back link */}
@@ -195,6 +198,7 @@ export default function ProjectCaseStudy({ params }) {
         </article>
       </main>
       <Footer />
+      </div>
     </>
   );
 }

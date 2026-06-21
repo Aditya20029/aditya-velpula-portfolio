@@ -32,18 +32,23 @@ export default function Home() {
       <ScrollProgress />
       <Navbar />
       <div aria-hidden className="context-tint" />
-      <main id="main" className="relative z-10">
-        <Hero />
-        <About />
-        <TechMarquee />
-        <Experience />
-        <DapsePipelineStory />
-        <Projects />
-        <Skills />
-        <Certifications />
-        <Contact />
-      </main>
-      <Footer />
+      {/* .zoom-shell scales the flowing content ~20% smaller without
+          touching the fixed overlays above (cursor, canvases, navbar),
+          so the custom cursor still reaches the true viewport edge. */}
+      <div className="zoom-shell">
+        <main id="main" className="relative z-10">
+          <Hero />
+          <About />
+          <TechMarquee />
+          <Experience />
+          <DapsePipelineStory />
+          <Projects />
+          <Skills />
+          <Certifications />
+          <Contact />
+        </main>
+        <Footer />
+      </div>
     </MobileMotion>
   );
 }
