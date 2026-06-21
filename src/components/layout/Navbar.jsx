@@ -77,7 +77,7 @@ export default function Navbar() {
                     className="absolute inset-0 rounded-full"
                     style={{
                       background:
-                        "linear-gradient(135deg, rgba(124,212,255,0.13), rgba(255,154,230,0.1))",
+                        "linear-gradient(135deg, rgba(232,198,106,0.15), rgba(184,134,11,0.1))",
                       border: "1px solid var(--border-subtle)",
                     }}
                     transition={{ type: "spring", stiffness: 420, damping: 34 }}

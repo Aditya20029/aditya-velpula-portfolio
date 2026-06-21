@@ -109,14 +109,14 @@ export default function About() {
         >
           <div
             className="relative rounded-2xl p-6 md:p-8 glass-card overflow-hidden font-mono-var"
-            style={{ borderColor: "rgba(124, 212, 255, 0.35)" }}
+            style={{ borderColor: "rgba(232, 198, 106, 0.35)" }}
           >
             <div
               aria-hidden
               className="absolute inset-0 pointer-events-none"
               style={{
                 background:
-                  "linear-gradient(to bottom, transparent, rgba(6,182,212,0.04), transparent)",
+                  "linear-gradient(to bottom, transparent, rgba(212,175,55,0.05), transparent)",
                 animation: "scan-line 4s linear infinite",
               }}
             />

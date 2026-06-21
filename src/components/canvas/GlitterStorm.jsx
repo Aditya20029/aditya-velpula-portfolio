@@ -25,17 +25,17 @@ const PALETTE = [
   "255, 255, 255",
   "230, 240, 255",
   "230, 240, 255",
-  "215, 225, 245", // cool white
-  "255, 215, 240", // very faint pink
-  "215, 235, 255", // very faint teal
-  "230, 225, 250", // very faint lilac
+  "250, 244, 224", // warm white
+  "255, 240, 200", // faint champagne
+  "250, 232, 188", // faint gold
+  "245, 226, 176", // faint amber
 ];
 
 const COMET_COLORS = [
-  "255, 154, 230",
-  "124, 212, 255",
-  "196, 167, 255",
-  "255, 216, 138",
+  "245, 207, 106", // amber gold
+  "212, 175, 55",  // classic gold
+  "232, 198, 106", // champagne
+  "184, 134, 11",  // deep gold
 ];
 
 /** Build an off-screen sprite of a glowing dot in a given color.

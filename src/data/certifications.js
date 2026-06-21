@@ -2,27 +2,27 @@
 export const CERT_TIERS = {
   professional: {
     label: "PROFESSIONAL",
-    accent: "#60a5fa", // sky-400
-    accentRgb: "96, 165, 250",
-    gradient: "linear-gradient(135deg, #0ea5e9 0%, #1e40af 100%)",
+    accent: "#e8c66a", // champagne gold
+    accentRgb: "232, 198, 106",
+    gradient: "linear-gradient(135deg, #f0d488 0%, #b8860b 100%)",
   },
   associate: {
     label: "ASSOCIATE",
-    accent: "#22d3ee", // cyan-400
-    accentRgb: "34, 211, 238",
-    gradient: "linear-gradient(135deg, #06b6d4 0%, #0e7490 100%)",
+    accent: "#d4af37", // classic gold
+    accentRgb: "212, 175, 55",
+    gradient: "linear-gradient(135deg, #d4af37 0%, #9a7b1f 100%)",
   },
   foundational: {
     label: "FOUNDATIONAL",
-    accent: "#3b82f6", // blue-500
-    accentRgb: "59, 130, 246",
-    gradient: "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)",
+    accent: "#c9962f", // deep gold
+    accentRgb: "201, 150, 47",
+    gradient: "linear-gradient(135deg, #c9962f 0%, #7a5c12 100%)",
   },
   academy: {
     label: "ACADEMY",
-    accent: "#14b8a6", // teal-500
-    accentRgb: "20, 184, 166",
-    gradient: "linear-gradient(135deg, #14b8a6 0%, #0f766e 100%)",
+    accent: "#b87333", // copper
+    accentRgb: "184, 115, 51",
+    gradient: "linear-gradient(135deg, #c8803a 0%, #8a4f22 100%)",
   },
 };
 

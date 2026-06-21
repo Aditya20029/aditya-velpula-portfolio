@@ -21,14 +21,14 @@ export default async function Image() {
           flexDirection: "column",
           justifyContent: "center",
           padding: "80px",
-          background: "#07070d",
+          background: "#0a0806",
           backgroundImage: [
-            "radial-gradient(ellipse 60% 50% at 12% 18%, rgba(124,212,255,0.35), transparent 60%)",
-            "radial-gradient(ellipse 60% 50% at 88% 24%, rgba(255,154,230,0.30), transparent 60%)",
-            "radial-gradient(ellipse 70% 50% at 50% 90%, rgba(196,167,255,0.25), transparent 65%)",
-            "radial-gradient(ellipse 50% 40% at 88% 88%, rgba(255,216,138,0.18), transparent 60%)",
+            "radial-gradient(ellipse 60% 50% at 12% 18%, rgba(232,198,106,0.34), transparent 60%)",
+            "radial-gradient(ellipse 60% 50% at 88% 24%, rgba(184,134,11,0.30), transparent 60%)",
+            "radial-gradient(ellipse 70% 50% at 50% 90%, rgba(212,175,55,0.24), transparent 65%)",
+            "radial-gradient(ellipse 50% 40% at 88% 88%, rgba(245,207,106,0.18), transparent 60%)",
           ].join(", "),
-          color: "#f1f5f9",
+          color: "#fdf8ec",
           fontFamily: "system-ui, -apple-system, Segoe UI, sans-serif",
         }}
       >
@@ -70,7 +70,7 @@ export default async function Image() {
             letterSpacing: "-0.04em",
             lineHeight: 1,
             backgroundImage:
-              "linear-gradient(135deg, #7cd4ff 0%, #c4a7ff 35%, #ff9ae6 65%, #ffd88a 100%)",
+              "linear-gradient(135deg, #faecbf 0%, #e8c66a 35%, #d4af37 65%, #9a7b1f 100%)",
             backgroundClip: "text",
             color: "transparent",
             display: "flex",
@@ -84,16 +84,16 @@ export default async function Image() {
           style={{
             fontSize: 38,
             fontWeight: 500,
-            color: "#cbd5e1",
+            color: "#ece3d0",
             marginTop: 28,
             display: "flex",
             gap: 16,
             alignItems: "center",
           }}
         >
-          <span>AI Engineer</span>
-          <span style={{ color: "#475569" }}>·</span>
-          <span>Building Intelligent Systems at Scale</span>
+          <span>AI / Data Engineer</span>
+          <span style={{ color: "#6b6149" }}>·</span>
+          <span>Production AI + Scalable ETL at Scale</span>
         </div>
 
         {/* Skills row */}
@@ -109,9 +109,9 @@ export default async function Image() {
               key={s}
               style={{
                 padding: "10px 22px",
-                border: "1px solid rgba(255,255,255,0.16)",
+                border: "1px solid rgba(232,198,106,0.24)",
                 borderRadius: 999,
-                color: "#94a3b8",
+                color: "#c9bda3",
                 fontSize: 22,
                 fontFamily: "ui-monospace, Menlo, monospace",
                 letterSpacing: "0.1em",
@@ -130,7 +130,7 @@ export default async function Image() {
             right: 80,
             fontSize: 22,
             fontFamily: "ui-monospace, Menlo, monospace",
-            color: "#7cd4ff",
+            color: "#e8c66a",
             letterSpacing: "0.14em",
           }}
         >
@@ -145,14 +145,14 @@ export default async function Image() {
             left: 80,
             width: 64,
             height: 64,
-            border: "2px solid #7cd4ff",
+            border: "2px solid #e8c66a",
             borderRadius: 16,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             fontSize: 26,
             fontWeight: 800,
-            color: "#7cd4ff",
+            color: "#e8c66a",
             letterSpacing: "0.05em",
           }}
         >
