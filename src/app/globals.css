@@ -163,14 +163,17 @@ body {
    at true viewport scale so the custom cursor tracks real coordinates
    and the full-screen canvases cover the whole viewport.
 
-   width:125% compensates for the box-shrink: 125vw * 0.8 = 100vw, so the
-   content still fills the viewport edge to edge with no dead strip on
-   the right. Mobile (<768px) is exempt — px sizes there are already at
-   their clamp minimums. */
+   The shell keeps its natural 100% width (no width override): in
+   Chromium, zoom shrinks element sizes but preserves block flow
+   position, so a centered container stays centered at 50vw. Widening
+   the shell would push the content's center right of viewport center.
+   The full-screen fixed backdrop (unzoomed, behind everything) covers
+   the whole viewport, so the shrunk shell leaves no visible gap.
+   Mobile (<768px) is exempt — px sizes there are already at their
+   clamp minimums. */
 @media (min-width: 768px) {
   .zoom-shell {
     zoom: 0.8;
-    width: 125%;
   }
 }
 
