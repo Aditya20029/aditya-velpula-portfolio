@@ -106,12 +106,13 @@ export default function RootLayout({ children }) {
           id="critical-shell"
           dangerouslySetInnerHTML={{ __html: criticalShellCss }}
         />
-        {/* Apply the user's stored theme synchronously *before* first
-            paint so returning light-mode visitors don't flash dark.
-            New visitors fall through to the SSR default ("dark"). */}
+        {/* Force night mode on every load. Any previously-stored
+            preference is wiped so the site always opens dark, for
+            everyone, every time. The in-session toggle still works,
+            but it no longer persists across reloads. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("av-theme");if(t==="dark"||t==="light"){document.documentElement.setAttribute("data-theme",t);}}catch(e){}})();`,
+            __html: `(function(){try{document.documentElement.setAttribute("data-theme","dark");localStorage.removeItem("av-theme");}catch(e){}})();`,
           }}
         />
       </head>

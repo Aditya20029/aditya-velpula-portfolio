@@ -12,10 +12,11 @@ export function useTheme() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const html = document.documentElement;
-    const stored = localStorage.getItem("av-theme");
-    const initial = stored || html.getAttribute("data-theme") || "dark";
-    setTheme(initial);
-    html.setAttribute("data-theme", initial);
+    /* Always open in night mode. We deliberately ignore any stored
+       preference so every fresh load starts dark; the toggle still
+       works for the rest of the session, it just doesn't persist. */
+    setTheme("dark");
+    html.setAttribute("data-theme", "dark");
 
     const observer = new MutationObserver((mutations) => {
       for (const m of mutations) {
@@ -43,9 +44,8 @@ export function useTheme() {
        feel mushy). */
     html.classList.add("theme-transitioning");
     html.setAttribute("data-theme", next);
-    try {
-      localStorage.setItem("av-theme", next);
-    } catch (_) {}
+    /* Intentionally not persisted: the site always reopens in night
+       mode, so an in-session switch to light shouldn't carry over. */
 
     window.setTimeout(() => {
       html.classList.remove("theme-transitioning");
